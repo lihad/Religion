@@ -5,9 +5,7 @@ import java.util.TimerTask;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
-import org.bukkit.inventory.ItemStack;
-
-import Lihad.Religion.Religion;
+import Lihad.Religion.Information.BeyondInfo;
 
 
 public class BeyondTimerTask extends TimerTask {
@@ -15,8 +13,8 @@ public class BeyondTimerTask extends TimerTask {
 	@Override
 	public void run(){
 		try{
-			for(int i=0;i<Religion.info.getTowersAll().size();i++){
-				Location location = Religion.info.getTowerLocation(Religion.info.getReligion(Religion.info.getTowersAll().get(i)), Religion.info.getTowersAll().get(i));
+			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
+				Location location = BeyondInfo.getTowerLocation(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i));
 				Chest chest = (Chest) location.getBlock().getState();
 				int amount = 0;
 				for(int j=0;j<27;j++){
@@ -24,10 +22,10 @@ public class BeyondTimerTask extends TimerTask {
 						amount = amount+chest.getInventory().getItem(j).getAmount();
 					}
 				}
-				if(amount > Religion.info.getTowerInfluence(Religion.info.getReligion(Religion.info.getTowersAll().get(i)), Religion.info.getTowersAll().get(i))){
-					Religion.info.setTowerInfluence(Religion.info.getReligion(Religion.info.getTowersAll().get(i)), Religion.info.getTowersAll().get(i), Religion.info.getTowerInfluence(Religion.info.getReligion(Religion.info.getTowersAll().get(i)), Religion.info.getTowersAll().get(i))+1);
-				}else if(amount < Religion.info.getTowerInfluence(Religion.info.getReligion(Religion.info.getTowersAll().get(i)), Religion.info.getTowersAll().get(i))){
-					Religion.info.setTowerInfluence(Religion.info.getReligion(Religion.info.getTowersAll().get(i)), Religion.info.getTowersAll().get(i), Religion.info.getTowerInfluence(Religion.info.getReligion(Religion.info.getTowersAll().get(i)), Religion.info.getTowersAll().get(i))-1);
+				if(amount > BeyondInfo.getTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i))){
+					BeyondInfo.setTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i))+1);
+				}else if(amount < BeyondInfo.getTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i))){
+					BeyondInfo.setTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i))-1);
 				}else{
 					
 				}
