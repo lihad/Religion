@@ -18,9 +18,18 @@ public class BeyondInfo {
 	}
 	
 	//get Functions
+	
+	/**
+	 * @return A list of all the Religions, string form.
+	 */
 	public List<String> getReligions(){
 		return BeyondInfoReader.getKeyList("Religions");
 	}
+	
+	/**
+	 * @param towername - accepts the name of a tower.
+	 * @return The religion associated with the tower.
+	 */
 	public String getReligion(String towername){
 		List<String> religionList = getReligions();
 		for(int i = 0; i<religionList.size();i++){
@@ -28,6 +37,11 @@ public class BeyondInfo {
 		}
 		return null;
 	}
+	
+	/**
+	 * @param player - accepts a player.
+	 * @return Returns
+	 */
 	public String getReligion(Player player){
 		List<String> religionList = getReligions();
 		for(int i = 0; i<religionList.size();i++){
