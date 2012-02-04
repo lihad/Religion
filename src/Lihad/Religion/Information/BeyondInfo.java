@@ -267,6 +267,16 @@ public class BeyondInfo {
 		}
 		return players;
 	}
+	public List<Player> getReligionPlayers(String religion){
+		List<Player> players = new ArrayList<Player>();
+		List<Player> playersall = getPlayers();
+		for(int i=0;i<playersall.size();i++){
+			if(getPlayerPath(playersall.get(i)).contains(religion)){
+				players.add(playersall.get(i));
+			}
+		}
+		return players;
+	}
 	//has Functions
 	/**
 	 * Simply checks to see if player exists in the information.yml

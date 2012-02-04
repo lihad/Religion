@@ -1,5 +1,10 @@
 package Lihad.Religion.Command;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
+
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -31,7 +36,7 @@ public class CommandRunner implements CommandExecutor {
 		 * 
 		 * COMMANDS TO ADD
 		 * 
-		 * TODO: How about a command to list the members of your own tower
+		 * TODO: How about a command to list the members of your own tower, both online and offline (online in a different color)
 		 */
 		
 		//------------------------------------------------------------------------------------------------
@@ -116,7 +121,35 @@ public class CommandRunner implements CommandExecutor {
 				sender.sendMessage("This command is invalid because you are not a member of a tower");
 			}
 			return true;
-		} else return false;
+		}
+		
+		/**
+		 * 
+		 * Drives '/rr here'.  Outputs the territory you are standing in.
+		 */
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("here")){
+			sender.sendMessage("You are in the territory of "+Religion.info.getTower(((Player)sender).getLocation()));
+			return true;
+		}
+		
+		/**
+		 * 
+		 * Drives '/rr who'. Lists all members of players religion who are online in white, and all members associated with players tower who are online in red 
+		 */
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("who")){
+			String message = "";
+			List<Player> onlineplayers = Arrays.asList(plugin.getServer().getOnlinePlayers());
+			List<Player> towerplayers = Religion.info.getTowerPlayers(Religion.info.getTowerName((Player)sender));
+			List<Player> religionplayers = Religion.info.getReligionPlayers(Religion.info.getReligion((Player)sender));
+			for(int i=0;i<religionplayers.size();i++){
+				if(towerplayers.contains(religionplayers.get(i)) && onlineplayers.contains(religionplayers.get(i))) message = message.concat(ChatColor.RED.toString()+religionplayers.get(i).getName());
+				else if(onlineplayers.contains(religionplayers.get(i))) message = message.concat(ChatColor.WHITE.toString()+religionplayers.get(i).getName());
+			}
+			((Player)sender).sendMessage(message);
+			return true;
+		}
+		
+		else return false;
 	}
 
 }

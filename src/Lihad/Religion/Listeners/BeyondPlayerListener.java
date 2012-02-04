@@ -38,11 +38,11 @@ public class BeyondPlayerListener extends PlayerListener {
 				event.setCancelled(true);
 			}else if(!Religion.info.getTowers(Religion.info.getReligion(event.getClickedBlock().getLocation())).contains(Religion.info.getTowerName(event.getPlayer()))){
 				Chest chest = (Chest) event.getClickedBlock().getState();
-				if(chest.getInventory().contains(Material.GOLD_INGOT)){
-					//ItemStack items = new ItemStack(Material.GOLD_INGOT, 1);
+				if(chest.getInventory().contains(Religion.config.getStorableItemid())){
 					event.getPlayer().sendMessage("You stole a gold bar!");
+					//TODO: make damage configurable via Config.BeyondConfig
 					event.getPlayer().damage(10);
-					int index =chest.getInventory().first(266);
+					int index =chest.getInventory().first(Religion.config.getStorableItemid());
 					ItemStack items = chest.getInventory().getItem(index);
 					items.setAmount(items.getAmount()-1);
 					chest.getInventory().setItem(index, items);
@@ -52,7 +52,8 @@ public class BeyondPlayerListener extends PlayerListener {
 				}else{
 					event.getPlayer().sendMessage("DOWN WITH IT!!!");
 					Religion.info.removeTower(Religion.info.getReligion(event.getClickedBlock().getLocation()), Religion.info.getTower(event.getClickedBlock().getLocation()));
-					event.getClickedBlock().getLocation().getWorld().createExplosion(event.getClickedBlock().getLocation(), 30, true);
+					//TODO: Make explosion yield value configurable via Config.BeyondConfig
+					event.getClickedBlock().getLocation().getWorld().createExplosion(event.getClickedBlock().getLocation(), 60, true);
 					event.getClickedBlock().setTypeId(0);
 				}
 				event.setCancelled(true);
