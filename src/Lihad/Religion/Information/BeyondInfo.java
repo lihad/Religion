@@ -278,7 +278,7 @@ public class BeyondInfo {
 	 * Simply checks to see if player exists in the information.yml
 	 */
 	public boolean hasPlayer(Player player){
-		try{ return getPlayers().contains(player.getName()); }
+		try{ return getPlayers().contains(player); }
 		catch(Exception e){ return false; }
 	}
 	public boolean hasTower(String towername){

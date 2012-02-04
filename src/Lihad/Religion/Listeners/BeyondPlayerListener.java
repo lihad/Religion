@@ -38,11 +38,11 @@ public class BeyondPlayerListener extends PlayerListener {
 				event.setCancelled(true);
 			}else if(!Religion.info.getTowers(Religion.info.getReligion(event.getClickedBlock().getLocation())).contains(Religion.info.getTowerName(event.getPlayer()))){
 				Chest chest = (Chest) event.getClickedBlock().getState();
-				if(chest.getInventory().contains(Religion.config.getStorableItemid())){
+				if(chest.getInventory().contains(Material.GOLD_INGOT)){
 					event.getPlayer().sendMessage("You stole a gold bar!");
 					//TODO: make damage configurable via Config.BeyondConfig
 					event.getPlayer().damage(10);
-					int index =chest.getInventory().first(Religion.config.getStorableItemid());
+					int index =chest.getInventory().first(266);
 					ItemStack items = chest.getInventory().getItem(index);
 					items.setAmount(items.getAmount()-1);
 					chest.getInventory().setItem(index, items);

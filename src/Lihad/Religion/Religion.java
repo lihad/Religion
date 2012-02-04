@@ -45,6 +45,10 @@ public class Religion extends JavaPlugin {
 	 * TODO: Need to add a class/package/something for ability handling.  <- Really the next big step.
 	 * 
 	 * 
+	 * TODO: Make it so people can't make a /home or sleep in a bed within the aoe of an opposing tower
+	 * TODO: '/rr who' doesn't work for some reason
+	 * 
+	 * 
 	 */
 	
 	
