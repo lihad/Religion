@@ -55,7 +55,7 @@ public class CommandRunner implements CommandExecutor {
 		 * TODO: I believe '/rr join' with no param throws an exception.  This needs to be fixed
 		 * Drives '/rr join <param>' command.  This allows a player to join the chosen tower. 
 		 */
-		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("join")){
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("join") && arg.length == 2){
 			if(!Religion.info.hasTower(arg[1])){
 				sender.sendMessage("Invalid tower you fuck head");
 				return true;
@@ -72,7 +72,7 @@ public class CommandRunner implements CommandExecutor {
 		/**
 		 * Drives '/rr leave'.  Allows player to leave tower and religion
 		 */
-		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("leave")){
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("leave") && arg.length == 1){
 			if(!Religion.info.hasPlayer((Player)sender)){
 				sender.sendMessage("YOU ARENT PART OF A RELIGION YOU CUNT");
 				return true;
@@ -85,7 +85,7 @@ public class CommandRunner implements CommandExecutor {
 		/**
 		 * Drives '/rr list'.  Lists to player all religions that exist
 		 */
-		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("list")){
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("list") && arg.length == 1){
 			sender.sendMessage("The religions that exist are: "+Religion.info.getReligions().toString());
 			return true;
 		}
@@ -93,7 +93,7 @@ public class CommandRunner implements CommandExecutor {
 		/**
 		 * Drives '/rr <religion> list' Lists all towers associated with param religion
 		 */
-		else if(cmd.getName().equalsIgnoreCase("rr") && Religion.info.getReligions().contains(arg[0]) && arg[1].equals("list")){
+		else if(cmd.getName().equalsIgnoreCase("rr") && Religion.info.getReligions().contains(arg[0]) && arg[1].equals("list") && arg.length == 2){
 			sender.sendMessage("The towers that exist are: "+Religion.info.getTowers(arg[0]));
 			return true;
 		}
@@ -102,7 +102,7 @@ public class CommandRunner implements CommandExecutor {
 		 * TODO: I don't think this works... make it work.  General details could include members, tower name, location.
 		 * Drives '/rr details <towername>'  Gets general details of a tower.
 		 */
-		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("details") && !(arg[1].isEmpty())){
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("details") && arg.length == 2){
 			if(Religion.info.hasTower(arg[1])){
 				sender.sendMessage("General Info");
 			}else{
@@ -115,7 +115,7 @@ public class CommandRunner implements CommandExecutor {
 		 * TODO: I don't think this works... make it work.  In-Depth details could include members, tower name, location, influence
 		 *Drives '/rr details' Gets in-depth details about a player specific religion
 		 */
-		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("details")){
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("details") && arg.length == 1){
 			if(Religion.info.hasPlayer((Player)sender)){
 				sender.sendMessage("In-depth Info");
 			}else{
@@ -128,7 +128,7 @@ public class CommandRunner implements CommandExecutor {
 		 * 
 		 * Drives '/rr here'.  Outputs the territory you are standing in.
 		 */
-		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("here")){
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("here") && arg.length == 1){
 			sender.sendMessage("You are in the territory of "+Religion.info.getTower(((Player)sender).getLocation()));
 			return true;
 		}
@@ -137,7 +137,8 @@ public class CommandRunner implements CommandExecutor {
 		 * 
 		 * Drives '/rr who'. Lists all members of players religion who are online in white, and all members associated with players tower who are online in red 
 		 */
-		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("who")){
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("who") && arg.length == 1){
+			if(Religion.info.getReligion((Player)sender) == null) ((Player)sender).sendMessage("You are not a member of a Tower and are thus unable to use this command");
 			String message = "";
 			List<Player> onlineplayers = Arrays.asList(plugin.getServer().getOnlinePlayers());
 			List<Player> towerplayers = Religion.info.getTowerPlayers(Religion.info.getTowerName((Player)sender));
