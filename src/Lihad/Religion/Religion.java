@@ -42,6 +42,7 @@ public class Religion extends JavaPlugin {
 	 * 
 	 * ------------------------------GENERAL NEED TO SHTUFF ------------------------------------------
 	 * TODO: I would like to see more general 'player.sendMessage(".."); things.  Just as event flares
+	 * Use Util.towerBroadcast(name, msg), Util.religionBroadcast(name, msg)
 	 * TODO: Need to add a class/package/something for ability handling.  <- Really the next big step.
 	 * 
 	 * 
