@@ -18,6 +18,8 @@ public class CommandRunner implements CommandExecutor {
 	}
 
 	@Override
+	//TODO: Make symbols non-valid in command.
+	//TODO: Make this look better
 	public boolean onCommand(CommandSender sender, Command cmd, String string,
 			String[] arg) {
 		if(cmd.getName().equalsIgnoreCase("rr") && arg.length == 0){
