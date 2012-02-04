@@ -1,0 +1,7 @@
+name: Religion
+main: Lihad.Religion.Religion
+version: 0.1
+commands:
+  rr:
+    description: TEST VERSION
+    usage: TEST VERSION
