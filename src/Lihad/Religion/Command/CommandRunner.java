@@ -42,11 +42,12 @@ public class CommandRunner implements CommandExecutor {
 		//------------------------------------------------------------------------------------------------
 		
 		/**
-		 * TODO: Maybe give some sort of 'help' page connected with this command
-		 * Base Command, drives /rr
+		 * 
+		 * Base Command, drives /rr.  Tells the player what religion and tower they are member of
 		 */
 		if(cmd.getName().equalsIgnoreCase("rr") && arg.length == 0){
-			sender.sendMessage(Religion.info.getReligions().toString());
+			if(Religion.info.getTowerName((Player)sender) == null) sender.sendMessage("You are not a member of any religion");
+			else sender.sendMessage("You are a member of "+Religion.info.getTowerName((Player)sender)+", a tower of "+Religion.info.getReligion((Player)sender));
 			return true;
 		}
 		

@@ -15,7 +15,6 @@ public class BeyondTimerTask extends TimerTask {
 	@Override
 	public void run(){
 		try{
-			System.out.println("Timer");
 			for(int i=0;i<Religion.info.getTowersAll().size();i++){
 				Location location = Religion.info.getTowerLocation(Religion.info.getReligion(Religion.info.getTowersAll().get(i)), Religion.info.getTowersAll().get(i));
 				Chest chest = (Chest) location.getBlock().getState();
@@ -32,8 +31,6 @@ public class BeyondTimerTask extends TimerTask {
 				}else{
 					
 				}
-				System.out.println("Influence = "+Religion.info.getTowerInfluence(Religion.info.getReligion(Religion.info.getTowersAll().get(i)), Religion.info.getTowersAll().get(i)));
-
 			}
 		}catch(Exception e){
 			System.out.println("NO TOWER EXISTS");

@@ -58,9 +58,7 @@ public class BeyondInfo {
 		for(int i = 0;i<religions.size();i++){
 			List<String> towers = getTowers(religions.get(i));
 			for(int j = 0;j<towers.size();j++){
-				System.out.println("Check 2 - "+religions.get(i)+" "+ towers.get(j));
 				if(getTowerLocation(religions.get(i),towers.get(j)).equals(location)){
-					System.out.println("Check 3");
 					return religions.get(i);
 				}
 			}
@@ -83,9 +81,7 @@ public class BeyondInfo {
 		for(int i = 0;i<religions.size();i++){
 			List<String> towers = getTowers(religions.get(i));
 			for(int j = 0;j<towers.size();j++){
-				System.out.println("Check 2 - "+religions.get(i)+" "+ towers.get(j));
 				if(getTowerLocation(religions.get(i),towers.get(j)).equals(location)){
-					System.out.println("Check 3");
 					return towers.get(j);
 				}
 			}
