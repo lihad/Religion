@@ -17,6 +17,10 @@ public class BeyondBlockListener extends BlockListener {
 	public BeyondBlockListener(Religion instance) {
 		plugin = instance;
 	}
+	/**
+	 * TODO: Make it so a tower can not be named after a religion.
+	 * TODO: Make it so only those without a religion/tower can start a new tower
+	 */
 	public void onSignChange(SignChangeEvent event){
 		if(event.getBlock().getLocation().getBlockY() > 119){
 			if(event.getLine(0).equals("[Religion]") && !(event.getLine(1).equals(null))&& !(event.getLine(2).equals(null))){

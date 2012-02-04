@@ -356,12 +356,15 @@ public class BeyondInfo {
 		}
 	}
 	/**
-	 * TODO: Have this method also remove any player who is a member of this tower
-	 * Removes tower.
+	 * Removes tower. Also removes all players associated with that tower from relgion/tower
 	 * @param religion
 	 * @param towername
 	 */
 	public void removeTower(String religion, String towername){
+		List<Player> players = getTowerPlayers(towername);
+		for(int i =0; i<players.size();i++){
+			removePlayer(players.get(i));
+		}
 		BeyondInfoWriter.writeConfigurationNull("Religions."+religion+".Towers."+towername);
 	}
 	//is Functions

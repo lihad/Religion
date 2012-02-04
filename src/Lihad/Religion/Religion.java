@@ -45,7 +45,6 @@ public class Religion extends JavaPlugin {
 	 * TODO: Need to add a class/package/something for ability handling.  <- Really the next big step.
 	 * 
 	 * 
-	 * 
 	 */
 	
 	
