@@ -47,7 +47,7 @@ public class BeyondPlayerListener extends PlayerListener {
 					items.setAmount(items.getAmount()-1);
 					chest.getInventory().setItem(index, items);
 					items.setAmount(1);
-					event.getPlayer().getInventory().setItem(event.getPlayer().getInventory().firstEmpty(), items);
+					event.getPlayer().getInventory().addItem(items);
 					event.getPlayer().updateInventory();
 				}else{
 					event.getPlayer().sendMessage("DOWN WITH IT!!!");
