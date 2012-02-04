@@ -25,10 +25,9 @@ public class BeyondInfo {
 	public List<String> getReligions(){
 		return BeyondInfoReader.getKeyList("Religions");
 	}
-	
 	/**
-	 * @param towername - accepts the name of a tower.
-	 * @return The religion associated with the tower.
+	 * @param towername
+	 * @return Returns the religion associated with the tower.
 	 */
 	public String getReligion(String towername){
 		List<String> religionList = getReligions();
@@ -37,10 +36,9 @@ public class BeyondInfo {
 		}
 		return null;
 	}
-	
 	/**
-	 * @param player - accepts a player.
-	 * @return Returns
+	 * @param player
+	 * @return Returns the religion of the player. null if the player has no religion
 	 */
 	public String getReligion(Player player){
 		List<String> religionList = getReligions();
@@ -49,6 +47,10 @@ public class BeyondInfo {
 		}
 		return null;
 	}
+	/**
+	 * @param location
+	 * @return Returns religion associated with the given location. null if location has no religion
+	 */
 	public String getReligion(Location location){
 		List<String> religions = getReligions();
 
@@ -65,13 +67,19 @@ public class BeyondInfo {
 		}
 		return null;
 	}
+	/**
+	 * @param religion
+	 * @return Returns a list of towers from a specified religion
+	 */
 	public List<String> getTowers(String religion){
 		return BeyondInfoReader.getKeyList("Religions."+religion+".Towers");
 	}
+	/**
+	 * @param location
+	 * @return Returns the towername associated with a given location.  null if no tower associated with location
+	 */
 	public String getTower(Location location){
 		List<String> religions = getReligions();
-
-
 		for(int i = 0;i<religions.size();i++){
 			List<String> towers = getTowers(religions.get(i));
 			for(int j = 0;j<towers.size();j++){
@@ -84,6 +92,10 @@ public class BeyondInfo {
 		}
 		return null;
 	}
+	/**
+	 * 
+	 * @return Returns a list of all towers
+	 */
 	public List<String> getTowersAll(){
 		List<String> all = new ArrayList<String>();
 		for(int i=0;i<getReligions().size();i++){
@@ -91,12 +103,29 @@ public class BeyondInfo {
 		}
 		return all;
 	}
+	/**
+	 * 
+	 * @param religion
+	 * @param towername
+	 * @return Returns tower name associated with the given params
+	 */
 	public String getTowerName(String religion, String towername){
 		return BeyondInfoReader.getString("Religions."+religion+".Towers."+towername+".Name");
 	}
+	/**
+	 * NOTE: using this when player has no defined religion will result in a nullpointer
+	 * @param player
+	 * @return Returns tower name player is associated with
+	 */
 	public String getTowerName(Player player){
 		return BeyondInfoReader.getString("Religions."+getPlayerPath(player)+".Name");
 	}
+	/**
+	 * 
+	 * @param religion
+	 * @param towername
+	 * @return Returns the tower (chest) location based on the given params
+	 */
 	public Location getTowerLocation(String religion, String towername){
 		String[] array;
 		String string = BeyondInfoReader.getString("Religions."+religion+".Towers."+towername+".Location");
@@ -104,6 +133,11 @@ public class BeyondInfo {
 		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 		return location;
 	}
+	/**
+	 * NOTE: using this when player has no defined religion will result in a nullpointer
+	 * @param player
+	 * @return Returns the given tower (chest) location of a tower given player is associated with
+	 */
 	public Location getTowerLocation(Player player){
 		String[] array;
 		String string = BeyondInfoReader.getString("Religions."+getPlayerPath(player)+".Location");
@@ -111,35 +145,90 @@ public class BeyondInfo {
 		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 		return location;
 	}
+	/**
+	 * 
+	 * @param religion
+	 * @param towername
+	 * @return Returns tower member count based on given params
+	 */
 	public int getTowerMemberCount(String religion, String towername){
 		return BeyondInfoReader.getInt("Religions."+religion+".Towers."+towername+".Members");
 	}
+	/**
+	 * NOTE: using this when player has no defined religion will result in a nullpointer
+	 * @param player
+	 * @return Returns tower member count of player's associated tower
+	 */
 	public int getTowerMemberCount(Player player){
 		return BeyondInfoReader.getInt("Religions."+getPlayerPath(player)+".Members");
 	}
+	/**
+	 * NOTE: This is currently not in use
+	 * @param religion
+	 * @param towername
+	 * @return Returns tower gold as defined in the information.yml
+	 */
 	public int getTowerGold(String religion, String towername){
 		return BeyondInfoReader.getInt("Religions."+religion+".Towers."+towername+".Gold");
 	}
+	/**
+	 * NOTE: using this when player has no defined religion will result in a nullpointer
+	 * NOTE: This is currently not in use
+	 * @param player
+	 * @return Returns tower gold as defined in the information.yml for given player associated with a religion
+	 */
 	public int getTowerGold(Player player){
 		return BeyondInfoReader.getInt("Religions."+getPlayerPath(player)+".Gold");
 	}
+	/**
+	 * 
+	 * @param religion
+	 * @param towername
+	 * @return Returns tower influence based on given params
+	 */
 	public int getTowerInfluence(String religion, String towername){
 		return BeyondInfoReader.getInt("Religions."+religion+".Towers."+towername+".Influence");
 	}
+	/**
+	 * NOTE: using this when player has no defined religion will result in a nullpointer
+	 * @param player
+	 * @return Returns tower influence of a player associated with a tower
+	 */
 	public int getTowerInfluence(Player player){
 		return BeyondInfoReader.getInt("Religions."+getPlayerPath(player)+".Influence");
 	}
+	/**
+	 * NOTE: using this when player has no defined religion will result in a nullpointer
+	 * @param player
+	 * @return Returns a predefined yaml path that is given to every player.  This path defines religion and tower of a player.
+	 */
 	public String getPlayerPath(Player player){
 		return BeyondInfoReader.getString("Players."+player.getName());
 	}
+	/**
+	 * 
+	 * @param towername
+	 * @return Returns the radius of the AoE tower effect
+	 */
 	public int getTowerAoE(String towername){
 		int aoe = (int) (((getTowerMemberCount(getReligion(towername), towername))*(Religion.config.getMemberBonus()))+(((double)getTowerInfluence(getReligion(towername), towername)) / 1728.0)*(double)(Religion.config.getMaximumAoE()));
 		if(aoe>Religion.config.getMaximumAoE())return Religion.config.getMaximumAoE();
 		else return aoe;	
 	}
+	/**
+	 * 
+	 * @param location
+	 * @param towername
+	 * @return Returns the vector-length distance of a Location to tower
+	 */
 	public double getDistanceToTower(Location location, String towername){
 		return Math.sqrt(Math.pow((location.getBlockX()-getTowerLocation(getReligion(towername), towername).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getTowerLocation(getReligion(towername), towername).getBlockZ()), 2));
 	}
+	/**
+	 * 
+	 * @param location
+	 * @return Returns the closest tower to the location as long as the location exists within a towers AoE.  Returns null otherwise
+	 */
 	public String getClosestValidTower(Location location){
 		List<String> alltowers = getTowersAll();
 		String closest = null;
@@ -152,9 +241,38 @@ public class BeyondInfo {
 		}
 		return closest;
 	}
+	/**
+	 * 
+	 * @return Returns all players associated with any religion
+	 */
+	public List<Player> getPlayers(){
+		List<String> strings = BeyondInfoReader.getKeyList("Players");
+		List<Player> players = new ArrayList<Player>();
+		for(int i=0;i<strings.size();i++){
+			players.add(plugin.getServer().getPlayer(strings.get(i)));
+		}
+		return players;
+	}
+	/**
+	 * 
+	 * @param towername
+	 * @return Returns all players associated with param towername
+	 */
+	public List<Player> getTowerPlayers(String towername){
+		List<Player> players = new ArrayList<Player>();
+		for(int i=0;i<getPlayers().size();i++){
+			if(getTowerName(getPlayers().get(i)).equals(towername)){
+				players.add(getPlayers().get(i));
+			}
+		}
+		return players;
+	}
 	//has Functions
+	/**
+	 * Simply checks to see if player exists in the information.yml
+	 */
 	public boolean hasPlayer(Player player){
-		try{ return BeyondInfoReader.getKeyList("Players").contains(player.getName()); }
+		try{ return getPlayers().contains(player.getName()); }
 		catch(Exception e){ return false; }
 	}
 	public boolean hasTower(String towername){
@@ -219,6 +337,9 @@ public class BeyondInfo {
 		addPlayer(player, religion, towername);
 	}
 	//remove Functions
+	/**
+	 * Removes player path, effectively removing a player from tower and religion 
+	 */
 	public void removePlayer(Player player){
 		if(hasPlayer(player)){
 			int count = getTowerMemberCount(player);
@@ -228,6 +349,12 @@ public class BeyondInfo {
 			System.out.println("[Religion] Player, "+player.getName()+", was attmepted to be removed.  Failed for a reason or another");
 		}
 	}
+	/**
+	 * TODO: Have this method also remove any player who is a member of this tower
+	 * Removes tower.
+	 * @param religion
+	 * @param towername
+	 */
 	public void removeTower(String religion, String towername){
 		BeyondInfoWriter.writeConfigurationNull("Religions."+religion+".Towers."+towername);
 	}

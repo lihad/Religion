@@ -29,6 +29,27 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 
 @SuppressWarnings("deprecation")
 public class Religion extends JavaPlugin {
+	
+	
+	/**
+	 * @author Kyle, Joren
+	 * 
+	 * 
+	 * ------------------------------READ THIS READ THIS!!!!------------------------------------------
+	 * 
+	 * To run this plugin, you will need the config.yml and information.yml, get those here:
+	 *         -------          http://dl.dropbox.com/u/31548940/Religion.zip
+	 * 
+	 * ------------------------------GENERAL NEED TO SHTUFF ------------------------------------------
+	 * TODO: I would like to see more general 'player.sendMessage(".."); things.  Just as event flares
+	 * TODO: Need to add a class/package/something for ability handling.  <- Really the next big step.
+	 * 
+	 * 
+	 * 
+	 */
+	
+	
+	
     public static Configuration configuration;
     public static Configuration information;
 	public static PermissionHandler handler;
