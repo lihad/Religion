@@ -261,6 +261,21 @@ public class BeyondInfo {
 	}
 	/**
 	 * 
+	 * @param location
+	 * @return Returns a list of all players in a tower
+	 */
+	public static List<String> getTowersOfLocation(Location location) {
+		List<String> alltowers = getTowersAll();
+		List<String> towers = new ArrayList<String>();
+		for (int i = 0; i < alltowers.size(); i++) {
+			if (isTowerArea(location, alltowers.get(i)))
+				towers.add(alltowers.get(i));
+		}
+		return towers;
+
+	}
+	/**
+	 * 
 	 * @return Returns all players associated with any religion
 	 */
 	public static List<Player> getPlayers(){
