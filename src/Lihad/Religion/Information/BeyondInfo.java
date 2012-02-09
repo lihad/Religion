@@ -319,11 +319,11 @@ public class BeyondInfo {
 	private static void setTowerName(Player player, String towername){
 		BeyondInfoWriter.writeConfigurationString("Religions."+getPlayerPath(player)+".Name", towername);
 	}
-	private static void setTowerLocation(String religion, String towername, int x, int y, int z, World world){
-		BeyondInfoWriter.writeConfigurationString("Religions."+religion+".Towers."+towername+".Location", x+","+y+","+z+","+world.getName());
+	private static void setTowerLocation(String towername, int x, int y, int z, World world){
+		BeyondInfoWriter.writeConfigurationString("Religions."+getReligion(towername)+".Towers."+towername+".Location", x+","+y+","+z+","+world.getName());
 	}
-	private static void setTowerLocation(String religion, String towername, Location location){
-		BeyondInfoWriter.writeConfigurationString("Religions."+religion+".Towers."+towername+".Location", location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
+	private static void setTowerLocation(String towername, Location location){
+		BeyondInfoWriter.writeConfigurationString("Religions."+getReligion(towername)+".Towers."+towername+".Location", location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
 	}
 	private static void setTowerLocation(Player player, int x, int y, int z, World world){
 		BeyondInfoWriter.writeConfigurationString("Religions."+getPlayerPath(player)+".Location", x+","+y+","+z+","+world.getName());
@@ -331,47 +331,47 @@ public class BeyondInfo {
 	private static void setTowerLocation(Player player, Location location){
 		BeyondInfoWriter.writeConfigurationString("Religions."+getPlayerPath(player)+".Location", location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
 	}
-	private static void setTowerMemberCount(String religion, String towername, int arg){
-		BeyondInfoWriter.writeConfigurationInt("Religions."+religion+".Towers."+towername+".Members", arg);
+	private static void setTowerMemberCount(String towername, int arg){
+		BeyondInfoWriter.writeConfigurationInt("Religions."+getReligion(towername)+".Towers."+towername+".Members", arg);
 	}
 	private static void setTowerMemberCount(Player player, int arg){
 		BeyondInfoWriter.writeConfigurationInt("Religions."+getPlayerPath(player)+".Members", arg);
 	}
-	public static void setTowerGold(String religion, String towername, int arg){
-		BeyondInfoWriter.writeConfigurationInt("Religions."+religion+".Towers."+towername+".Gold", arg);
+	public static void setTowerGold(String towername, int arg){
+		BeyondInfoWriter.writeConfigurationInt("Religions."+getReligion(towername)+".Towers."+towername+".Gold", arg);
 	}
-	public static void setTowerMaxGold(String religion, String towername, int arg){
-		BeyondInfoWriter.writeConfigurationInt("Religions."+religion+".Towers."+towername+".MaxGold", arg);
+	public static void setTowerMaxGold(String towername, int arg){
+		BeyondInfoWriter.writeConfigurationInt("Religions."+getReligion(towername)+".Towers."+towername+".MaxGold", arg);
 	}
 	public static void setTowerGold(Player player, int arg){ //what's this do?  I don't follow  --Joren
 		BeyondInfoWriter.writeConfigurationInt("Religions."+getPlayerPath(player)+".Gold", arg);
 	}
-	public static void setTowerInfluence(String religion, String towername, double arg){
-		BeyondInfoWriter.writeConfigurationDouble("Religions."+religion+".Towers."+towername+".Influence", arg);
+	public static void setTowerInfluence(String towername, double arg){
+		BeyondInfoWriter.writeConfigurationDouble("Religions."+getReligion(towername)+".Towers."+towername+".Influence", arg);
 	}
 	public static void setTowerInfluence(Player player, double arg){
 		BeyondInfoWriter.writeConfigurationDouble("Religions."+getPlayerPath(player)+".Influence", arg);
 	}
-	public static void setTowerInfluenceDelta(String religion, String towername, double arg){
-		BeyondInfoWriter.writeConfigurationDouble("Religions."+religion+".Towers."+towername+".Influence.Delta", arg);
+	public static void setTowerInfluenceDelta(String towername, double arg){
+		BeyondInfoWriter.writeConfigurationDouble("Religions."+getReligion(towername)+".Towers."+towername+".Influence.Delta", arg);
 	}
 	public static void setTowerInfluenceDelta(Player player, double arg){
 		BeyondInfoWriter.writeConfigurationDouble("Religions."+getPlayerPath(player)+".Influence.Delta", arg);
 	}
-	private static void setPlayerPath(Player player, String religion, String towername){
-		BeyondInfoWriter.writeConfigurationString("Players."+player.getName(), religion+".Towers."+towername);
+	private static void setPlayerPath(Player player, String towername){
+		BeyondInfoWriter.writeConfigurationString("Players."+player.getName(), getReligion(towername)+".Towers."+towername);
 	}
 	//add Functions
-	public static void addPlayer(Player player, String religion, String towername){
-		setPlayerPath(player,religion,towername);
+	public static void addPlayer(Player player, String towername){
+		setPlayerPath(player,towername);
 		int count = getTowerMemberCount(player); 
 		setTowerMemberCount(player, count+1);
 	}
 	public static void addTower(Player player, String religion, String towername, Location location){
-		setTowerName(religion,towername);
-		setTowerLocation(religion, towername, location);
-		setTowerMemberCount(religion, towername, 0);
-		addPlayer(player, religion, towername);
+		setTowerName(religion,towername); // CALL THIS FIRST - otherwise the tower won't have a religion when anything else is called
+		setTowerLocation(towername, location);
+		setTowerMemberCount(towername, 0);
+		addPlayer(player, towername);
 	}
 	//remove Functions
 	/**

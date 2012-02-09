@@ -63,7 +63,7 @@ public class CommandRunner implements CommandExecutor {
 				sender.sendMessage("You are already a member of a Tower. Please leave your current one to join this one.");
 				return true;
 			}
-			BeyondInfo.addPlayer((Player)sender, BeyondInfo.getReligion(arg[1]), arg[1]);
+			BeyondInfo.addPlayer((Player)sender, arg[1]);
 			sender.sendMessage("You have joined the Tower of "+arg[1]+" and the Religion of "+BeyondInfo.getReligion(arg[1]));
 			return true;
 		}

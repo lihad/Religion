@@ -23,9 +23,9 @@ public class BeyondTimerTask extends TimerTask {
 					}
 				}
 				if(amount > BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))){
-					BeyondInfo.setTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))+1);
+					BeyondInfo.setTowerInfluence(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))+1);
 				}else if(amount < BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))){
-					BeyondInfo.setTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))-1);
+					BeyondInfo.setTowerInfluence(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))-1);
 				}else{
 					
 				}
