@@ -21,7 +21,7 @@ public class BeyondEntityListener extends EntityListener {
 			Block block = (Block)event.getEntity();
 			if(block.getType() == Material.CHEST){
 				for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
-					if(block.getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i)))){
+					if(block.getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i)))){
 						event.setCancelled(true);
 					}
 				}
@@ -33,7 +33,7 @@ public class BeyondEntityListener extends EntityListener {
 		for(int i = 0;i<blocklist.size();i++){
 			if(blocklist.get(i).getType()== Material.CHEST){
 				for(int j=0;j<BeyondInfo.getTowersAll().size();j++){
-					if(blocklist.get(i).getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(j)), BeyondInfo.getTowersAll().get(j)))){
+					if(blocklist.get(i).getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(j)))){
 						event.setCancelled(true);
 					}
 				}

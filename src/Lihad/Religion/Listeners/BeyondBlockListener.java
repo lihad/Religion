@@ -35,7 +35,7 @@ public class BeyondBlockListener extends BlockListener {
 	public void onBlockBreak(BlockBreakEvent event){
 		if(event.getBlock().getType() == Material.CHEST){
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
-				if(event.getBlock().getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i)))){
+				if(event.getBlock().getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i)))){
 					event.setCancelled(true);
 				}
 			}
@@ -44,7 +44,7 @@ public class BeyondBlockListener extends BlockListener {
 	public void onBlockDamage(BlockDamageEvent event){
 		if(event.getBlock().getType() == Material.CHEST){
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
-				if(event.getBlock().getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i)))){
+				if(event.getBlock().getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i)))){
 					event.setCancelled(true);
 				}
 			}

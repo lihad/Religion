@@ -14,7 +14,7 @@ public class BeyondTimerTask extends TimerTask {
 	public void run(){
 		try{
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
-				Location location = BeyondInfo.getTowerLocation(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i));
+				Location location = BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i));
 				Chest chest = (Chest) location.getBlock().getState();
 				int amount = 0;
 				for(int j=0;j<27;j++){
@@ -22,10 +22,10 @@ public class BeyondTimerTask extends TimerTask {
 						amount = amount+chest.getInventory().getItem(j).getAmount();
 					}
 				}
-				if(amount > BeyondInfo.getTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i))){
-					BeyondInfo.setTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i))+1);
-				}else if(amount < BeyondInfo.getTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i))){
-					BeyondInfo.setTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i))-1);
+				if(amount > BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))){
+					BeyondInfo.setTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))+1);
+				}else if(amount < BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))){
+					BeyondInfo.setTowerInfluence(BeyondInfo.getReligion(BeyondInfo.getTowersAll().get(i)), BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))-1);
 				}else{
 					
 				}

@@ -58,7 +58,7 @@ public class BeyondInfo {
 		for(int i = 0;i<religions.size();i++){
 			List<String> towers = getTowers(religions.get(i));
 			for(int j = 0;j<towers.size();j++){
-				if(getTowerLocation(religions.get(i),towers.get(j)).equals(location)){
+				if(getTowerLocation(towers.get(j)).equals(location)){
 					return religions.get(i);
 				}
 			}
@@ -81,7 +81,7 @@ public class BeyondInfo {
 		for(int i = 0;i<religions.size();i++){
 			List<String> towers = getTowers(religions.get(i));
 			for(int j = 0;j<towers.size();j++){
-				if(getTowerLocation(religions.get(i),towers.get(j)).equals(location)){
+				if(getTowerLocation(towers.get(j)).equals(location)){
 					return towers.get(j);
 				}
 			}
@@ -105,6 +105,7 @@ public class BeyondInfo {
 	 * @param towername
 	 * @return Returns tower name associated with the given params
 	 */
+	//TODO:...... so... I need the name of the tower in order to get the name of the tower? ..... derp?  -- Joren
 	public static String getTowerName(String religion, String towername){
 		return BeyondInfoReader.getString("Religions."+religion+".Towers."+towername+".Name");
 	}
@@ -118,13 +119,12 @@ public class BeyondInfo {
 	}
 	/**
 	 * 
-	 * @param religion
 	 * @param towername
 	 * @return Returns the tower (chest) location based on the given params
 	 */
-	public static Location getTowerLocation(String religion, String towername){
+	public static Location getTowerLocation(String towername){
 		String[] array;
-		String string = BeyondInfoReader.getString("Religions."+religion+".Towers."+towername+".Location");
+		String string = BeyondInfoReader.getString("Religions."+getReligion(towername) + ".Towers."+towername+".Location");
 		array = string.split(",");
 		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 		return location;
@@ -143,12 +143,11 @@ public class BeyondInfo {
 	}
 	/**
 	 * 
-	 * @param religion
 	 * @param towername
 	 * @return Returns tower member count based on given params
 	 */
-	public static int getTowerMemberCount(String religion, String towername){
-		return BeyondInfoReader.getInt("Religions."+religion+".Towers."+towername+".Members");
+	public static int getTowerMemberCount(String towername){
+		return BeyondInfoReader.getInt("Religions."+getReligion(towername)+".Towers."+towername+".Members");
 	}
 	/**
 	 * NOTE: using this when player has no defined religion will result in a nullpointer
@@ -160,21 +159,19 @@ public class BeyondInfo {
 	}
 	/**
 	 * NOTE: This is currently not in use
-	 * @param religion
 	 * @param towername
 	 * @return Returns tower gold as defined in the information.yml
 	 */
-	public static int getTowerGold(String religion, String towername){
-		return BeyondInfoReader.getInt("Religions."+religion+".Towers."+towername+".Gold");
+	public static int getTowerGold(String towername){
+		return BeyondInfoReader.getInt("Religions."+getReligion(towername)+".Towers."+towername+".Gold");
 	}
 	
 	/**
-	 * @param religion
 	 * @param towername
 	 * @return Returns the maximum amount of gold tower has ever held
 	 */
-	public static void getTowerMaxGold(String religion, String towername){
-		BeyondInfoReader.getInt("Religions."+religion+".Towers."+towername+".MaxGold");
+	public static void getTowerMaxGold(String towername){
+		BeyondInfoReader.getInt("Religions."+getReligion(towername)+".Towers."+towername+".MaxGold");
 	}
 
 	/**
@@ -188,12 +185,11 @@ public class BeyondInfo {
 	}
 	/**
 	 * 
-	 * @param religion
 	 * @param towername
 	 * @return Returns tower influence rate of change based on given params
 	 */
-	public static double getTowerInfluenceDelta(String religion, String towername){
-		return BeyondInfoReader.getDouble("Religions."+religion+".Towers."+towername+".Influence.Delta");
+	public static double getTowerInfluenceDelta(String towername){
+		return BeyondInfoReader.getDouble("Religions."+getReligion(towername)+".Towers."+towername+".Influence.Delta");
 	}
 	/**
 	 * NOTE: using this when player has no defined religion will result in a nullpointer
@@ -205,12 +201,11 @@ public class BeyondInfo {
 	}
 	/**
 	 * 
-	 * @param religion
 	 * @param towername
 	 * @return Returns tower influence based on given params
 	 */
-	public static double getTowerInfluence(String religion, String towername){
-		return BeyondInfoReader.getDouble("Religions."+religion+".Towers."+towername+".Influence");
+	public static double getTowerInfluence(String towername){
+		return BeyondInfoReader.getDouble("Religions."+getReligion(towername)+".Towers."+towername+".Influence");
 	}
 	/**
 	 * NOTE: using this when player has no defined religion will result in a nullpointer
@@ -234,7 +229,7 @@ public class BeyondInfo {
 	 * @return Returns the radius of the AoE tower effect
 	 */
 	public static int getTowerAoE(String towername){
-		int aoe = (int) (((getTowerMemberCount(getReligion(towername), towername))*(Religion.config.getMemberBonus()))+(((double)getTowerInfluence(getReligion(towername), towername)) / 1728.0)*(double)(Religion.config.getMaximumAoE()));
+		int aoe = (int) (((getTowerMemberCount(towername))*(Religion.config.getMemberBonus()))+(((double)getTowerInfluence(towername)) / 1728.0)*(double)(Religion.config.getMaximumAoE()));
 		if(aoe>Religion.config.getMaximumAoE())return Religion.config.getMaximumAoE();
 		else return aoe;	
 	}
@@ -245,7 +240,7 @@ public class BeyondInfo {
 	 * @return Returns the vector-length distance of a Location to tower
 	 */
 	public static double getDistanceToTower(Location location, String towername){
-		return Math.sqrt(Math.pow((location.getBlockX()-getTowerLocation(getReligion(towername), towername).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getTowerLocation(getReligion(towername), towername).getBlockZ()), 2));
+		return Math.sqrt(Math.pow((location.getBlockX()-getTowerLocation(towername).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getTowerLocation(towername).getBlockZ()), 2));
 	}
 	/**
 	 * 
@@ -405,7 +400,7 @@ public class BeyondInfo {
 	}
 	//is Functions
 	public static boolean isTowerArea(Location location, String towername){
-		if(Math.pow((location.getBlockX()-getTowerLocation(getReligion(towername), towername).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getTowerLocation(getReligion(towername), towername).getBlockZ()), 2) < Math.pow(getTowerAoE(towername), 2)) return true;
+		if(Math.pow((location.getBlockX()-getTowerLocation(towername).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getTowerLocation(towername).getBlockZ()), 2) < Math.pow(getTowerAoE(towername), 2)) return true;
 		else return false;
 	}
 }
