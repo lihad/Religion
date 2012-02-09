@@ -25,17 +25,25 @@ public class BeyondPlayerListener extends PlayerListener {
 	public void onPlayerMove(PlayerMoveEvent event){
 		String closestFrom = BeyondInfo.getClosestValidTower(event.getFrom());
 		String closestTo = BeyondInfo.getClosestValidTower(event.getTo());
+		
 		if(closestFrom==null)closestFrom = "null";
 		if(closestTo==null)closestTo = "null";
+		
+
+		if(closestFrom.equals("null")&&!closestTo.equals("null")&&BeyondInfo.getReligion(event.getPlayer()) == null){
+			event.setTo(event.getFrom());
+			event.getPlayer().sendMessage("This is a religious area. Go away non-believer!");
+			return;
+		}
+		if((!closestTo.equals("null"))&&(!closestFrom.equals("null"))&&BeyondInfo.getReligion(event.getPlayer()) == null){
+			event.getPlayer().damage(6);
+			event.getPlayer().sendMessage("Being in a religious area without your own religion is pulling your soul apart...");
+			return;
+		}
+		
 		if(!closestFrom.equals(closestTo)){
 			event.getPlayer().sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(event.getPlayer(), closestTo) + closestTo);
 		}
-		if(!closestFrom.equals("null")&&BeyondInfo.getReligion(event.getPlayer()) == null){
-			event.getPlayer().setHealth(0);
-		}else if(closestFrom.equals("null")&&!closestTo.equals("null")&&BeyondInfo.getReligion(event.getPlayer()) == null){
-			event.setCancelled(true);
-		}
-
 
 	}
 	public void onPlayerInteract(PlayerInteractEvent event){
