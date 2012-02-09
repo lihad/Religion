@@ -41,13 +41,10 @@ public class Religion extends JavaPlugin {
 	 *         -------          http://dl.dropbox.com/u/31548940/Religion.zip
 	 * 
 	 * ------------------------------GENERAL NEED TO SHTUFF ------------------------------------------
-	 * TODO: I would like to see more general 'player.sendMessage(".."); things.  Just as event flares
-	 * Use Util.towerBroadcast(name, msg), Util.religionBroadcast(name, msg)
 	 * TODO: Need to add a class/package/something for ability handling.  <- Really the next big step.
 	 * 
 	 * 
-	 * TODO: Make it so people can't make a /home or sleep in a bed within the aoe of an opposing tower
-	 * TODO: '/rr who' doesn't work for some reason
+	 * TODO: Make it so people can't make a /home within the aoe of an opposing tower - this requires support from MultiHome :/ we might be able to cancel TP events though.
 	 * 
 	 * 
 	 */
