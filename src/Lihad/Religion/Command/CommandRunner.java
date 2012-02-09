@@ -12,8 +12,6 @@ import org.bukkit.entity.Player;
 import Lihad.Religion.Religion;
 import Lihad.Religion.Information.BeyondInfo;
 
-
-
 public class CommandRunner implements CommandExecutor {
 	public static Religion plugin;
 
@@ -128,7 +126,9 @@ public class CommandRunner implements CommandExecutor {
 		 * Drives '/rr here'.  Outputs the territory you are standing in.
 		 */
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("here") && arg.length == 1){
-			sender.sendMessage("You are in the territory of "+BeyondInfo.getTower(((Player)sender).getLocation()));
+			List<String> towers = BeyondInfo.getTowersOfLocation(((Player)sender).getLocation());
+			if(towers.size() == 0) sender.sendMessage("You are not in a defined territory");
+			else sender.sendMessage("You are in the territory of "+towers);
 			return true;
 		}
 		
@@ -137,14 +137,17 @@ public class CommandRunner implements CommandExecutor {
 		 * Drives '/rr who'. Lists all members of players religion who are online in white, and all members associated with players tower who are online in red 
 		 */
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("who") && arg.length == 1){
-			if(BeyondInfo.getReligion((Player)sender) == null) ((Player)sender).sendMessage("You are not a member of a Tower and are thus unable to use this command");
+			if(BeyondInfo.getReligion((Player)sender) == null){
+				((Player)sender).sendMessage("You are not a member of a Tower and are thus unable to use this command");
+				return true;
+			}
 			String message = "";
-			List<Player> onlineplayers = Arrays.asList(plugin.getServer().getOnlinePlayers());
+			System.out.println("BeyondInfo.getTowerName((Player)sender) "+BeyondInfo.getTowerName((Player)sender));
 			List<Player> towerplayers = BeyondInfo.getTowerPlayers(BeyondInfo.getTowerName((Player)sender));
 			List<Player> religionplayers = BeyondInfo.getReligionPlayers(BeyondInfo.getReligion((Player)sender));
 			for(int i=0;i<religionplayers.size();i++){
-				if(towerplayers.contains(religionplayers.get(i)) && onlineplayers.contains(religionplayers.get(i))) message = message.concat(ChatColor.RED.toString()+religionplayers.get(i).getName());
-				else if(onlineplayers.contains(religionplayers.get(i))) message = message.concat(ChatColor.WHITE.toString()+religionplayers.get(i).getName());
+				if(towerplayers.contains(religionplayers.get(i))) message = message.concat(ChatColor.RED.toString()+religionplayers.get(i).getName());
+				else message = message.concat(ChatColor.WHITE.toString()+religionplayers.get(i).getName());
 			}
 			((Player)sender).sendMessage(message);
 			return true;

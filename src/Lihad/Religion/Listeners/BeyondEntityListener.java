@@ -1,12 +1,18 @@
 package Lihad.Religion.Listeners;
 
 import java.util.List;
+import java.util.Random;
 
+import org.bukkit.DyeColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.entity.SheepRegrowWoolEvent;
 
 import Lihad.Religion.Religion;
 import Lihad.Religion.Information.BeyondInfo;
@@ -27,6 +33,23 @@ public class BeyondEntityListener extends EntityListener {
 				}
 			}
 		}
+		/**
+		 * The following 'if' makes players that take damage in their own religions AoE take half.  Those who take damage in opposing religion AoE
+		 * take +1 
+		 */
+		if(event.getEntity() instanceof Player){
+			Player player = (Player)event.getEntity();
+			if(BeyondInfo.getClosestValidTower(player.getLocation()) ==  null || BeyondInfo.getReligion(player) == null) return;
+			else{
+				if(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(player.getLocation())).equals(BeyondInfo.getReligion(player))){
+					player.damage(event.getDamage()/2);
+					event.setCancelled(true);
+				}else{
+					player.damage(event.getDamage()+1);
+					event.setCancelled(true);
+				}
+			}
+		}
 	}
 	public void onEntityExplode(EntityExplodeEvent event){
 		List<Block> blocklist = event.blockList();
@@ -40,5 +63,4 @@ public class BeyondEntityListener extends EntityListener {
 			}
 		}
 	}
-
 }

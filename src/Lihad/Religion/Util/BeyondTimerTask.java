@@ -22,13 +22,12 @@ public class BeyondTimerTask extends TimerTask {
 						amount = amount+chest.getInventory().getItem(j).getAmount();
 					}
 				}
-				
+
 				//Influence = Influence + InfluenceDelta (this will run every time the timer does, so this needs to be low)
 				BeyondInfo.setTowerInfluence(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i)) + BeyondInfo.getTowerInfluenceDelta(BeyondInfo.getTowersAll().get(i)));
 				//Right now this will get overwritten by the lines below.
 				//Eventually, want gold to modify InfluenceDelta, but at a *much* lower rate.  Have to think on this.  -- Joren
 
-				
 				if(amount > BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))){
 					BeyondInfo.setTowerInfluence(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))+1);
 				}else if(amount < BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))){
@@ -38,7 +37,7 @@ public class BeyondTimerTask extends TimerTask {
 				}
 			}
 		}catch(Exception e){
-			System.out.println("NO TOWER EXISTS");
+			System.out.println("[Religion] [ERROR] [NO TOWER] Lihad knows why you are seeing this, ask him");
 
 		}
 

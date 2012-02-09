@@ -49,7 +49,7 @@ public class BeyondInfo {
 	}
 	/**
 	 * @param location
-	 * @return Returns religion associated with the given location. null if location has no religion
+	 * @return Returns religion associated with the given location (chest location). null if location has no religion
 	 */
 	public static String getReligion(Location location){
 		List<String> religions = getReligions();
@@ -74,7 +74,7 @@ public class BeyondInfo {
 	}
 	/**
 	 * @param location
-	 * @return Returns the towername associated with a given location.  null if no tower associated with location
+	 * @return Returns the towername associated with a given location (chest location).  null if no tower associated with location
 	 */
 	public static String getTower(Location location){
 		List<String> religions = getReligions();
