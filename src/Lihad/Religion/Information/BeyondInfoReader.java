@@ -56,6 +56,9 @@ public class BeyondInfoReader {
     	}
     	return array; 	
     }
+    public static double getDouble(String string) {
+        return Religion.information.getDouble(string, 0.0);
+    }
     public static double getDouble(String string, double arg) {
         return Religion.information.getDouble(string, arg);
     }

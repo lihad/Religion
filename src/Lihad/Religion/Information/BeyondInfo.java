@@ -190,18 +190,35 @@ public class BeyondInfo {
 	 * 
 	 * @param religion
 	 * @param towername
+	 * @return Returns tower influence rate of change based on given params
+	 */
+	public static double getTowerInfluenceDelta(String religion, String towername){
+		return BeyondInfoReader.getDouble("Religions."+religion+".Towers."+towername+".Influence.Delta");
+	}
+	/**
+	 * NOTE: using this when player has no defined religion will result in a nullpointer
+	 * @param player
+	 * @return Returns tower influence rate of change of a player associated with a tower
+	 */
+	public static double getTowerInfluenceDelta(Player player){
+		return BeyondInfoReader.getDouble("Religions."+getPlayerPath(player)+".Influence.Delta");
+	}
+	/**
+	 * 
+	 * @param religion
+	 * @param towername
 	 * @return Returns tower influence based on given params
 	 */
-	public static int getTowerInfluence(String religion, String towername){
-		return BeyondInfoReader.getInt("Religions."+religion+".Towers."+towername+".Influence");
+	public static double getTowerInfluence(String religion, String towername){
+		return BeyondInfoReader.getDouble("Religions."+religion+".Towers."+towername+".Influence");
 	}
 	/**
 	 * NOTE: using this when player has no defined religion will result in a nullpointer
 	 * @param player
 	 * @return Returns tower influence of a player associated with a tower
 	 */
-	public static int getTowerInfluence(Player player){
-		return BeyondInfoReader.getInt("Religions."+getPlayerPath(player)+".Influence");
+	public static double getTowerInfluence(Player player){
+		return BeyondInfoReader.getDouble("Religions."+getPlayerPath(player)+".Influence");
 	}
 	/**
 	 * NOTE: using this when player has no defined religion will result in a nullpointer
@@ -334,11 +351,17 @@ public class BeyondInfo {
 	public static void setTowerGold(Player player, int arg){ //what's this do?  I don't follow  --Joren
 		BeyondInfoWriter.writeConfigurationInt("Religions."+getPlayerPath(player)+".Gold", arg);
 	}
-	public static void setTowerInfluence(String religion, String towername, int arg){
-		BeyondInfoWriter.writeConfigurationInt("Religions."+religion+".Towers."+towername+".Influence", arg);
+	public static void setTowerInfluence(String religion, String towername, double arg){
+		BeyondInfoWriter.writeConfigurationDouble("Religions."+religion+".Towers."+towername+".Influence", arg);
 	}
-	public static void setTowerInfluence(Player player, int arg){
-		BeyondInfoWriter.writeConfigurationInt("Religions."+getPlayerPath(player)+".Influence", arg);
+	public static void setTowerInfluence(Player player, double arg){
+		BeyondInfoWriter.writeConfigurationDouble("Religions."+getPlayerPath(player)+".Influence", arg);
+	}
+	public static void setTowerInfluenceDelta(String religion, String towername, double arg){
+		BeyondInfoWriter.writeConfigurationDouble("Religions."+religion+".Towers."+towername+".Influence.Delta", arg);
+	}
+	public static void setTowerInfluenceDelta(Player player, double arg){
+		BeyondInfoWriter.writeConfigurationDouble("Religions."+getPlayerPath(player)+".Influence.Delta", arg);
 	}
 	private static void setPlayerPath(Player player, String religion, String towername){
 		BeyondInfoWriter.writeConfigurationString("Players."+player.getName(), religion+".Towers."+towername);
