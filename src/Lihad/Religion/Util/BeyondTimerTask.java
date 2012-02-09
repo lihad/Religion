@@ -24,9 +24,11 @@ public class BeyondTimerTask extends TimerTask {
 				}
 
 				//Influence = Influence + InfluenceDelta (this will run every time the timer does, so this needs to be low)
-				BeyondInfo.setTowerInfluence(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i)) + BeyondInfo.getTowerInfluenceDelta(BeyondInfo.getTowersAll().get(i)));
+				//BeyondInfo.setTowerInfluence(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i)) + BeyondInfo.getTowerInfluenceDelta(BeyondInfo.getTowersAll().get(i)));
 				//Right now this will get overwritten by the lines below.
 				//Eventually, want gold to modify InfluenceDelta, but at a *much* lower rate.  Have to think on this.  -- Joren
+				
+				// Joren - instead, just adjust the timer rate to the rate you want the growth to occur at, unless you want it to be exponential
 
 				if(amount > BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))){
 					BeyondInfo.setTowerInfluence(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTowerInfluence(BeyondInfo.getTowersAll().get(i))+1);

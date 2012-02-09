@@ -95,7 +95,6 @@ public class BeyondUtil {
 	
 	/**
 	 * 
-	 * 
 	 * Checks to see if a location is next to another block. z,x ONLY
 	 */
 	public static boolean isNextTo(Location reference, Location variable){

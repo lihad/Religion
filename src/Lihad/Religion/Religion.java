@@ -10,7 +10,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
 
+import Lihad.Religion.Abilities.Personal;
 import Lihad.Religion.Abilities.SpellAoE;
+import Lihad.Religion.Abilities.TowerAoE;
 import Lihad.Religion.Command.CommandRunner;
 import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Config.BeyondConfigReader;
@@ -71,6 +73,9 @@ public class Religion extends JavaPlugin {
 	public static BeyondInfo info;
 	
 	public static SpellAoE spell;
+	public static TowerAoE tower;
+	public static Personal personal;
+
 	
 	private final BeyondPluginListener pluginListener = new BeyondPluginListener(this);
 	private final BeyondBlockListener blockListener = new BeyondBlockListener(this);
@@ -109,6 +114,8 @@ public class Religion extends JavaPlugin {
 		inforead = new BeyondInfoReader(this);
 		info = new BeyondInfo(this);
 		spell = new SpellAoE(this);
+		tower = new TowerAoE(this);
+		personal = new Personal(this);
 
 		//PermsManager
 		setupPermissions();
