@@ -14,7 +14,6 @@ public class BeyondBlockListener extends BlockListener {
 		plugin = instance;
 	}
 	/**
-	 * TODO: Make it so a tower can not be named after a religion.
 	 * TODO: Make it so only those without a religion/tower can start a new tower
 	 * 
 	 * How about just make it so that if you're in a tower, you get booted when you make a new one?

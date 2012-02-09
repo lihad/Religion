@@ -167,6 +167,16 @@ public class BeyondInfo {
 	public static int getTowerGold(String religion, String towername){
 		return BeyondInfoReader.getInt("Religions."+religion+".Towers."+towername+".Gold");
 	}
+	
+	/**
+	 * @param religion
+	 * @param towername
+	 * @return Returns the maximum amount of gold tower has ever held
+	 */
+	public static void getTowerMaxGold(String religion, String towername){
+		BeyondInfoReader.getInt("Religions."+religion+".Towers."+towername+".MaxGold");
+	}
+
 	/**
 	 * NOTE: using this when player has no defined religion will result in a nullpointer
 	 * NOTE: This is currently not in use
@@ -318,7 +328,10 @@ public class BeyondInfo {
 	public static void setTowerGold(String religion, String towername, int arg){
 		BeyondInfoWriter.writeConfigurationInt("Religions."+religion+".Towers."+towername+".Gold", arg);
 	}
-	public static void setTowerGold(Player player, int arg){
+	public static void setTowerMaxGold(String religion, String towername, int arg){
+		BeyondInfoWriter.writeConfigurationInt("Religions."+religion+".Towers."+towername+".MaxGold", arg);
+	}
+	public static void setTowerGold(Player player, int arg){ //what's this do?  I don't follow  --Joren
 		BeyondInfoWriter.writeConfigurationInt("Religions."+getPlayerPath(player)+".Gold", arg);
 	}
 	public static void setTowerInfluence(String religion, String towername, int arg){
