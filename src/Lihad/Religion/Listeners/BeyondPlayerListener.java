@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Religion;
@@ -28,6 +29,11 @@ public class BeyondPlayerListener extends PlayerListener {
 		if(closestTo==null)closestTo = "null";
 		if(!closestFrom.equals(closestTo)){
 			event.getPlayer().sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(event.getPlayer(), closestTo) + closestTo);
+		}
+		if(!closestFrom.equals("null")&&BeyondInfo.getReligion(event.getPlayer()) == null){
+			event.getPlayer().setHealth(0);
+		}else if(closestFrom.equals("null")&&!closestTo.equals("null")&&BeyondInfo.getReligion(event.getPlayer()) == null){
+			event.setCancelled(true);
 		}
 
 
@@ -105,32 +111,15 @@ public class BeyondPlayerListener extends PlayerListener {
 		}
 	}
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
-		/**
-		if(event.getPlayer().getItemInHand() == null) return;
-		if(event.getPlayer().getItemInHand().getType() == Material.ARROW){
-			event.getPlayer().shootArrow();
+
+	}
+	public void onPlayerRespawn(PlayerRespawnEvent event){
+		if(BeyondInfo.getTowerName(event.getPlayer())== null && !(BeyondInfo.getClosestValidTower(event.getRespawnLocation()) == null) && event.isBedSpawn()){
+			event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());
+		}else if(BeyondInfo.getTowerName(event.getPlayer())== null)return;
+		else if(BeyondInfo.getClosestValidTower(event.getRespawnLocation()).equals(BeyondInfo.getReligion(event.getPlayer()))){
+			event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());
 		}
-*/
-		
-		/**
-		if(event.getPlayer().getItemInHand() == null) return;
-		if(event.getPlayer().getItemInHand().getType() == Material.ROTTEN_FLESH){
-			event.getPlayer().getWorld().spawnCreature(event.getRightClicked().getLocation(), CreatureType.CHICKEN);
-			event.getRightClicked().remove();
-		}
-*/
-		
-		/**
-		if(event.getPlayer().getItemInHand() == null) return;
-		if(event.getPlayer().getItemInHand().getType() == Material.SAPLING){
-			event.getPlayer().getWorld().generateTree(event.getRightClicked().getLocation(), TreeType.TREE);
-		}
-*/
-		/**
-		if(event.getPlayer().getItemInHand() == null) return;
-		if(event.getPlayer().getItemInHand().getType() == Material.SULPHUR){
-			event.getPlayer().getWorld().createExplosion(event.getPlayer().getLocation(), 20, true);
-		}
-		*/
+			
 	}
 }
