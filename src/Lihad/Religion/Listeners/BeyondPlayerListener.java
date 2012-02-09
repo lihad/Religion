@@ -32,7 +32,7 @@ public class BeyondPlayerListener extends PlayerListener {
 		if(BeyondInfo.getReligion(event.getClickedBlock().getLocation()) == null) return;
 		else if(event.getClickedBlock().getType() == Material.CHEST){
 			if(BeyondInfo.getReligion(event.getPlayer()) == null){
-				event.getPlayer().sendMessage("You need to be a member of this religion to interact with this chest.");
+				event.getPlayer().sendMessage("You need to be a member of a religion to interact with this chest.");
 				event.setCancelled(true);
 			}else if(!BeyondInfo.getTowers(BeyondInfo.getReligion(event.getClickedBlock().getLocation())).contains(BeyondInfo.getTowerName(event.getPlayer()))){
 				Chest chest = (Chest) event.getClickedBlock().getState();

@@ -15,7 +15,7 @@ import Lihad.Religion.Information.BeyondInfo;
  * @author Joren
  *
  */
-public class Util {
+public class BeyondUtil {
 
 	/**
 	 * Broadcasts a message to all players who are part of specified Tower
