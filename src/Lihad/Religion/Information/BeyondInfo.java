@@ -229,7 +229,7 @@ public class BeyondInfo {
 	 * @return Returns the radius of the AoE tower effect
 	 */
 	public static int getTowerAoE(String towername){
-		int aoe = (int) (((getTowerMemberCount(towername))*(Religion.config.getMemberBonus()))+(((double)getTowerInfluence(towername)) / 1728.0)*(double)(Religion.config.getMaximumAoE()));
+		int aoe = (int) (((getTowerMemberCount(towername))*(Religion.config.getMemberBonus()))+(getTowerInfluence(towername) / 1728.0)*(double)(Religion.config.getMaximumAoE()));
 		if(aoe>Religion.config.getMaximumAoE())return Religion.config.getMaximumAoE();
 		else return aoe;	
 	}
