@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import Lihad.Religion.Religion;
 import Lihad.Religion.Information.BeyondInfo;
+import Lihad.Religion.Util.BeyondUtil;
 
 public class CommandRunner implements CommandExecutor {
 	public static Religion plugin;
@@ -26,6 +27,11 @@ public class CommandRunner implements CommandExecutor {
 		 * COMMAND RUNNER
 		 * 
 		 * All parts on this section drive commands referenced by the beginning /rr
+		 * 
+		 * 
+		 * Completely changed how members join a tower, and the hierarchy within the tower.  There are "Leader", "Trusted" members and Members.
+		 * Leaders get '/rr trust <playername>' and '/rr exile <playername>' and '/rr leader <playername>' and '/rr invite <playername>'
+		 * Trusted get '/rr exile <playername>' and '/rr invite <playername>'
 		 * 
 		 * TODO: Make symbols non-valid in command.
 		 * TODO: Add ChatColor to text output
@@ -50,35 +56,80 @@ public class CommandRunner implements CommandExecutor {
 		
 		/**
 		 * TODO: I believe '/rr join' with no param throws an exception.  This needs to be fixed
-		 * Drives '/rr join <param>' command.  This allows a player to join the chosen tower. 
+		 * Drives '/rr join <param>' command.  This allows a player to join the chosen tower if they exist on the invited list.
+		 * 
+		 *
 		 */
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("join") && arg.length == 2){
 			if(!BeyondInfo.hasTower(arg[1])){
-				sender.sendMessage("Invalid tower you fuck head");
-				return true;
+				sender.sendMessage("This is not a valid tower");
 			}
 			if(BeyondInfo.hasPlayer((Player)sender)){
 				sender.sendMessage("You are already a member of a Tower. Please leave your current one to join this one.");
-				return true;
 			}
-			BeyondInfo.addPlayer((Player)sender, arg[1]);
-			sender.sendMessage("You have joined the Tower of "+arg[1]+" and the Religion of "+BeyondInfo.getReligion(arg[1]));
+			if(BeyondInfo.isMemberInvited((Player)sender, arg[1])){
+				BeyondInfo.addPlayer((Player)sender, arg[1]);
+				sender.sendMessage("You have joined the Tower of "+arg[1]+" and the Religion of "+BeyondInfo.getReligion(arg[1]));
+			}else{
+				sender.sendMessage("You have yet to be invited to join this tower");
+			}
+			return true;
+		}
+		/**
+		 * 
+		 */
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("exile") && arg.length == 2){
+			if(!BeyondInfo.hasPlayer((Player)sender)){
+				sender.sendMessage("You are not able to use this command");
+			}
+			if(BeyondInfo.isPlayerAMember(arg[1], BeyondInfo.getTowerName((Player)sender))){
+				BeyondInfo.removePlayer(arg[1]);
+				sender.sendMessage(arg[1]+" has been removed from "+BeyondInfo.getTowerName((Player)sender));
+				if(plugin.getServer().getPlayer(arg[1]) != null){
+					plugin.getServer().getPlayer(arg[1]).sendMessage("You have been removed from "+BeyondInfo.getTowerName((Player)sender));
+				}
+			}else{
+				sender.sendMessage("That player does not seem to be a member of this tower.  Check your caps.");
+			}
 			return true;
 		}
 		
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("invite") && arg.length == 2){
+			if(BeyondInfo.isMemberTrusted((Player)sender) || BeyondInfo.isPlayerLeader((Player)sender)){
+				if(plugin.getServer().getPlayer(arg[1]) != null)BeyondInfo.addInvited(arg[1], BeyondInfo.getTowerName((Player)sender));
+				else sender.sendMessage("This player is either not online of doesn't exist");
+			}
+			return true;
+		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("trust") && arg.length == 2){
+			if(BeyondInfo.isPlayerLeader((Player)sender) && BeyondInfo.isPlayerAMember(arg[1], BeyondInfo.getTowerName((Player)sender))){
+				sender.sendMessage(arg[1]+" was invited to join your tower");
+				BeyondInfo.addInvited(arg[1], BeyondInfo.getTowerName((Player)sender));
+			}else{
+				sender.sendMessage("This command is invalid as you are not leader or that player is not currently online");
+			}
+			return true;
+		}
+
 		/**
 		 * Drives '/rr leave'.  Allows player to leave tower and religion
 		 */
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("leave") && arg.length == 1){
 			if(!BeyondInfo.hasPlayer((Player)sender)){
-				sender.sendMessage("YOU ARENT PART OF A RELIGION YOU CUNT");
+				sender.sendMessage("You are not a member of a tower, and thus, this command does nothing");
 				return true;
 			}
-			BeyondInfo.removePlayer((Player)sender);
-			sender.sendMessage("You have left your tower and religion");
-			return true;
+			if(BeyondInfo.getLeader((Player)sender).equals(((Player)sender).getName())){
+				BeyondUtil.towerBroadcast(BeyondInfo.getTowerName((Player)sender), "The leader of Tower "+BeyondInfo.getTowerName((Player)sender)+" has parished");
+				BeyondInfo.removeTower(BeyondInfo.getReligion(BeyondInfo.getTowerName((Player)sender)), BeyondInfo.getTowerName((Player)sender));
+				return true;
+			}else{
+				BeyondInfo.removePlayer((Player)sender);
+				sender.sendMessage("You have left your tower and religion");
+				return true;
+			}
 		}
-		
+
 		/**
 		 * Drives '/rr list'.  Lists to player all religions that exist
 		 */
