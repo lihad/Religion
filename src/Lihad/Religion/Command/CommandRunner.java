@@ -64,12 +64,13 @@ public class CommandRunner implements CommandExecutor {
 			if(!BeyondInfo.hasTower(arg[1])){
 				sender.sendMessage("This is not a valid tower");
 			}
-			if(BeyondInfo.hasPlayer((Player)sender)){
+			else if(BeyondInfo.hasPlayer((Player)sender)){
 				sender.sendMessage("You are already a member of a Tower. Please leave your current one to join this one.");
 			}
-			if(BeyondInfo.isMemberInvited((Player)sender, arg[1])){
+			else if(BeyondInfo.isMemberInvited((Player)sender, arg[1])){
 				BeyondInfo.addPlayer((Player)sender, arg[1]);
 				sender.sendMessage("You have joined the Tower of "+arg[1]+" and the Religion of "+BeyondInfo.getReligion(arg[1]));
+				BeyondInfo.removeInvited((Player)sender, arg[1]);
 			}else{
 				sender.sendMessage("You have yet to be invited to join this tower");
 			}
@@ -82,7 +83,7 @@ public class CommandRunner implements CommandExecutor {
 			if(!BeyondInfo.hasPlayer((Player)sender)){
 				sender.sendMessage("You are not able to use this command");
 			}
-			if(BeyondInfo.isPlayerAMember(arg[1], BeyondInfo.getTowerName((Player)sender))){
+			else if(BeyondInfo.isPlayerAMember(arg[1], BeyondInfo.getTowerName((Player)sender))){
 				BeyondInfo.removePlayer(arg[1]);
 				sender.sendMessage(arg[1]+" has been removed from "+BeyondInfo.getTowerName((Player)sender));
 				if(plugin.getServer().getPlayer(arg[1]) != null){
@@ -93,18 +94,36 @@ public class CommandRunner implements CommandExecutor {
 			}
 			return true;
 		}
-		
+
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("invite") && arg.length == 2){
+			if(BeyondInfo.getInvitedList((Player)sender) == null){
+			}else if(BeyondInfo.getInvitedList((Player)sender).contains(arg[1])){
+				sender.sendMessage("This player was already invited to join your tower");
+				return true;
+			}
 			if(BeyondInfo.isMemberTrusted((Player)sender) || BeyondInfo.isPlayerLeader((Player)sender)){
-				if(plugin.getServer().getPlayer(arg[1]) != null)BeyondInfo.addInvited(arg[1], BeyondInfo.getTowerName((Player)sender));
+				if(plugin.getServer().getPlayer(arg[1]) != null){
+					sender.sendMessage(arg[1]+" was invited to join your tower");
+					plugin.getServer().getPlayer(arg[1]).sendMessage("You were invited to join "+BeyondInfo.getTowerName((Player)sender));
+					BeyondInfo.addInvited(arg[1], BeyondInfo.getTowerName((Player)sender));
+				}
 				else sender.sendMessage("This player is either not online of doesn't exist");
 			}
 			return true;
 		}
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("trust") && arg.length == 2){
+			if(!BeyondInfo.getPlayers().contains((Player)sender)){
+				sender.sendMessage("This command is invalid as you are not a leader of a tower");
+				return true;
+			}else if(BeyondInfo.getTrustedList((Player)sender) == null){
+				
+			}else if(BeyondInfo.getTrustedList((Player)sender).contains(arg[1])){
+				sender.sendMessage("This member is already on the trust list");
+				return true;
+			}
 			if(BeyondInfo.isPlayerLeader((Player)sender) && BeyondInfo.isPlayerAMember(arg[1], BeyondInfo.getTowerName((Player)sender))){
-				sender.sendMessage(arg[1]+" was invited to join your tower");
-				BeyondInfo.addInvited(arg[1], BeyondInfo.getTowerName((Player)sender));
+				BeyondInfo.addTrusted(arg[1], BeyondInfo.getTowerName((Player)sender));
+				sender.sendMessage("Member "+arg[1]+" was made trusted.");
 			}else{
 				sender.sendMessage("This command is invalid as you are not leader or that player is not currently online");
 			}
@@ -117,17 +136,15 @@ public class CommandRunner implements CommandExecutor {
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("leave") && arg.length == 1){
 			if(!BeyondInfo.hasPlayer((Player)sender)){
 				sender.sendMessage("You are not a member of a tower, and thus, this command does nothing");
-				return true;
 			}
-			if(BeyondInfo.getLeader((Player)sender).equals(((Player)sender).getName())){
+			else if(BeyondInfo.getLeader((Player)sender).equals(((Player)sender).getName())){
 				BeyondUtil.towerBroadcast(BeyondInfo.getTowerName((Player)sender), "The leader of Tower "+BeyondInfo.getTowerName((Player)sender)+" has parished");
 				BeyondInfo.removeTower(BeyondInfo.getReligion(BeyondInfo.getTowerName((Player)sender)), BeyondInfo.getTowerName((Player)sender));
-				return true;
 			}else{
 				BeyondInfo.removePlayer((Player)sender);
 				sender.sendMessage("You have left your tower and religion");
-				return true;
 			}
+			return true;
 		}
 
 		/**
