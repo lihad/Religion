@@ -94,20 +94,20 @@ public class CommandRunner implements CommandExecutor {
 			}
 			return true;
 		}
-
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("invite") && arg.length == 2){
+			if(plugin.getServer().getPlayer(arg[1]) == null){
+				sender.sendMessage("This player is either not online of doesn't exist");
+				return true;
+			}
 			if(BeyondInfo.getInvitedList((Player)sender) == null){
-			}else if(BeyondInfo.getInvitedList((Player)sender).contains(arg[1])){
+			}else if(BeyondInfo.getInvitedList((Player)sender).contains(plugin.getServer().getPlayer(arg[1]).getName())){
 				sender.sendMessage("This player was already invited to join your tower");
 				return true;
 			}
 			if(BeyondInfo.isMemberTrusted((Player)sender) || BeyondInfo.isPlayerLeader((Player)sender)){
-				if(plugin.getServer().getPlayer(arg[1]) != null){
-					sender.sendMessage(arg[1]+" was invited to join your tower");
-					plugin.getServer().getPlayer(arg[1]).sendMessage("You were invited to join "+BeyondInfo.getTowerName((Player)sender));
-					BeyondInfo.addInvited(arg[1], BeyondInfo.getTowerName((Player)sender));
-				}
-				else sender.sendMessage("This player is either not online of doesn't exist");
+				sender.sendMessage(arg[1]+" was invited to join your tower");
+				plugin.getServer().getPlayer(arg[1]).sendMessage("You were invited to join "+BeyondInfo.getTowerName((Player)sender));
+				BeyondInfo.addInvited(plugin.getServer().getPlayer(arg[1]).getName(), BeyondInfo.getTowerName((Player)sender));
 			}
 			return true;
 		}

@@ -130,6 +130,7 @@ public class Religion extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_BED_ENTER, this.playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, this.playerListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_RESPAWN, this.playerListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Priority.Normal, this);
 
 
 
