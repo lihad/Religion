@@ -22,7 +22,8 @@ public class BeyondBlockListener extends BlockListener {
 	 * TODO: Make it so only those without a religion/tower can start a new tower
 	 */
 	public void onSignChange(SignChangeEvent event){
-		if(event.getBlock().getLocation().getBlockY() > 119 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()).equals("null")){
+		System.out.println(event.getBlock().getLocation().toString());
+		if(event.getBlock().getLocation().getBlockY() > 119 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) == null){
 			//TODO: make statement "event.getLine(2).length() > 4" be > a configurable value.  That value is the minimum length a tower name can be.
 			if(event.getLine(0).equals("[Religion]") && !(event.getLine(1).equals(null))&& (event.getLine(2).length() > 4)){
 				if(BeyondInfo.getReligions().contains(event.getLine(1))){
@@ -30,15 +31,15 @@ public class BeyondBlockListener extends BlockListener {
 						event.getPlayer().sendMessage("This name is already being used - try a different one.");
 						return;
 					}
-					if(event.getLine(2).contains(" ")){
-						event.getPlayer().sendMessage("Your tower may have no spaces in the name.");
+					if(event.getLine(2).contains(" ") || event.getLine(2).contains("?") || event.getLine(2).contains("!") || event.getLine(2).contains(".")|| event.getLine(2).contains(",")|| event.getLine(2).contains("'")){
+						event.getPlayer().sendMessage("Your tower may have no spaces or symbols in the name.");
 						return;
 					}
 					BeyondInfo.addTower(event.getPlayer(), event.getLine(1), event.getLine(2), event.getBlock().getLocation());
 					event.getBlock().setType(Material.CHEST);
 				}else event.getPlayer().sendMessage("Your chosen religion does not exist.");
 			}else if(event.getLine(0).equals("[Religion]") && event.getLine(2).length() <= 4) event.getPlayer().sendMessage("Your chosen tower name is not long enough, try again.");
-		}else if(!BeyondInfo.getClosestValidTower(event.getBlock().getLocation()).equals("null") && BeyondInfo.hasPlayer(event.getPlayer())){
+		}else if(!(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) == null) && BeyondInfo.hasPlayer(event.getPlayer())){
 			if(event.getLine(0).equals("[Religion]") && (event.getLine(1).equalsIgnoreCase("Spell"))&& !(event.getLine(2).equals(null)) && BeyondUtil.isNextTo(BeyondInfo.getTowerLocation(event.getPlayer()), event.getBlock().getLocation())){
 				if(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()).equals(BeyondInfo.getTowerName(event.getPlayer()))){
 					if(Religion.spell.handler(event.getLine(2), event.getPlayer())) event.getPlayer().sendMessage("You cast "+event.getLine(2));

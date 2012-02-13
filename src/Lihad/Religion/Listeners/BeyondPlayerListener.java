@@ -125,9 +125,10 @@ public class BeyondPlayerListener extends PlayerListener {
 		if(BeyondInfo.getTowerName(event.getPlayer())== null && !(BeyondInfo.getClosestValidTower(event.getRespawnLocation()) == null) && event.isBedSpawn()){
 			event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());
 		}else if(BeyondInfo.getTowerName(event.getPlayer())== null)return;
+		else if(BeyondInfo.getClosestValidTower(event.getRespawnLocation()) == null)return;
 		else if(BeyondInfo.getClosestValidTower(event.getRespawnLocation()).equals(BeyondInfo.getReligion(event.getPlayer()))){
 			event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());
 		}
-			
+
 	}
 }

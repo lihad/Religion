@@ -125,7 +125,7 @@ public class BeyondEntityListener extends EntityListener {
 				List<String> potionpower = new ArrayList<String>();
 				potionpower.add("Pandasidism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Zombie && potionpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth() && calculator(player) < 10){
+					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth() && calculator(player) < 80){
 						event.getEntity().remove();
 						Potion potion = new Potion(potionTypeRandomizer(), potionTierRandomizer(), potionSplashRandomizer());
 						ItemStack stack = new ItemStack(Material.POTION, 1);
@@ -137,17 +137,23 @@ public class BeyondEntityListener extends EntityListener {
 				List<String> weaponpower = new ArrayList<String>();
 				weaponpower.add("Fercism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie && weaponpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 20){
+					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 80){
 						event.getEntity().remove();
 						ItemStack stack = new ItemStack(weaponTypeRandomizer(), 1);
-						stack.addEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+						while(stack.getEnchantments().isEmpty()){
+							try{
+								stack.addEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+							}catch(IllegalArgumentException e){
+								System.out.println("[Religion] DEBUG - weaponpower");
+							}
+						}
 						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 					}
 				}
 				List<String> armorpower = new ArrayList<String>();
 				armorpower.add("Lihazism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie && armorpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 20){
+					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 80){
 						event.getEntity().remove();
 						ItemStack stack = new ItemStack(armorTypeRandomizer(), 1);
 						stack.addEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
@@ -160,6 +166,13 @@ public class BeyondEntityListener extends EntityListener {
 					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth() && calculator(player) < 80){
 						event.getEntity().remove();
 						ItemStack stack = new ItemStack(toolTypeRandomizer(), 1);
+						while(stack.getEnchantments().isEmpty()){
+							try{
+								stack.addEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+							}catch(IllegalArgumentException e){
+								System.out.println("[Religion] DEBUG - toolpower");
+							}
+						}
 						stack.addEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
 						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 					}

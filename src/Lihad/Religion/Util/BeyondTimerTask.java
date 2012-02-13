@@ -5,6 +5,9 @@ import java.util.TimerTask;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
+import org.bukkit.plugin.Plugin;
+
+import Lihad.Religion.Religion;
 import Lihad.Religion.Information.BeyondInfo;
 
 
@@ -37,6 +40,7 @@ public class BeyondTimerTask extends TimerTask {
 				}else{
 					
 				}
+				Religion.configuration.save();
 			}
 		}catch(Exception e){
 			System.out.println("[Religion] [ERROR] [NO TOWER] Lihad knows why you are seeing this, ask him");
