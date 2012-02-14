@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -117,6 +118,9 @@ public class BeyondInfo {
 	 */
 	public static String getTowerName(Player player){
 		return BeyondInfoReader.getString("Religions."+getPlayerPath(player)+".Name");
+	}
+	public static String getTowerNamePlayerString(String playername){
+		return BeyondInfoReader.getString("Religions."+BeyondInfoReader.getString("Players."+playername)+".Name");
 	}
 	/**
 	 * 
@@ -363,11 +367,11 @@ public class BeyondInfo {
 	 * 
 	 * @return Returns all players associated with any religion
 	 */
-	public static List<Player> getPlayers(){
+	public static List<Player> getOnlineReligionPlayers(){
 		List<String> strings = BeyondInfoReader.getKeyList("Players");
 		List<Player> players = new ArrayList<Player>();
 		for(int i=0;i<strings.size();i++){
-			players.add(plugin.getServer().getPlayer(strings.get(i)));
+			if(plugin.getServer().getPlayer(strings.get(i)) != null)players.add(plugin.getServer().getPlayer(strings.get(i)));
 		}
 		return players;
 	}
@@ -378,16 +382,16 @@ public class BeyondInfo {
 	 */
 	public static List<Player> getTowerPlayers(String towername){
 		List<Player> players = new ArrayList<Player>();
-		for(int i=0;i<getPlayers().size();i++){
-			if(getTowerName(getPlayers().get(i)).equals(towername)){
-				players.add(getPlayers().get(i));
+		for(int i=0;i<getOnlineReligionPlayers().size();i++){
+			if(getTowerName(getOnlineReligionPlayers().get(i)).equals(towername)){
+				players.add(getOnlineReligionPlayers().get(i));
 			}
 		}
 		return players;
 	}
 	public static List<Player> getReligionPlayers(String religion){
 		List<Player> players = new ArrayList<Player>();
-		List<Player> playersall = getPlayers();
+		List<Player> playersall = getOnlineReligionPlayers();
 		for(int i=0;i<playersall.size();i++){
 			if(getPlayerPath(playersall.get(i)).contains(religion)){
 				players.add(playersall.get(i));
@@ -401,16 +405,19 @@ public class BeyondInfo {
 	 * Simply checks to see if player exists in the information.yml
 	 */
 	public static boolean hasPlayer(Player player){
-		try{ return getPlayers().contains(player); }
+		try{ return BeyondInfoReader.getKeyList("Players.").contains(player.getName()); }
 		catch(Exception e){ return false; }
 	}
 	public static boolean hasTower(String towername){
 		try{
 			List<String> religionList = getReligions();
 			for(int i = 0; i<religionList.size();i++){
-				if(getTowers(religionList.get(i)).contains(towername)) return true;
+				for(int j = 0; j<getTowers(religionList.get(i)).size();j++){
+					if(getTowers(religionList.get(i)).get(j).equalsIgnoreCase(towername)) return true;
+				}
 			}
-			return false;			}
+			return false;			
+		}
 		catch(Exception e){ return false; }
 	}
 	//set Functions
@@ -541,17 +548,17 @@ public class BeyondInfo {
 		}
 		BeyondInfoWriter.writeConfigurationNull("Religions."+religion+".Towers."+towername);
 	}
-	public static void removeTrusted(Player playerInvoking, String playerNameToBeRemoved){
-		if(getTrustedListRaw(playerInvoking) == null)return;
-		else if(getTrustedListRaw(playerInvoking).contains(","+playerNameToBeRemoved)) setTrustedList(playerInvoking, getTrustedListRaw(playerInvoking).replaceAll(","+playerNameToBeRemoved, ""));
-		else if(getTrustedListRaw(playerInvoking).contains(playerNameToBeRemoved+",")) setTrustedList(playerInvoking, getTrustedListRaw(playerInvoking).replaceAll(playerNameToBeRemoved+",", ""));
-		else if(getTrustedListRaw(playerInvoking).contains(playerNameToBeRemoved)) setTrustedList(playerInvoking, getTrustedListRaw(playerInvoking).replaceAll(playerNameToBeRemoved, ""));
+	public static void removeTrusted(Player playerToBeRemoved, String towername){
+		if(getTrustedListRaw(towername) == null)return;
+		else if(getTrustedListRaw(towername).contains(","+playerToBeRemoved.getName())) setTrustedList(towername, getTrustedListRaw(towername).replaceAll(","+playerToBeRemoved.getName(), ""));
+		else if(getTrustedListRaw(towername).contains(playerToBeRemoved.getName()+",")) setTrustedList(towername, getTrustedListRaw(towername).replaceAll(playerToBeRemoved.getName()+",", ""));
+		else if(getTrustedListRaw(towername).contains(playerToBeRemoved.getName())) setTrustedList(towername, getTrustedListRaw(towername).replaceAll(playerToBeRemoved.getName(), ""));
 	}
-	public static void removeInvited(Player playerInvoking, String playerToBeAdded){
-		if(getInvitedListRaw(playerInvoking) == null)return;
-		else if(getInvitedListRaw(playerInvoking).contains(","+playerToBeAdded)) setInvitedList(playerInvoking, getInvitedListRaw(playerInvoking).replaceAll(","+playerToBeAdded, ""));
-		else if(getInvitedListRaw(playerInvoking).contains(playerToBeAdded+",")) setInvitedList(playerInvoking, getInvitedListRaw(playerInvoking).replaceAll(playerToBeAdded+",", ""));
-		else if(getInvitedListRaw(playerInvoking).contains(playerToBeAdded)) setInvitedList(playerInvoking, getInvitedListRaw(playerInvoking).replaceAll(playerToBeAdded, ""));
+	public static void removeInvited(Player playerToBeRemoved, String towername){
+		if(getInvitedListRaw(towername) == null)return;
+		if(getInvitedListRaw(towername).contains(","+playerToBeRemoved.getName()))setInvitedList(towername, getInvitedListRaw(towername).replaceAll(","+playerToBeRemoved.getName(), ""));
+		else if(getInvitedListRaw(towername).contains(playerToBeRemoved.getName()+","))setInvitedList(towername, getInvitedListRaw(towername).replaceAll(playerToBeRemoved.getName()+",", ""));
+		else if(getInvitedListRaw(towername).contains(playerToBeRemoved.getName()))setInvitedList(towername, getInvitedListRaw(towername).replaceAll(playerToBeRemoved.getName(), ""));
 	}
 	public static void removeTrusted(String towername, String playerNameToBeRemoved){
 		if(getTrustedListRaw(towername) == null)return;
@@ -559,11 +566,11 @@ public class BeyondInfo {
 		else if(getTrustedListRaw(towername).contains(playerNameToBeRemoved+",")) setTrustedList(towername, getTrustedListRaw(towername).replaceAll(playerNameToBeRemoved+",", ""));
 		else if(getTrustedListRaw(towername).contains(playerNameToBeRemoved)) setTrustedList(towername, getTrustedListRaw(towername).replaceAll(playerNameToBeRemoved, ""));
 	}
-	public static void removeInvited(String towername, String playerToBeAdded){
+	public static void removeInvited(String towername, String playerNameToBeRemoved){
 		if(getInvitedListRaw(towername) == null)return;
-		else if(getInvitedListRaw(towername).contains(","+playerToBeAdded)) setInvitedList(towername, getInvitedListRaw(towername).replaceAll(","+playerToBeAdded, ""));
-		else if(getInvitedListRaw(towername).contains(playerToBeAdded+",")) setInvitedList(towername, getInvitedListRaw(towername).replaceAll(playerToBeAdded+",", ""));
-		else if(getInvitedListRaw(towername).contains(playerToBeAdded))setInvitedList(towername, getInvitedListRaw(towername).replaceAll(playerToBeAdded, ""));
+		if(getInvitedListRaw(towername).contains(","+playerNameToBeRemoved)) setInvitedList(towername, getInvitedListRaw(towername).replaceAll(","+playerNameToBeRemoved, ""));
+		else if(getInvitedListRaw(towername).contains(playerNameToBeRemoved+",")) setInvitedList(towername, getInvitedListRaw(towername).replaceAll(playerNameToBeRemoved+",", ""));
+		else if(getInvitedListRaw(towername).contains(playerNameToBeRemoved))setInvitedList(towername, getInvitedListRaw(towername).replaceAll(playerNameToBeRemoved, ""));
 	}
 	//is Functions
 	public static boolean isTowerArea(Location location, String towername){

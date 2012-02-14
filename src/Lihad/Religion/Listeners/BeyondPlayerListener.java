@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Religion;
@@ -130,5 +131,18 @@ public class BeyondPlayerListener extends PlayerListener {
 			event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());
 		}
 
+	}
+	public void onPlayerTeleport(PlayerTeleportEvent event){
+		if(Religion.handler.has(event.getPlayer(), "religion.tp") || event.getPlayer().isOp()) return;
+		if(BeyondInfo.getReligion(event.getPlayer())==null && BeyondInfo.getClosestValidTower(event.getTo()) != null){
+			event.setTo(event.getFrom());
+			event.getPlayer().sendMessage("Your connection with the destination has been severed by "+BeyondInfo.getClosestValidTower(event.getTo()));
+		}
+		else if(BeyondInfo.getReligion(event.getPlayer())!=null && BeyondInfo.getClosestValidTower(event.getTo()) != null){
+			if(!BeyondInfo.getReligion(event.getPlayer()).equals(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(event.getTo())))){
+				event.setTo(event.getFrom());
+				event.getPlayer().sendMessage("Your connection with the destination has been severed by "+BeyondInfo.getClosestValidTower(event.getTo()));
+			}
+		}
 	}
 }

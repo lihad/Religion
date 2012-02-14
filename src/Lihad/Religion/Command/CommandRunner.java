@@ -65,12 +65,12 @@ public class CommandRunner implements CommandExecutor {
 				sender.sendMessage("This is not a valid tower");
 			}
 			else if(BeyondInfo.hasPlayer((Player)sender)){
-				sender.sendMessage("You are already a member of a Tower. Please leave your current one to join this one.");
+				sender.sendMessage("You are already a member of a Tower.");
 			}
 			else if(BeyondInfo.isMemberInvited((Player)sender, arg[1])){
 				BeyondInfo.addPlayer((Player)sender, arg[1]);
 				sender.sendMessage("You have joined the Tower of "+arg[1]+" and the Religion of "+BeyondInfo.getReligion(arg[1]));
-				BeyondInfo.removeInvited((Player)sender, arg[1]);
+				BeyondInfo.removeInvited(((Player)sender), arg[1]);
 			}else{
 				sender.sendMessage("You have yet to be invited to join this tower");
 			}
@@ -112,7 +112,7 @@ public class CommandRunner implements CommandExecutor {
 			return true;
 		}
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("trust") && arg.length == 2){
-			if(!BeyondInfo.getPlayers().contains((Player)sender)){
+			if(!BeyondInfo.getOnlineReligionPlayers().contains((Player)sender)){
 				sender.sendMessage("This command is invalid as you are not a leader of a tower");
 				return true;
 			}else if(BeyondInfo.getTrustedList((Player)sender) == null){
@@ -220,6 +220,16 @@ public class CommandRunner implements CommandExecutor {
 			((Player)sender).sendMessage(message);
 			return true;
 		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("whois") && arg.length == 2){
+			if(BeyondInfo.getTowerNamePlayerString(arg[1]) != null){
+				((Player)sender).sendMessage(arg[1]+" is a member of the tower "+BeyondUtil.getChatColor((Player)sender, BeyondInfo.getTowerNamePlayerString(arg[1]))+BeyondInfo.getTowerNamePlayerString(arg[1])+", Religion of "+BeyondInfo.getReligion(BeyondInfo.getTowerNamePlayerString(arg[1])));
+			}else{
+				((Player)sender).sendMessage("That player does not exist or does not belong to a religion");
+			}
+			return true;
+
+		}
+
 		
 		else return false;
 	}

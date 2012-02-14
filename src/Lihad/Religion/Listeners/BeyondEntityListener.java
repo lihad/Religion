@@ -91,7 +91,7 @@ public class BeyondEntityListener extends EntityListener {
 				sheeppower.add("Jorism");
 				sheeppower.add("Pandasidism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Sheep && sheeppower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Sheep)event.getEntity()).getHealth() && calculator(player) < 10){
+					if(event.getDamage() >= ((Sheep)event.getEntity()).getHealth() && calculator(player) < 20){
 						event.getEntity().remove();
 						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), new ItemStack(Material.GOLD_INGOT, 3));
 					}
@@ -101,7 +101,7 @@ public class BeyondEntityListener extends EntityListener {
 				chickenpower.add("Jorism");
 				chickenpower.add("Notchitism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Creeper && chickenpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Creeper)event.getEntity()).getHealth() && calculator(player) < 5){
+					if(event.getDamage() >= ((Creeper)event.getEntity()).getHealth() && calculator(player) < 10){
 						event.getEntity().remove();
 						((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
 						((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
@@ -125,7 +125,7 @@ public class BeyondEntityListener extends EntityListener {
 				List<String> potionpower = new ArrayList<String>();
 				potionpower.add("Pandasidism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Zombie && potionpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth() && calculator(player) < 80){
+					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth() && calculator(player) < 20){
 						event.getEntity().remove();
 						Potion potion = new Potion(potionTypeRandomizer(), potionTierRandomizer(), potionSplashRandomizer());
 						ItemStack stack = new ItemStack(Material.POTION, 1);
@@ -137,7 +137,7 @@ public class BeyondEntityListener extends EntityListener {
 				List<String> weaponpower = new ArrayList<String>();
 				weaponpower.add("Fercism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie && weaponpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 80){
+					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 20){
 						event.getEntity().remove();
 						ItemStack stack = new ItemStack(weaponTypeRandomizer(), 1);
 						while(stack.getEnchantments().isEmpty()){
@@ -153,7 +153,7 @@ public class BeyondEntityListener extends EntityListener {
 				List<String> armorpower = new ArrayList<String>();
 				armorpower.add("Lihazism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie && armorpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 80){
+					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 20){
 						event.getEntity().remove();
 						ItemStack stack = new ItemStack(armorTypeRandomizer(), 1);
 						stack.addEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
@@ -163,7 +163,7 @@ public class BeyondEntityListener extends EntityListener {
 				List<String> toolpower = new ArrayList<String>();
 				toolpower.add("Notchitism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Enderman && toolpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth() && calculator(player) < 80){
+					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth() && calculator(player) < 40){
 						event.getEntity().remove();
 						ItemStack stack = new ItemStack(toolTypeRandomizer(), 1);
 						while(stack.getEnchantments().isEmpty()){
@@ -185,7 +185,7 @@ public class BeyondEntityListener extends EntityListener {
 		int next = chance.nextInt(1000);
 		int playerlevel = player.getLevel()/10;
 		if(playerlevel > 10)playerlevel = 10;
-		return (next - playerlevel);
+		return (next - (playerlevel*3));
 	}
 	public PotionType potionTypeRandomizer(){
 		Random chance = new Random();
