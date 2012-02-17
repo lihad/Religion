@@ -40,10 +40,17 @@ public class BeyondTimerTask extends TimerTask {
 				}else{
 					
 				}
-				Religion.configuration.save();
+				
+				//
+				//
+				//
+				//
 			}
+			Religion.trades.driver();
+			Religion.configuration.save();
 		}catch(Exception e){
 			System.out.println("[Religion] [ERROR] [NO TOWER] Lihad knows why you are seeing this, ask him");
+			e.printStackTrace();
 
 		}
 

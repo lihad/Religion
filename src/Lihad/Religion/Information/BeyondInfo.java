@@ -10,6 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import Lihad.Religion.Religion;
+import Lihad.Religion.Config.BeyondConfigReader;
 
 public class BeyondInfo {
 	public static Religion plugin;
@@ -322,6 +323,52 @@ public class BeyondInfo {
 		if(aoe>Religion.config.getMaximumAoE())return Religion.config.getMaximumAoE();
 		else return aoe;	
 	}
+	
+	//
+	//
+	//
+	//
+	//
+	public static List<String> getTrades(String towername){
+		return BeyondInfoReader.getKeyList("Religions."+getReligion(towername)+".Towers."+towername+".Trades");
+	}
+	public static Location getTradeLocation(String towername, String trade){
+		String[] array;
+		String string = BeyondInfoReader.getString("Religions."+getReligion(towername)+".Towers."+towername+".Trades."+trade);
+		array = string.split(",");
+		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
+		return location;
+	}
+	public static String getTrade(Location location){
+		List<String> religions = getReligions();
+		for(int i = 0;i<religions.size();i++){
+			List<String> towers = getTowers(religions.get(i));
+			for(int j = 0;j<towers.size();j++){
+				List<String> trades = getTrades(towers.get(j));
+				if(trades == null) continue;
+				for(int k = 0; k<trades.size();k++){
+					if(getTradeLocation(towers.get(j), trades.get(k)).equals(location)){
+						return trades.get(k);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+
+
+
+	
+	
+	
+	//
+	//
+	//
+	//
+	//
+	
+	
 	/**
 	 * 
 	 * @param location
@@ -420,6 +467,12 @@ public class BeyondInfo {
 		}
 		catch(Exception e){ return false; }
 	}
+	public static boolean hasTrade(String towername, String trade){
+		if(BeyondInfoReader.getKeyList("Religions."+getReligion(towername)+".Towers."+towername+".Trades") != null){
+			if(BeyondInfoReader.getKeyList("Religions."+getReligion(towername)+".Towers."+towername+".Trades").contains(trade)) return true;
+		}
+		return false;
+	}
 	//set Functions
 	private static void setTowerName(String religion, String towername){
 		BeyondInfoWriter.writeConfigurationString("Religions."+religion+".Towers."+towername+".Name", towername);
@@ -487,6 +540,10 @@ public class BeyondInfo {
 	private static void setPlayerPath(Player player, String towername){
 		BeyondInfoWriter.writeConfigurationString("Players."+player.getName(), getReligion(towername)+".Towers."+towername);
 	}
+	private static void setTrades(String towername, String trade, Location location){
+		BeyondInfoWriter.writeConfigurationString("Religions."+getReligion(towername)+".Towers."+towername+".Trades."+trade, location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
+
+	}
 	//add Functions
 	public static void addPlayer(Player player, String towername){
 		setPlayerPath(player,towername);
@@ -507,6 +564,9 @@ public class BeyondInfo {
 	public static void addInvited(String playername, String towername){
 		if(getInvitedListRaw(towername) == null || getInvitedListRaw(towername) == ""|| getInvitedListRaw(towername) == "''") setInvitedList(towername, playername);
 		else setInvitedList(towername, getInvitedListRaw(towername).concat(","+playername));
+	}
+	public static void addTrade(String towername, String trade, Location location){
+		setTrades(towername, trade, location);
 	}
 	//remove Functions
 	/**
@@ -571,6 +631,9 @@ public class BeyondInfo {
 		if(getInvitedListRaw(towername).contains(","+playerNameToBeRemoved)) setInvitedList(towername, getInvitedListRaw(towername).replaceAll(","+playerNameToBeRemoved, ""));
 		else if(getInvitedListRaw(towername).contains(playerNameToBeRemoved+",")) setInvitedList(towername, getInvitedListRaw(towername).replaceAll(playerNameToBeRemoved+",", ""));
 		else if(getInvitedListRaw(towername).contains(playerNameToBeRemoved))setInvitedList(towername, getInvitedListRaw(towername).replaceAll(playerNameToBeRemoved, ""));
+	}
+	public static void removeTrades(String towername, String trade){
+		BeyondInfoWriter.writeConfigurationNull("Religions."+getReligion(towername)+".Towers."+towername+".Trades."+trade);
 	}
 	//is Functions
 	public static boolean isTowerArea(Location location, String towername){

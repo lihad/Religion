@@ -36,9 +36,16 @@ public class BeyondBlockListener extends BlockListener {
 						return;
 					}
 					BeyondInfo.addTower(event.getPlayer(), event.getLine(1), event.getLine(2), event.getBlock().getLocation());
+					if(event.getBlock().getRelative(1, 0, 0).getType() == Material.CHEST) event.getBlock().getRelative(1, 0, 0).setTypeId(0);
+					if(event.getBlock().getRelative(-1, 0, 0).getType() == Material.CHEST) event.getBlock().getRelative(-1, 0, 0).setTypeId(0);
+					if(event.getBlock().getRelative(0, 0, 1).getType() == Material.CHEST) event.getBlock().getRelative(0, 0, 1).setTypeId(0);
+					if(event.getBlock().getRelative(0, 0, -1).getType() == Material.CHEST) event.getBlock().getRelative(0, 0, -1).setTypeId(0);
+
 					event.getBlock().setType(Material.CHEST);
 				}else event.getPlayer().sendMessage("Your chosen religion does not exist.");
 			}else if(event.getLine(0).equals("[Religion]") && event.getLine(2).length() <= 4) event.getPlayer().sendMessage("Your chosen tower name is not long enough, try again.");
+			
+		/**	
 		}else if(!(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) == null) && BeyondInfo.hasPlayer(event.getPlayer())){
 			if(event.getLine(0).equals("[Religion]") && (event.getLine(1).equalsIgnoreCase("Spell"))&& !(event.getLine(2).equals(null)) && BeyondUtil.isNextTo(BeyondInfo.getTowerLocation(event.getPlayer()), event.getBlock().getLocation())){
 				if(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()).equals(BeyondInfo.getTowerName(event.getPlayer()))){
@@ -50,6 +57,24 @@ public class BeyondBlockListener extends BlockListener {
 				}
 				event.getBlock().setTypeId(0);
 			}
+		 */
+		}else if(event.getBlock().getLocation().getBlockY() > 64 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()).equals(BeyondInfo.getTowerName(event.getPlayer())) && BeyondInfo.isPlayerLeader(event.getPlayer())){
+			if(event.getLine(0).equals("[Trade]")){
+				if(event.getLine(1).equals("Blacksmith") || event.getLine(1).equals("Fishery") || event.getLine(1).equals("Fletcher")){
+					if(!BeyondInfo.hasTrade(BeyondInfo.getTowerName(event.getPlayer()), event.getLine(1))){
+						BeyondInfo.addTrade(BeyondInfo.getTowerName(event.getPlayer()), event.getLine(1), event.getBlock().getLocation());
+						event.getBlock().setType(Material.CHEST);
+						event.getPlayer().sendMessage("You have created a "+event.getLine(1));
+					}else event.getPlayer().sendMessage("You already have a "+event.getLine(1));
+				} else event.getPlayer().sendMessage("The following isn't a valid Trade: "+event.getLine(1));
+			}
+		}else{
+			System.out.println("DEBUG");
+			System.out.println(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()));
+			System.out.println(BeyondInfo.getTowerName(event.getPlayer()));
+			System.out.println(BeyondInfo.isPlayerLeader(event.getPlayer()));
+
+
 		}
 	}
 	public void onBlockBreak(BlockBreakEvent event){
@@ -57,6 +82,12 @@ public class BeyondBlockListener extends BlockListener {
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
 				if(event.getBlock().getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i)))){
 					event.setCancelled(true);
+				}else if(BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)) != null){
+					for(int j=0;j<BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)).size();j++){
+						if(event.getBlock().getLocation().equals(BeyondInfo.getTradeLocation(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)).get(j)))){
+							event.setCancelled(true);
+						}
+					}
 				}
 			}
 		}
@@ -66,6 +97,12 @@ public class BeyondBlockListener extends BlockListener {
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
 				if(event.getBlock().getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i)))){
 					event.setCancelled(true);
+				}else if(BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)) != null){
+					for(int j=0;j<BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)).size();j++){
+						if(event.getBlock().getLocation().equals(BeyondInfo.getTradeLocation(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)).get(j)))){
+							event.setCancelled(true);
+						}
+					}
 				}
 			}
 		}
@@ -80,8 +117,13 @@ public class BeyondBlockListener extends BlockListener {
 		 */
 		if(event.getBlock().getType() == Material.CHEST){
 			Location place = event.getBlock().getLocation();
+			if(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())==null)return;
 			Location modified = BeyondInfo.getTowerLocation(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()));
 			if(BeyondUtil.isNextTo(modified, place)) event.setCancelled(true);
+			if(BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()))==null)return;
+			for(int i = 0; i<BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).size();i++){
+				if(BeyondUtil.isNextTo(BeyondInfo.getTradeLocation(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()), BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).get(i)), place)) event.setCancelled(true);
+			}
 		}
 	}
 

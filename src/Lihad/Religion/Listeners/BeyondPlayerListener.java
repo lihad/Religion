@@ -1,17 +1,21 @@
 package Lihad.Religion.Listeners;
 
+import java.util.Random;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Religion;
@@ -49,8 +53,7 @@ public class BeyondPlayerListener extends PlayerListener {
 	}
 	public void onPlayerInteract(PlayerInteractEvent event){
 		if(event.getClickedBlock() == null)return;
-		if(BeyondInfo.getReligion(event.getClickedBlock().getLocation()) == null) return;
-		else if(event.getClickedBlock().getType() == Material.CHEST){
+		else if(event.getClickedBlock().getType() == Material.CHEST && BeyondInfo.getReligion(event.getClickedBlock().getLocation()) != null){
 			if(BeyondInfo.getReligion(event.getPlayer()) == null){
 				event.getPlayer().sendMessage("You need to be a member of this religion to interact with this chest.");
 				event.setCancelled(true);
@@ -87,7 +90,10 @@ public class BeyondPlayerListener extends PlayerListener {
 				event.setCancelled(true);
 			}else if(BeyondInfo.getTowers(BeyondInfo.getReligion(event.getClickedBlock().getLocation())).contains(BeyondInfo.getTowerName(event.getPlayer()))){
 				Chest chest = (Chest) event.getClickedBlock().getState();
-				if(event.getPlayer().getInventory().contains(Material.GOLD_INGOT)){
+				if(BeyondUtil.getChestAmount(chest, Material.GOLD_INGOT) == 1728){
+					event.getPlayer().sendMessage("Chest is full!");
+				}
+				else if(event.getPlayer().getInventory().contains(Material.GOLD_INGOT)){
 					event.getPlayer().sendMessage("You gave "+ChatColor.YELLOW.toString()+"1 "+ChatColor.WHITE.toString()+"Gold Bar to "+ChatColor.GREEN.toString()+BeyondInfo.getTower(event.getClickedBlock().getLocation()));
 					int index = event.getPlayer().getInventory().first(266);
 					ItemStack items = event.getPlayer().getInventory().getItem(index);
@@ -103,11 +109,36 @@ public class BeyondPlayerListener extends PlayerListener {
 				}
 				event.setCancelled(true);
 			}
-		}else if(event.getPlayer().getItemInHand().getType() == Material.ARROW){
-			event.getPlayer().shootArrow();
+		}else if(event.getClickedBlock().getType() == Material.CHEST && BeyondInfo.getTrade(event.getClickedBlock().getLocation()) != null){
+			Chest chest = (Chest) event.getClickedBlock().getState();
+			//
+			//
+			//
+			//
+			if((!BeyondInfo.getTowerName(event.getPlayer()).equals(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation()))) && BeyondInfo.getReligion(event.getPlayer()).equals(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation())))){
+				event.getPlayer().sendMessage("You need to be a member of this tower to interact with this chest in that manner.");
+				event.setCancelled(true);
+			}else if(BeyondInfo.getTowerName(event.getPlayer()).equals(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation()))){
+				//OPENS
+			}else if(!BeyondInfo.getReligion(event.getPlayer()).equals(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation())))){
+				//STEALS
+				int index = inventoryRandomizer(chest.getInventory());
+				ItemStack stack = chest.getInventory().getItem(index);
+				if(stack == null){
+					event.getPlayer().sendMessage("Terrible Luck!  You couldn't grab anything from the chest.");
+				}else{
+					event.getPlayer().sendMessage("You were able to steal some "+stack.getType().name());
+					chest.getInventory().setItem(index, null);
+					event.getPlayer().getInventory().addItem(new ItemStack(Material.GOLD_INGOT, 1));
+					event.getPlayer().updateInventory();
+				}
+				int damage = 6;
+				if(event.getPlayer().getHealth()< damage)event.getPlayer().setHealth(0);
+				else event.getPlayer().setHealth(event.getPlayer().getHealth()-damage);
+				event.setCancelled(true);
+			}
 		}
 	}
-
 	public void onPlayerBedEnter(PlayerBedEnterEvent event){
 		if(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower((event.getBed().getLocation()))) == null){
 			return;
@@ -144,5 +175,13 @@ public class BeyondPlayerListener extends PlayerListener {
 				event.getPlayer().sendMessage("Your connection with the destination has been severed by "+BeyondInfo.getClosestValidTower(event.getTo()));
 			}
 		}
+	}
+	public void onPlayerChat(PlayerChatEvent event){
+		
+	}
+	public int inventoryRandomizer(Inventory inventory){
+		Random chance = new Random();
+		int next = chance.nextInt(inventory.getSize());
+		return next;
 	}
 }

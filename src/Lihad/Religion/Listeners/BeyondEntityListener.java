@@ -44,6 +44,12 @@ public class BeyondEntityListener extends EntityListener {
 				for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
 					if(block.getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i)))){
 						event.setCancelled(true);
+					}else if(BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)) != null){
+						for(int j=0;j<BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)).size();j++){
+							if(block.getLocation().equals(BeyondInfo.getTradeLocation(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)).get(j)))){
+								event.setCancelled(true);
+							}
+						}
 					}
 				}
 			}
@@ -69,11 +75,17 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	public void onEntityExplode(EntityExplodeEvent event){
 		List<Block> blocklist = event.blockList();
-		for(int i = 0;i<blocklist.size();i++){
-			if(blocklist.get(i).getType()== Material.CHEST){
-				for(int j=0;j<BeyondInfo.getTowersAll().size();j++){
-					if(blocklist.get(i).getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(j)))){
+		for(int b = 0;b<blocklist.size();b++){
+			if(blocklist.get(b).getType() == Material.CHEST){
+				for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
+					if(blocklist.get(b).getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i)))){
 						event.setCancelled(true);
+					}else if(BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)) != null){
+						for(int j=0;j<BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)).size();j++){
+							if(blocklist.get(b).getLocation().equals(BeyondInfo.getTradeLocation(BeyondInfo.getTowersAll().get(i), BeyondInfo.getTrades(BeyondInfo.getTowersAll().get(i)).get(j)))){
+								event.setCancelled(true);
+							}
+						}
 					}
 				}
 			}

@@ -24,6 +24,7 @@ import Lihad.Religion.Listeners.BeyondBlockListener;
 import Lihad.Religion.Listeners.BeyondEntityListener;
 import Lihad.Religion.Listeners.BeyondPlayerListener;
 import Lihad.Religion.Listeners.BeyondPluginListener;
+import Lihad.Religion.Trades.TradesDriver;
 import Lihad.Religion.Util.BeyondTimerTask;
 import Lihad.Religion.Util.UpdateTimer;
 
@@ -58,6 +59,7 @@ public class Religion extends JavaPlugin {
 	public static CommandExecutor cmd;
     public static UpdateTimer timer;
     public static BeyondTimerTask task;
+    public static TradesDriver trades;
 
 	
 	public static BeyondConfigWriter configwrite;
@@ -112,6 +114,7 @@ public class Religion extends JavaPlugin {
 		spell = new SpellAoE(this);
 		tower = new TowerAoE(this);
 		personal = new Personal(this);
+		trades = new TradesDriver(this);
 
 		//PermsManager
 		setupPermissions();

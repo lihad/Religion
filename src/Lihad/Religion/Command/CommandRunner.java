@@ -125,7 +125,7 @@ public class CommandRunner implements CommandExecutor {
 				BeyondInfo.addTrusted(arg[1], BeyondInfo.getTowerName((Player)sender));
 				sender.sendMessage("Member "+arg[1]+" was made trusted.");
 			}else{
-				sender.sendMessage("This command is invalid as you are not leader or that player is not currently online");
+				sender.sendMessage("This command is invalid as you are not the leader or that player is not currently online");
 			}
 			return true;
 		}
