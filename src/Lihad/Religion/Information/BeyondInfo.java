@@ -376,6 +376,7 @@ public class BeyondInfo {
 	 * @return Returns the vector-length distance of a Location to tower
 	 */
 	public static double getDistanceToTower(Location location, String towername){
+		if(!location.getWorld().getName().equals(BeyondInfo.getTowerLocation(towername).getWorld().getName())) return 1000000;
 		return Math.sqrt(Math.pow((location.getBlockX()-getTowerLocation(towername).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getTowerLocation(towername).getBlockZ()), 2));
 	}
 	/**

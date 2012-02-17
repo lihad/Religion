@@ -58,7 +58,8 @@ public class BeyondBlockListener extends BlockListener {
 				event.getBlock().setTypeId(0);
 			}
 		 */
-		}else if(event.getBlock().getLocation().getBlockY() > 64 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()).equals(BeyondInfo.getTowerName(event.getPlayer())) && BeyondInfo.isPlayerLeader(event.getPlayer())){
+		}else if(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) == null) return;
+		else if(event.getBlock().getLocation().getBlockY() > 64 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()).equals(BeyondInfo.getTowerName(event.getPlayer())) && BeyondInfo.isPlayerLeader(event.getPlayer())){
 			if(event.getLine(0).equals("[Trade]")){
 				if(event.getLine(1).equals("Blacksmith") || event.getLine(1).equals("Fishery") || event.getLine(1).equals("Fletcher")){
 					if(!BeyondInfo.hasTrade(BeyondInfo.getTowerName(event.getPlayer()), event.getLine(1))){
@@ -69,11 +70,6 @@ public class BeyondBlockListener extends BlockListener {
 				} else event.getPlayer().sendMessage("The following isn't a valid Trade: "+event.getLine(1));
 			}
 		}else{
-			System.out.println("DEBUG");
-			System.out.println(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()));
-			System.out.println(BeyondInfo.getTowerName(event.getPlayer()));
-			System.out.println(BeyondInfo.isPlayerLeader(event.getPlayer()));
-
 
 		}
 	}
@@ -107,7 +103,6 @@ public class BeyondBlockListener extends BlockListener {
 			}
 		}
 	}
-	
 	public void onBlockPlace(BlockPlaceEvent event){
 		// TODO: Make this less terrible
 		/**
@@ -126,5 +121,4 @@ public class BeyondBlockListener extends BlockListener {
 			}
 		}
 	}
-
 }

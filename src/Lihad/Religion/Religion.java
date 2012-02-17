@@ -60,8 +60,7 @@ public class Religion extends JavaPlugin {
     public static UpdateTimer timer;
     public static BeyondTimerTask task;
     public static TradesDriver trades;
-
-	
+    
 	public static BeyondConfigWriter configwrite;
 	public static BeyondConfigReader configread;
 	public static BeyondConfig config;
@@ -136,8 +135,6 @@ public class Religion extends JavaPlugin {
         pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_TELEPORT, this.playerListener, Priority.Normal, this);
 
-
-
 		//TimerManager
 		task = new BeyondTimerTask();
 		timer = new UpdateTimer(this);
@@ -145,8 +142,6 @@ public class Religion extends JavaPlugin {
 		//CommandManager
 		cmd = new CommandRunner(this);
 		getCommand("rr").setExecutor(cmd);
- 
-		
 		
 		System.out.println("[Religion] Has launched successfully.");
 		System.out.println("-----------------------------------------");
