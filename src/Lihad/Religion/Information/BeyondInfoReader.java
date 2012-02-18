@@ -22,7 +22,7 @@ public class BeyondInfoReader {
     	return array; 	
     }
     public static long getLong(String string) {
-        return Long.parseLong(Religion.information.getString(string));
+        return Long.valueOf(Religion.information.getString(string));
     }
     public static long[] getLongArray(int size, String string, String string2, long arg){
     	long[] array = new long[size];

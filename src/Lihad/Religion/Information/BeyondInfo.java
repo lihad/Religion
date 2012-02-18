@@ -355,6 +355,9 @@ public class BeyondInfo {
 		}
 		return null;
 	}
+	public static long getTimestamp(String towername){
+		return BeyondInfoReader.getLong("Religions."+getReligion(towername)+".Towers."+towername+".Timestamp");
+	}
 
 
 
@@ -543,7 +546,9 @@ public class BeyondInfo {
 	}
 	private static void setTrades(String towername, String trade, Location location){
 		BeyondInfoWriter.writeConfigurationString("Religions."+getReligion(towername)+".Towers."+towername+".Trades."+trade, location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
-
+	}
+	public static void setTimestamp(String towername, long timestamp){
+		BeyondInfoWriter.writeConfigurationLong("Religions."+getReligion(towername)+".Towers."+towername+".Timestamp", timestamp);
 	}
 	//add Functions
 	public static void addPlayer(Player player, String towername){
@@ -556,6 +561,7 @@ public class BeyondInfo {
 		setTowerLocation(towername, location);
 		setTowerMemberCount(towername, 0);
 		setLeader(towername, player.getName());
+		setTimestamp(towername, System.currentTimeMillis());
 		addPlayer(player, towername);
 	}
 	public static void addTrusted(String playername, String towername){

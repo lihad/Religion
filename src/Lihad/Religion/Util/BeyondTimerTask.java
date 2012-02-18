@@ -46,6 +46,7 @@ public class BeyondTimerTask extends TimerTask {
 				//
 				//
 			}
+			
 			Religion.trades.driver();
 			Religion.information.save();
 		}catch(Exception e){

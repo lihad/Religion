@@ -22,7 +22,6 @@ public class BeyondBlockListener extends BlockListener {
 	 * TODO: Make it so only those without a religion/tower can start a new tower
 	 */
 	public void onSignChange(SignChangeEvent event){
-		System.out.println(event.getBlock().getLocation().toString());
 		if(event.getBlock().getLocation().getBlockY() > 119 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) == null){
 			//TODO: make statement "event.getLine(2).length() > 4" be > a configurable value.  That value is the minimum length a tower name can be.
 			if(event.getLine(0).equals("[Religion]") && !(event.getLine(1).equals(null))&& (event.getLine(2).length() > 4)){
@@ -34,6 +33,10 @@ public class BeyondBlockListener extends BlockListener {
 					if(event.getLine(2).contains(" ") || event.getLine(2).contains("?") || event.getLine(2).contains("!") || event.getLine(2).contains(".")|| event.getLine(2).contains(",")|| event.getLine(2).contains("'")){
 						event.getPlayer().sendMessage("Your tower may have no spaces or symbols in the name.");
 						return;
+					}
+					if(BeyondInfo.hasPlayer(event.getPlayer())){
+						event.getPlayer().sendMessage("You are already a member of a religion!");
+
 					}
 					BeyondInfo.addTower(event.getPlayer(), event.getLine(1), event.getLine(2), event.getBlock().getLocation());
 					if(event.getBlock().getRelative(1, 0, 0).getType() == Material.CHEST) event.getBlock().getRelative(1, 0, 0).setTypeId(0);
@@ -63,9 +66,17 @@ public class BeyondBlockListener extends BlockListener {
 			if(event.getLine(0).equals("[Trade]")){
 				if(event.getLine(1).equals("Blacksmith") || event.getLine(1).equals("Fishery") || event.getLine(1).equals("Fletcher")){
 					if(!BeyondInfo.hasTrade(BeyondInfo.getTowerName(event.getPlayer()), event.getLine(1))){
+						for(int i = 0; i<BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).size();i++){
+							if(BeyondUtil.isNextTo(BeyondInfo.getTradeLocation(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()), BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).get(i)), event.getBlock().getLocation())){
+								event.getPlayer().sendMessage("You can not place this next to another chest.");
+								event.setCancelled(true);
+								return;
+							}
+						}
 						BeyondInfo.addTrade(BeyondInfo.getTowerName(event.getPlayer()), event.getLine(1), event.getBlock().getLocation());
 						event.getBlock().setType(Material.CHEST);
 						event.getPlayer().sendMessage("You have created a "+event.getLine(1));
+						
 					}else event.getPlayer().sendMessage("You already have a "+event.getLine(1));
 				} else event.getPlayer().sendMessage("The following isn't a valid Trade: "+event.getLine(1));
 			}

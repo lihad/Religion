@@ -230,14 +230,11 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	public Material weaponTypeRandomizer(){
 		Random chance = new Random();
-		int next = chance.nextInt(4);
-		switch(next){
-		case 0: return Material.IRON_SWORD;
-		case 1: return Material.DIAMOND_SWORD;
-		case 2: return Material.WOOD_SWORD;
-		case 3: return Material.GOLD_SWORD;
-		}
-		return Material.DIAMOND_SWORD;
+		int next = chance.nextInt(100);
+		if(next<10)return Material.DIAMOND_SWORD;
+		else if(next<25)return Material.IRON_SWORD;
+		else if(next<50)return Material.GOLD_SWORD;
+		else return Material.WOOD_SWORD;
 	}
 	public Enchantment weaponEnchantRandomizer(){
 		Random chance = new Random();
@@ -259,26 +256,23 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	public Material armorTypeRandomizer(){
 		Random chance = new Random();
-		int next = chance.nextInt(16);
-		switch(next){
-		case 0: return Material.LEATHER_BOOTS;
-		case 1: return Material.LEATHER_CHESTPLATE;
-		case 2: return Material.LEATHER_HELMET;
-		case 3: return Material.LEATHER_LEGGINGS;
-		case 4: return Material.IRON_BOOTS;
-		case 5: return Material.IRON_CHESTPLATE;
-		case 6: return Material.IRON_HELMET;
-		case 7: return Material.IRON_LEGGINGS;
-		case 8: return Material.GOLD_BOOTS;
-		case 9: return Material.GOLD_CHESTPLATE;
-		case 10: return Material.GOLD_HELMET;
-		case 11: return Material.GOLD_LEGGINGS;
-		case 12: return Material.DIAMOND_BOOTS;
-		case 13: return Material.DIAMOND_CHESTPLATE;
-		case 14: return Material.DIAMOND_HELMET;
-		case 15: return Material.DIAMOND_LEGGINGS;
-		}
-		return Material.DIAMOND_BOOTS;
+		int next = chance.nextInt(100);
+		if(next<2)return Material.DIAMOND_CHESTPLATE;
+		else if(next<5)return Material.DIAMOND_BOOTS;
+		else if(next<7)return Material.DIAMOND_HELMET;
+		else if(next<10)return Material.DIAMOND_LEGGINGS;
+		else if(next<13)return Material.IRON_CHESTPLATE;
+		else if(next<17)return Material.IRON_BOOTS;
+		else if(next<21)return Material.IRON_HELMET;
+		else if(next<25)return Material.IRON_LEGGINGS;
+		else if(next<29)return Material.GOLD_CHESTPLATE;
+		else if(next<36)return Material.GOLD_BOOTS;
+		else if(next<43)return Material.GOLD_HELMET;
+		else if(next<50)return Material.GOLD_LEGGINGS;
+		else if(next<60)return Material.LEATHER_CHESTPLATE;
+		else if(next<73)return Material.LEATHER_BOOTS;
+		else if(next<86)return Material.LEATHER_HELMET;
+		else return Material.LEATHER_LEGGINGS;
 	}
 	public Enchantment armorEnchantRandomizer(){
 		Random chance = new Random();
@@ -298,22 +292,22 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	public Material toolTypeRandomizer(){
 		Random chance = new Random();
-		int next = chance.nextInt(16);
-		switch(next){
-		case 0: return Material.WOOD_AXE;
-		case 2: return Material.WOOD_PICKAXE;
-		case 3: return Material.WOOD_SPADE;
-		case 4: return Material.STONE_AXE;
-		case 6: return Material.STONE_PICKAXE;
-		case 7: return Material.STONE_SPADE;
-		case 9: return Material.GOLD_AXE;
-		case 10: return Material.GOLD_PICKAXE;
-		case 11: return Material.GOLD_SPADE;
-		case 13: return Material.DIAMOND_AXE;
-		case 14: return Material.DIAMOND_PICKAXE;
-		case 15: return Material.DIAMOND_SPADE;
-		}
-		return Material.DIAMOND_BOOTS;
+		int next = chance.nextInt(100);
+		if(next<4)return Material.DIAMOND_AXE;
+		else if(next<7)return Material.DIAMOND_PICKAXE;
+		else if(next<10)return Material.DIAMOND_SPADE;
+		else if(next<15)return Material.IRON_AXE;
+		else if(next<20)return Material.IRON_PICKAXE;
+		else if(next<25)return Material.IRON_SPADE;
+		else if(next<29)return Material.GOLD_AXE;
+		else if(next<33)return Material.GOLD_PICKAXE;
+		else if(next<37)return Material.GOLD_SPADE;
+		else if(next<41)return Material.STONE_AXE;
+		else if(next<45)return Material.STONE_PICKAXE;
+		else if(next<50)return Material.STONE_SPADE;
+		else if(next<60)return Material.WOOD_PICKAXE;
+		else if(next<85)return Material.WOOD_AXE;
+		else return Material.WOOD_SPADE;
 	}
 	public Enchantment toolEnchantRandomizer(){
 		Random chance = new Random();

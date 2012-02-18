@@ -129,4 +129,8 @@ public class BeyondUtil {
 		
 		return new Location(BeyondInfo.getTowerLocation(towername).getWorld(),towerX+randomNum,127,towerZ+randomNum2);
 	}
+	public static boolean timestampReference(String towername){
+		if((System.currentTimeMillis()-BeyondInfo.getTimestamp(towername)) > 86400000L) return true;
+		return false;
+	}
 }
