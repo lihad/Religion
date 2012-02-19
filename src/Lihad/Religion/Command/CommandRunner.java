@@ -229,9 +229,13 @@ public class CommandRunner implements CommandExecutor {
 			return true;
 
 		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("rarity") && arg.length == 1){
+			if(BeyondUtil.rarity(((Player)sender).getItemInHand()) >= 60)((Player)sender).sendMessage("The Rarity Index of your "+ChatColor.BLUE.toString()+((Player)sender).getItemInHand().getType().toString()+" is "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(((Player)sender).getItemInHand()))+BeyondUtil.rarity(((Player)sender).getItemInHand()));
+			else ((Player)sender).sendMessage("This item has no Rarity Index");
+			return true;
+		}
 
 		
 		else return false;
 	}
-
 }

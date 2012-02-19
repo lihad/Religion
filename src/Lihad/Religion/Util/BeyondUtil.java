@@ -6,7 +6,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Information.BeyondInfo;
 
@@ -132,5 +134,69 @@ public class BeyondUtil {
 	public static boolean timestampReference(String towername){
 		if((System.currentTimeMillis()-BeyondInfo.getTimestamp(towername)) > 86400000L) return true;
 		return false;
+	}
+	
+	public static int rarity(ItemStack stack){
+		int levelvalue = 0;
+		int itemvalue = 0;
+		for(int i=0;i<stack.getEnchantments().keySet().size();i++){
+			levelvalue = levelvalue + stack.getEnchantmentLevel((Enchantment)stack.getEnchantments().keySet().toArray()[i]);
+		}
+		if(stack.getType() == Material.LEATHER_BOOTS
+				|| stack.getType() == Material.LEATHER_CHESTPLATE
+				|| stack.getType() == Material.LEATHER_HELMET
+				|| stack.getType() == Material.LEATHER_LEGGINGS
+				|| stack.getType() == Material.WOOD_PICKAXE
+				|| stack.getType() == Material.WOOD_SPADE
+				|| stack.getType() == Material.WOOD_PICKAXE
+				|| stack.getType() == Material.WOOD_SWORD)
+			itemvalue = 60;
+		else if(stack.getType() == Material.STONE_PICKAXE
+				|| stack.getType() == Material.STONE_SPADE
+				|| stack.getType() == Material.STONE_AXE
+				|| stack.getType() == Material.STONE_SWORD)
+			itemvalue = 80;
+		else if(stack.getType() == Material.GOLD_BOOTS
+				|| stack.getType() == Material.GOLD_CHESTPLATE
+				|| stack.getType() == Material.GOLD_HELMET
+				|| stack.getType() == Material.GOLD_LEGGINGS
+				|| stack.getType() == Material.GOLD_PICKAXE
+				|| stack.getType() == Material.GOLD_SPADE
+				|| stack.getType() == Material.GOLD_PICKAXE
+				|| stack.getType() == Material.GOLD_SWORD)
+			itemvalue = 100;
+		else if(stack.getType() == Material.IRON_BOOTS
+				|| stack.getType() == Material.IRON_CHESTPLATE
+				|| stack.getType() == Material.IRON_HELMET
+				|| stack.getType() == Material.IRON_LEGGINGS
+				|| stack.getType() == Material.IRON_PICKAXE
+				|| stack.getType() == Material.IRON_SPADE
+				|| stack.getType() == Material.IRON_PICKAXE
+				|| stack.getType() == Material.IRON_SWORD)
+			itemvalue = 120;
+		else if(stack.getType() == Material.DIAMOND_BOOTS
+				|| stack.getType() == Material.DIAMOND_CHESTPLATE
+				|| stack.getType() == Material.DIAMOND_HELMET
+				|| stack.getType() == Material.DIAMOND_LEGGINGS
+				|| stack.getType() == Material.DIAMOND_PICKAXE
+				|| stack.getType() == Material.DIAMOND_SPADE
+				|| stack.getType() == Material.DIAMOND_PICKAXE
+				|| stack.getType() == Material.DIAMOND_SWORD)
+			itemvalue = 140;
+
+
+
+		return (levelvalue+itemvalue);
+	}
+	public static String getColorOfRarity(int index){
+		if(index >= 180)return ChatColor.MAGIC.toString();
+		else if(index >= 160)return ChatColor.RED.toString();
+		else if(index >= 140)return ChatColor.LIGHT_PURPLE.toString();
+		else if(index >= 120)return ChatColor.BLUE.toString();
+		else if(index >= 100)return ChatColor.GREEN.toString();
+		else if(index >= 80)return ChatColor.YELLOW.toString();
+		else return ChatColor.GRAY.toString();
+
+
 	}
 }

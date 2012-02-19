@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,6 +32,7 @@ import org.bukkit.potion.PotionType;
 
 import Lihad.Religion.Religion;
 import Lihad.Religion.Information.BeyondInfo;
+import Lihad.Religion.Util.BeyondUtil;
 
 public class BeyondEntityListener extends EntityListener {
 	public static Religion plugin;
@@ -96,133 +98,149 @@ public class BeyondEntityListener extends EntityListener {
 		if(event.getDamager() instanceof Player){
 			Player player = (Player)event.getDamager();
 			if(BeyondInfo.getReligion(player) != null){
-
-				List<String> sheeppower = new ArrayList<String>();
-				sheeppower.add("Lihazism");
-				sheeppower.add("Fercism");
-				sheeppower.add("Jorism");
-				sheeppower.add("Pandasidism");
-				if(event.getDamager() instanceof Player && event.getEntity() instanceof Sheep && sheeppower.contains(BeyondInfo.getReligion(player))){
+				if(event.getDamager() instanceof Player && event.getEntity() instanceof Sheep){
 					if(event.getDamage() >= ((Sheep)event.getEntity()).getHealth() && calculator(player) < 20){
 						event.getEntity().remove();
 						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), new ItemStack(Material.GOLD_INGOT, 3));
 					}
 				}
-				
-				List<String> chickenpower = new ArrayList<String>();
-				chickenpower.add("Jorism");
-				chickenpower.add("Notchitism");
-				if(event.getDamager() instanceof Player && event.getEntity() instanceof Creeper && chickenpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Creeper)event.getEntity()).getHealth() && calculator(player) < 10){
-						event.getEntity().remove();
-						((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
-						((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
-						((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
-						((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
-					}
-					else if(event.getDamage() >= ((Creeper)event.getEntity()).getHealth() && calculator(player) < 100){
-						event.getEntity().remove();
-						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-						event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-
-					}
-				}
-				
-				List<String> potionpower = new ArrayList<String>();
-				potionpower.add("Pandasidism");
-				if(event.getDamager() instanceof Player && event.getEntity() instanceof Zombie && potionpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth() && calculator(player) < 80){
-						event.getEntity().remove();
-						Potion potion = new Potion(potionTypeRandomizer(), potionTierRandomizer(), potionSplashRandomizer());
-						ItemStack stack = new ItemStack(Material.POTION, 1);
-						potion.apply(stack);
-						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
-
+				if(event.getDamager() instanceof Player && event.getEntity() instanceof Creeper){
+					if(event.getDamage() >= ((Creeper)event.getEntity()).getHealth()){
+						int dice = calculator(player);
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 20)
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 20)){
+							event.getEntity().remove();
+							((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
+							((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
+							((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
+							((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
+						}else if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 30)
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 30)
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 30)
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 100)
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 100)){
+							event.getEntity().remove();
+							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+						}
 					}
 				}
-				List<String> weaponpower = new ArrayList<String>();
-				weaponpower.add("Fercism");
-				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie && weaponpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 20){
-						event.getEntity().remove();
-						ItemStack stack = new ItemStack(weaponTypeRandomizer(), 1);
-						while(stack.getEnchantments().isEmpty()){
-							try{
-								stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
-								Random chance = new Random();
-								int next = chance.nextInt(100);
-								if(next<10){
+				if(event.getDamager() instanceof Player && event.getEntity() instanceof Zombie){
+					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth()){
+						int dice = calculator(player);
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 7)
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 7)
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 40)
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 7)
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 7)){
+							event.getEntity().remove();
+							Potion potion = new Potion(potionTypeRandomizer(), potionTierRandomizer(), potionSplashRandomizer());
+							ItemStack stack = new ItemStack(Material.POTION, 1);
+							potion.apply(stack);
+							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);	
+						}
+					}
+				}
+				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
+					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
+						int dice = calculator(player);
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 20)
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
+							event.getEntity().remove();
+							ItemStack stack = new ItemStack(weaponTypeRandomizer(), 1);
+							while(stack.getEnchantments().isEmpty()){
+								try{
 									stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+									Random chance = new Random();
+									int next = chance.nextInt(100);
+									if(next<10){
+										stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+									}
+									if(next<5){
+										stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+									}
+									if(next<1){
+										stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+									}
+								}catch(IllegalArgumentException e){
+									System.out.println("[Religion] DEBUG - weaponpower");
 								}
-								if(next<5){
-									stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
-								}
-								if(next<1){
-									stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
-								}
-							}catch(IllegalArgumentException e){
-								System.out.println("[Religion] DEBUG - weaponpower");
 							}
+							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
+							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
 						}
-						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 					}
 				}
-				List<String> armorpower = new ArrayList<String>();
-				armorpower.add("Lihazism");
-				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie && armorpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 2000){
-						event.getEntity().remove();
-						ItemStack stack = new ItemStack(armorTypeRandomizer(), 1);
-						stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
-						Random chance = new Random();
-						int next = chance.nextInt(100);
-						if(next<10){
-							((Player)event.getDamager()).sendMessage("2");
-
+				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
+					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
+						int dice = calculator(player);
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 2000)
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
+							event.getEntity().remove();
+							ItemStack stack = new ItemStack(armorTypeRandomizer(), 1);
 							stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
-						}
-						if(next<5){
-							stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
-						}
-						if(next<1){
-							stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
-						}
-						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
-						((Player)event.getDamager()).sendMessage("By Lihad! A "+stack.getType().toString()+" dropped! Rarity Index: "+rarity(stack));
-					}
-				}
-				List<String> toolpower = new ArrayList<String>();
-				toolpower.add("Notchitism");
-				if(event.getDamager() instanceof Player && event.getEntity() instanceof Enderman && toolpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth() && calculator(player) < 20){
-						event.getEntity().remove();
-						ItemStack stack = new ItemStack(toolTypeRandomizer(), 1);
-						while(stack.getEnchantments().isEmpty()){
-							try{
-								stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-								Random chance = new Random();
-								int next = chance.nextInt(100);
-								if(next<10){
-									stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-								}
-								if(next<5){
-									stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-								}
-								if(next<1){
-									stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-								}
-							}catch(IllegalArgumentException e){
-								System.out.println("[Religion] DEBUG - toolpower");
+							Random chance = new Random();
+							int next = chance.nextInt(100);
+							if(next<10){
+								stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
 							}
+							if(next<5){
+								stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+							}
+							if(next<1){
+								stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+							}
+							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
+							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
 						}
-						stack.addEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
+					}
+				}
+				if(event.getDamager() instanceof Player && event.getEntity() instanceof Enderman){
+					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth()){
+						int dice = calculator(player);
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 30)
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
+							event.getEntity().remove();
+							ItemStack stack = new ItemStack(toolTypeRandomizer(), 1);
+							while(stack.getEnchantments().isEmpty()){
+								try{
+									stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+									Random chance = new Random();
+									int next = chance.nextInt(100);
+									if(next<10){
+										stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+									}
+									if(next<5){
+										stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+									}
+									if(next<1){
+										stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+									}
+								}catch(IllegalArgumentException e){
+									System.out.println("[Religion] DEBUG - toolpower");
+								}
+							}
+							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
+							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
+						}
 					}
 				}
 			}
@@ -387,57 +405,5 @@ public class BeyondEntityListener extends EntityListener {
 		else if(next<40)return 3;
 		else if(next<50)return 2;
 		else return 1;
-	}
-	public int rarity(ItemStack stack){
-		int levelvalue = 0;
-		int itemvalue = 0;
-		for(int i=0;i<stack.getEnchantments().keySet().size();i++){
-			levelvalue = stack.getEnchantmentLevel((Enchantment)stack.getEnchantments().keySet().toArray()[i]);
-		}
-		if(stack.getType() == Material.LEATHER_BOOTS
-				|| stack.getType() == Material.LEATHER_CHESTPLATE
-				|| stack.getType() == Material.LEATHER_HELMET
-				|| stack.getType() == Material.LEATHER_LEGGINGS
-				|| stack.getType() == Material.WOOD_PICKAXE
-				|| stack.getType() == Material.WOOD_SPADE
-				|| stack.getType() == Material.WOOD_PICKAXE
-				|| stack.getType() == Material.WOOD_SWORD)
-			itemvalue = 60;
-		else if(stack.getType() == Material.STONE_PICKAXE
-				|| stack.getType() == Material.STONE_SPADE
-				|| stack.getType() == Material.STONE_AXE
-				|| stack.getType() == Material.STONE_SWORD)
-			itemvalue = 80;
-		else if(stack.getType() == Material.GOLD_BOOTS
-				|| stack.getType() == Material.GOLD_CHESTPLATE
-				|| stack.getType() == Material.GOLD_HELMET
-				|| stack.getType() == Material.GOLD_LEGGINGS
-				|| stack.getType() == Material.GOLD_PICKAXE
-				|| stack.getType() == Material.GOLD_SPADE
-				|| stack.getType() == Material.GOLD_PICKAXE
-				|| stack.getType() == Material.GOLD_SWORD)
-			itemvalue = 100;
-		else if(stack.getType() == Material.IRON_BOOTS
-				|| stack.getType() == Material.IRON_CHESTPLATE
-				|| stack.getType() == Material.IRON_HELMET
-				|| stack.getType() == Material.IRON_LEGGINGS
-				|| stack.getType() == Material.IRON_PICKAXE
-				|| stack.getType() == Material.IRON_SPADE
-				|| stack.getType() == Material.IRON_PICKAXE
-				|| stack.getType() == Material.IRON_SWORD)
-			itemvalue = 120;
-		else if(stack.getType() == Material.DIAMOND_BOOTS
-				|| stack.getType() == Material.DIAMOND_CHESTPLATE
-				|| stack.getType() == Material.DIAMOND_HELMET
-				|| stack.getType() == Material.DIAMOND_LEGGINGS
-				|| stack.getType() == Material.DIAMOND_PICKAXE
-				|| stack.getType() == Material.DIAMOND_SPADE
-				|| stack.getType() == Material.DIAMOND_PICKAXE
-				|| stack.getType() == Material.DIAMOND_SWORD)
-			itemvalue = 140;
-
-
-
-		return (levelvalue+itemvalue);
 	}
 }
