@@ -137,7 +137,7 @@ public class BeyondEntityListener extends EntityListener {
 				List<String> potionpower = new ArrayList<String>();
 				potionpower.add("Pandasidism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Zombie && potionpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth() && calculator(player) < 20){
+					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth() && calculator(player) < 80){
 						event.getEntity().remove();
 						Potion potion = new Potion(potionTypeRandomizer(), potionTierRandomizer(), potionSplashRandomizer());
 						ItemStack stack = new ItemStack(Material.POTION, 1);
@@ -154,7 +154,18 @@ public class BeyondEntityListener extends EntityListener {
 						ItemStack stack = new ItemStack(weaponTypeRandomizer(), 1);
 						while(stack.getEnchantments().isEmpty()){
 							try{
-								stack.addEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								Random chance = new Random();
+								int next = chance.nextInt(100);
+								if(next<10){
+									stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								}
+								if(next<5){
+									stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								}
+								if(next<1){
+									stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								}
 							}catch(IllegalArgumentException e){
 								System.out.println("[Religion] DEBUG - weaponpower");
 							}
@@ -165,22 +176,47 @@ public class BeyondEntityListener extends EntityListener {
 				List<String> armorpower = new ArrayList<String>();
 				armorpower.add("Lihazism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie && armorpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 20){
+					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth() && calculator(player) < 2000){
 						event.getEntity().remove();
 						ItemStack stack = new ItemStack(armorTypeRandomizer(), 1);
-						stack.addEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+						stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+						Random chance = new Random();
+						int next = chance.nextInt(100);
+						if(next<10){
+							((Player)event.getDamager()).sendMessage("2");
+
+							stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+						}
+						if(next<5){
+							stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+						}
+						if(next<1){
+							stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+						}
 						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
+						((Player)event.getDamager()).sendMessage("By Lihad! A "+stack.getType().toString()+" dropped! Rarity Index: "+rarity(stack));
 					}
 				}
 				List<String> toolpower = new ArrayList<String>();
 				toolpower.add("Notchitism");
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Enderman && toolpower.contains(BeyondInfo.getReligion(player))){
-					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth() && calculator(player) < 40){
+					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth() && calculator(player) < 20){
 						event.getEntity().remove();
 						ItemStack stack = new ItemStack(toolTypeRandomizer(), 1);
 						while(stack.getEnchantments().isEmpty()){
 							try{
-								stack.addEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								Random chance = new Random();
+								int next = chance.nextInt(100);
+								if(next<10){
+									stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								}
+								if(next<5){
+									stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								}
+								if(next<1){
+									stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								}
 							}catch(IllegalArgumentException e){
 								System.out.println("[Religion] DEBUG - toolpower");
 							}
@@ -251,8 +287,17 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	public int weaponLevelRandomizer(){
 		Random chance = new Random();
-		int next = chance.nextInt(5)+1;
-		return next;
+		int next = chance.nextInt(100);
+		if(next<1)return 10;
+		else if(next<3)return 9;
+		else if(next<6)return 8;
+		else if(next<10)return 7;
+		else if(next<15)return 6;
+		else if(next<20)return 5;
+		else if(next<30)return 4;
+		else if(next<40)return 3;
+		else if(next<50)return 2;
+		else return 1;
 	}
 	public Material armorTypeRandomizer(){
 		Random chance = new Random();
@@ -287,8 +332,17 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	public int armorLevelRandomizer(){
 		Random chance = new Random();
-		int next = chance.nextInt(4)+1;
-		return next;
+		int next = chance.nextInt(100);
+		if(next<1)return 10;
+		else if(next<3)return 9;
+		else if(next<6)return 8;
+		else if(next<10)return 7;
+		else if(next<15)return 6;
+		else if(next<20)return 5;
+		else if(next<30)return 4;
+		else if(next<40)return 3;
+		else if(next<50)return 2;
+		else return 1;
 	}
 	public Material toolTypeRandomizer(){
 		Random chance = new Random();
@@ -322,8 +376,68 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	public int toolLevelRandomizer(){
 		Random chance = new Random();
-		int next = chance.nextInt(5)+1;
-		return next;
+		int next = chance.nextInt(100);
+		if(next<1)return 10;
+		else if(next<3)return 9;
+		else if(next<6)return 8;
+		else if(next<10)return 7;
+		else if(next<15)return 6;
+		else if(next<20)return 5;
+		else if(next<30)return 4;
+		else if(next<40)return 3;
+		else if(next<50)return 2;
+		else return 1;
 	}
-	
+	public int rarity(ItemStack stack){
+		int levelvalue = 0;
+		int itemvalue = 0;
+		for(int i=0;i<stack.getEnchantments().keySet().size();i++){
+			levelvalue = stack.getEnchantmentLevel((Enchantment)stack.getEnchantments().keySet().toArray()[i]);
+		}
+		if(stack.getType() == Material.LEATHER_BOOTS
+				|| stack.getType() == Material.LEATHER_CHESTPLATE
+				|| stack.getType() == Material.LEATHER_HELMET
+				|| stack.getType() == Material.LEATHER_LEGGINGS
+				|| stack.getType() == Material.WOOD_PICKAXE
+				|| stack.getType() == Material.WOOD_SPADE
+				|| stack.getType() == Material.WOOD_PICKAXE
+				|| stack.getType() == Material.WOOD_SWORD)
+			itemvalue = 60;
+		else if(stack.getType() == Material.STONE_PICKAXE
+				|| stack.getType() == Material.STONE_SPADE
+				|| stack.getType() == Material.STONE_AXE
+				|| stack.getType() == Material.STONE_SWORD)
+			itemvalue = 80;
+		else if(stack.getType() == Material.GOLD_BOOTS
+				|| stack.getType() == Material.GOLD_CHESTPLATE
+				|| stack.getType() == Material.GOLD_HELMET
+				|| stack.getType() == Material.GOLD_LEGGINGS
+				|| stack.getType() == Material.GOLD_PICKAXE
+				|| stack.getType() == Material.GOLD_SPADE
+				|| stack.getType() == Material.GOLD_PICKAXE
+				|| stack.getType() == Material.GOLD_SWORD)
+			itemvalue = 100;
+		else if(stack.getType() == Material.IRON_BOOTS
+				|| stack.getType() == Material.IRON_CHESTPLATE
+				|| stack.getType() == Material.IRON_HELMET
+				|| stack.getType() == Material.IRON_LEGGINGS
+				|| stack.getType() == Material.IRON_PICKAXE
+				|| stack.getType() == Material.IRON_SPADE
+				|| stack.getType() == Material.IRON_PICKAXE
+				|| stack.getType() == Material.IRON_SWORD)
+			itemvalue = 120;
+		else if(stack.getType() == Material.DIAMOND_BOOTS
+				|| stack.getType() == Material.DIAMOND_CHESTPLATE
+				|| stack.getType() == Material.DIAMOND_HELMET
+				|| stack.getType() == Material.DIAMOND_LEGGINGS
+				|| stack.getType() == Material.DIAMOND_PICKAXE
+				|| stack.getType() == Material.DIAMOND_SPADE
+				|| stack.getType() == Material.DIAMOND_PICKAXE
+				|| stack.getType() == Material.DIAMOND_SWORD)
+			itemvalue = 140;
+
+
+
+		return (levelvalue+itemvalue);
+	}
 }

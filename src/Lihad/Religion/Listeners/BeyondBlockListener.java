@@ -62,21 +62,23 @@ public class BeyondBlockListener extends BlockListener {
 			}
 		 */
 		}else if(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) == null) return;
-		else if(event.getBlock().getLocation().getBlockY() > 64 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()).equals(BeyondInfo.getTowerName(event.getPlayer())) && BeyondInfo.isPlayerLeader(event.getPlayer())){
+		else if(event.getBlock().getLocation().getBlockY() > 64 && event.getBlock().getLocation().getBlockY() < 120&& BeyondInfo.getClosestValidTower(event.getBlock().getLocation()).equals(BeyondInfo.getTowerName(event.getPlayer())) && BeyondInfo.isPlayerLeader(event.getPlayer())){
 			if(event.getLine(0).equals("[Trade]")){
 				if(event.getLine(1).equals("Blacksmith") || event.getLine(1).equals("Fishery") || event.getLine(1).equals("Fletcher")){
 					if(!BeyondInfo.hasTrade(BeyondInfo.getTowerName(event.getPlayer()), event.getLine(1))){
-						for(int i = 0; i<BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).size();i++){
-							if(BeyondUtil.isNextTo(BeyondInfo.getTradeLocation(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()), BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).get(i)), event.getBlock().getLocation())){
-								event.getPlayer().sendMessage("You can not place this next to another chest.");
-								event.setCancelled(true);
-								return;
+						if(BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())) != null){
+							for(int i = 0; i<BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).size();i++){
+								if(BeyondUtil.isNextTo(BeyondInfo.getTradeLocation(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()), BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).get(i)), event.getBlock().getLocation())){
+									event.getPlayer().sendMessage("You can not place this next to another chest.");
+									event.setCancelled(true);
+									return;
+								}
 							}
 						}
 						BeyondInfo.addTrade(BeyondInfo.getTowerName(event.getPlayer()), event.getLine(1), event.getBlock().getLocation());
 						event.getBlock().setType(Material.CHEST);
 						event.getPlayer().sendMessage("You have created a "+event.getLine(1));
-						
+
 					}else event.getPlayer().sendMessage("You already have a "+event.getLine(1));
 				} else event.getPlayer().sendMessage("The following isn't a valid Trade: "+event.getLine(1));
 			}
