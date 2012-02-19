@@ -253,9 +253,11 @@ public class CommandRunner implements CommandExecutor {
 				for(int i = 0; i<post.getEnchantments().keySet().size(); i++){
 					player.sendMessage(" -- "+ChatColor.BLUE.toString()+((Enchantment)(post.getEnchantments().keySet().toArray()[i])).getName()+ChatColor.WHITE.toString()+" LVL"+BeyondUtil.getColorOfLevel(post.getEnchantmentLevel(((Enchantment)(post.getEnchantments().keySet().toArray()[i]))))+post.getEnchantmentLevel(((Enchantment)(post.getEnchantments().keySet().toArray()[i]))));
 				}
+				if(post.getEnchantments().keySet().size() <= 0)player.sendMessage(ChatColor.WHITE.toString()+" -- This Item Has No Enchants");
+
 				player.sendMessage(ChatColor.YELLOW.toString()+" -------------------------------- ");
 
-			}else ((Player)sender).sendMessage("There is no item to checkout");
+			}else ((Player)sender).sendMessage("There is no item to look at");
 			return true;
 		}
 

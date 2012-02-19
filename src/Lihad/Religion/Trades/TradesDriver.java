@@ -72,7 +72,7 @@ public class TradesDriver {
 			ItemStack item = inventory.getItem(i);
 			try{
 				if(item.getDurability()<=0) continue;
-				item.setDurability((short) (item.getDurability()-20));
+				item.setDurability((short) (item.getDurability()-50));
 			}catch(Exception e){
 				System.out.println("[Religion] Watchdog. Get Lihad. auxBlacksmith. Exception thrown. Handled");
 				e.printStackTrace();
@@ -82,8 +82,9 @@ public class TradesDriver {
 	public void auxFishery(Chest chest){
 		Inventory inventory = chest.getInventory();
 		try{
-
-			inventory.setItem(inventory.firstEmpty(), new ItemStack(Material.RAW_FISH, 1));
+			for(int i = 0; i<5; i++){
+				inventory.addItem(new ItemStack(Material.RAW_FISH, 1));
+			}
 		}catch(Exception e){
 			System.out.println("[Religion] Watchdog. Get Lihad. auxFishery. Exception thrown. Handled");
 			e.printStackTrace();
@@ -92,14 +93,16 @@ public class TradesDriver {
 	public void auxFletcher(Chest chest){
 		Inventory inventory = chest.getInventory();
 		try{
-			if(inventory.contains(Material.WOOD)){
-				int index = inventory.first(Material.WOOD);
-				if(inventory.getItem(index).getAmount() == 1)inventory.setItem(index, null);
-				else{
-					inventory.getItem(index).setAmount(inventory.getItem(index).getAmount());
-					inventory.setItem(index, inventory.getItem(index));
+			for(int i = 0; i<10; i++){
+				if(inventory.contains(Material.WOOD)){
+					int index = inventory.first(Material.WOOD);
+					if(inventory.getItem(index).getAmount() == 1)inventory.setItem(index, null);
+					else{
+						inventory.getItem(index).setAmount(inventory.getItem(index).getAmount());
+						inventory.setItem(index, inventory.getItem(index));
+					}
+					inventory.addItem(new ItemStack(Material.ARROW, 1));
 				}
-				inventory.addItem(new ItemStack(Material.ARROW, 1));
 			}
 		}catch(Exception e){
 			System.out.println("[Religion] Watchdog. Get Lihad. auxFletcher. Exception thrown. Handled");
