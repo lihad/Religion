@@ -7,7 +7,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Religion;
 import Lihad.Religion.Information.BeyondInfo;
@@ -15,6 +17,7 @@ import Lihad.Religion.Util.BeyondUtil;
 
 public class CommandRunner implements CommandExecutor {
 	public static Religion plugin;
+	public ItemStack post;
 
 	public CommandRunner(Religion instance){
 		plugin = instance;
@@ -230,8 +233,55 @@ public class CommandRunner implements CommandExecutor {
 
 		}
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("rarity") && arg.length == 1){
-			if(BeyondUtil.rarity(((Player)sender).getItemInHand()) >= 60)((Player)sender).sendMessage("The Rarity Index of your "+ChatColor.BLUE.toString()+((Player)sender).getItemInHand().getType().toString()+" is "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(((Player)sender).getItemInHand()))+BeyondUtil.rarity(((Player)sender).getItemInHand()));
+			if(BeyondUtil.rarity(((Player)sender).getItemInHand()) >= 60)((Player)sender).sendMessage("The Rarity Index of your "+ChatColor.BLUE.toString()+((Player)sender).getItemInHand().getType().name()+" is "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(((Player)sender).getItemInHand()))+BeyondUtil.rarity(((Player)sender).getItemInHand()));
 			else ((Player)sender).sendMessage("This item has no Rarity Index");
+			return true;
+		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("post") && arg.length == 1){
+			if(BeyondUtil.rarity(((Player)sender).getItemInHand()) >= 60){
+				((Player)sender).chat(BeyondUtil.getColorOfRarity(BeyondUtil.rarity(((Player)sender).getItemInHand()))+"["+((Player)sender).getItemInHand().getType().name()+"] Rarity Index : "+BeyondUtil.rarity(((Player)sender).getItemInHand()));
+				post = ((Player)sender).getItemInHand();
+			}
+			else ((Player)sender).sendMessage("This item has no Rarity Index so it can't be posted to chat");
+			return true;
+		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("look") && arg.length == 1){
+			if(post != null){
+				Player player =((Player)sender);
+				player.sendMessage(ChatColor.YELLOW.toString()+" -------------------------------- ");
+				player.sendMessage(BeyondUtil.getColorOfRarity(BeyondUtil.rarity(post))+"["+post.getType().name()+"] Rarity Index : "+BeyondUtil.rarity(post));
+				for(int i = 0; i<post.getEnchantments().keySet().size(); i++){
+					player.sendMessage(" -- "+ChatColor.BLUE.toString()+((Enchantment)(post.getEnchantments().keySet().toArray()[i])).getName()+ChatColor.WHITE.toString()+" LVL"+BeyondUtil.getColorOfLevel(post.getEnchantmentLevel(((Enchantment)(post.getEnchantments().keySet().toArray()[i]))))+post.getEnchantmentLevel(((Enchantment)(post.getEnchantments().keySet().toArray()[i]))));
+				}
+				player.sendMessage(ChatColor.YELLOW.toString()+" -------------------------------- ");
+
+			}else ((Player)sender).sendMessage("There is no item to checkout");
+			return true;
+		}
+
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("gear") && arg.length == 1){
+			double total = (BeyondUtil.rarity(((Player)sender).getInventory().getHelmet())+BeyondUtil.rarity(((Player)sender).getInventory().getLeggings())+BeyondUtil.rarity(((Player)sender).getInventory().getBoots())+BeyondUtil.rarity(((Player)sender).getInventory().getChestplate())+BeyondUtil.rarity(((Player)sender).getInventory().getItemInHand()))/5.00;
+			((Player)sender).sendMessage(BeyondUtil.getColorOfRarity(total)+"Your Gear Rating is : "+total);
+			return true;
+		}
+		//Commented out until PEX fixes broadcast
+		/**
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("gear") && arg[1].equals("post") && arg.length == 2){
+			System.out.println("REF1");
+			double total = (BeyondUtil.rarity(((Player)sender).getInventory().getHelmet())+BeyondUtil.rarity(((Player)sender).getInventory().getLeggings())+BeyondUtil.rarity(((Player)sender).getInventory().getBoots())+BeyondUtil.rarity(((Player)sender).getInventory().getChestplate())+BeyondUtil.rarity(((Player)sender).getInventory().getItemInHand()))/5.00;
+			System.out.println("REF2");
+			((Player)sender).getServer.broadcastMessage(" -- ["+((Player)sender).getName()+"] has a Gear Rating of "+BeyondUtil.getColorOfRarity(total)+total);
+			System.out.println("REF3");
+
+			return true;
+		}
+		*/
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("gear") && arg.length == 2){
+			if(plugin.getServer().getPlayer(arg[1]) != null){
+				Player player = plugin.getServer().getPlayer(arg[1]);
+				double total = (BeyondUtil.rarity(player.getInventory().getHelmet())+BeyondUtil.rarity(player.getInventory().getLeggings())+BeyondUtil.rarity(player.getInventory().getBoots())+BeyondUtil.rarity(player.getInventory().getChestplate())+BeyondUtil.rarity(player.getInventory().getItemInHand()))/5.00;
+				((Player)sender).sendMessage(player.getName()+" has a Gear Rating of "+BeyondUtil.getColorOfRarity(total)+total);
+			}else ((Player)sender).sendMessage("This player either doesn't exist, or isn't online");
 			return true;
 		}
 

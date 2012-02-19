@@ -98,6 +98,7 @@ public class BeyondEntityListener extends EntityListener {
 		if(event.getDamager() instanceof Player){
 			Player player = (Player)event.getDamager();
 			if(BeyondInfo.getReligion(player) != null){
+				int dice = calculator(player);
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Sheep){
 					if(event.getDamage() >= ((Sheep)event.getEntity()).getHealth() && calculator(player) < 20){
 						event.getEntity().remove();
@@ -106,7 +107,6 @@ public class BeyondEntityListener extends EntityListener {
 				}
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Creeper){
 					if(event.getDamage() >= ((Creeper)event.getEntity()).getHealth()){
-						int dice = calculator(player);
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
@@ -136,7 +136,6 @@ public class BeyondEntityListener extends EntityListener {
 				}
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Zombie){
 					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth()){
-						int dice = calculator(player);
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 7)
 								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 7)
 								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 40)
@@ -152,7 +151,6 @@ public class BeyondEntityListener extends EntityListener {
 				}
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
 					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
-						int dice = calculator(player);
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 20)
 								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
@@ -185,8 +183,7 @@ public class BeyondEntityListener extends EntityListener {
 				}
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
 					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
-						int dice = calculator(player);
-						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 2000)
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 20)
 								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
@@ -212,7 +209,6 @@ public class BeyondEntityListener extends EntityListener {
 				}
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Enderman){
 					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth()){
-						int dice = calculator(player);
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)

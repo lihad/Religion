@@ -188,15 +188,31 @@ public class BeyondUtil {
 
 		return (levelvalue+itemvalue);
 	}
-	public static String getColorOfRarity(int index){
-		if(index >= 180)return ChatColor.MAGIC.toString();
+	public static String getColorOfRarity(double index){
+		if(index >= 180)return ChatColor.DARK_RED.toString();
 		else if(index >= 160)return ChatColor.RED.toString();
 		else if(index >= 140)return ChatColor.LIGHT_PURPLE.toString();
 		else if(index >= 120)return ChatColor.BLUE.toString();
 		else if(index >= 100)return ChatColor.GREEN.toString();
 		else if(index >= 80)return ChatColor.YELLOW.toString();
 		else return ChatColor.GRAY.toString();
-
-
+	}
+	public static String getColorOfTotalRarity(int index){
+		if(index >= 1000)return ChatColor.DARK_RED.toString();
+		else if(index >= 800)return ChatColor.RED.toString();
+		else if(index >= 700)return ChatColor.LIGHT_PURPLE.toString();
+		else if(index >= 600)return ChatColor.BLUE.toString();
+		else if(index >= 500)return ChatColor.GREEN.toString();
+		else if(index >= 400)return ChatColor.YELLOW.toString();
+		else return ChatColor.GRAY.toString();
+	}
+	public static String getColorOfLevel(int index){
+		if(index >= 12)return ChatColor.DARK_RED.toString();
+		else if(index >= 10)return ChatColor.RED.toString();
+		else if(index >= 8)return ChatColor.LIGHT_PURPLE.toString();
+		else if(index >= 6)return ChatColor.BLUE.toString();
+		else if(index >= 4)return ChatColor.GREEN.toString();
+		else if(index >= 2)return ChatColor.YELLOW.toString();
+		else return ChatColor.GRAY.toString();
 	}
 }
