@@ -25,6 +25,7 @@ import Lihad.Religion.Listeners.BeyondBlockListener;
 import Lihad.Religion.Listeners.BeyondEntityListener;
 import Lihad.Religion.Listeners.BeyondPlayerListener;
 import Lihad.Religion.Listeners.BeyondPluginListener;
+import Lihad.Religion.Listeners.BeyondWorldListener;
 import Lihad.Religion.Trades.TradesDriver;
 import Lihad.Religion.Util.BeyondTimerTask;
 import Lihad.Religion.Util.UpdateTimer;
@@ -81,6 +82,7 @@ public class Religion extends JavaPlugin {
 	private final BeyondBlockListener blockListener = new BeyondBlockListener(this);
 	private final BeyondPlayerListener playerListener = new BeyondPlayerListener(this);
 	private final BeyondEntityListener entityListener = new BeyondEntityListener(this);
+	private final BeyondWorldListener worldListener = new BeyondWorldListener(this);
 
 
 	
@@ -138,6 +140,10 @@ public class Religion extends JavaPlugin {
         pm.registerEvent(Event.Type.PLAYER_RESPAWN, this.playerListener, Priority.Lowest, this);
         pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_TELEPORT, this.playerListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.CHUNK_LOAD, this.worldListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.CHUNK_UNLOAD, this.worldListener, Priority.Normal, this);
+        pm.registerEvent(Event.Type.CHUNK_POPULATED, this.worldListener, Priority.Normal, this);
+
 
 		//TimerManager
 		task = new BeyondTimerTask();

@@ -86,18 +86,20 @@ public class BeyondEntityListener extends EntityListener {
 				}
 			}
 		}
-		if(((LivingEntity)event.getEntity()).equals(Bosses.boss) && !(event instanceof EntityDamageByEntityEvent)){
-			int health = Bosses.bossHealth;
-			int rawHealth = Bosses.boss.getHealth();
-			if(rawHealth >= (health/1000.0)){
-				Bosses.boss.damage(1);
-				Bosses.bossHealth = health-event.getDamage();
-			}else{
-				Bosses.boss.damage(0);
-				Bosses.bossHealth = health-event.getDamage();
-			}
+		if(event.getEntity() instanceof LivingEntity){
+			if(((LivingEntity)event.getEntity()).equals(Bosses.boss) && !(event instanceof EntityDamageByEntityEvent)){
+				int health = Bosses.bossHealth;
+				int rawHealth = Bosses.boss.getHealth();
+				if(rawHealth >= (health/1000.0)){
+					Bosses.boss.damage(1);
+					Bosses.bossHealth = health-event.getDamage();
+				}else{
+					Bosses.boss.damage(0);
+					Bosses.bossHealth = health-event.getDamage();
+				}
 
-			event.setCancelled(true);
+				event.setCancelled(true);
+			}
 		}
 	}
 	public void onEntityExplode(EntityExplodeEvent event){
@@ -122,49 +124,51 @@ public class BeyondEntityListener extends EntityListener {
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
 		
 		//AHKMED
-		if(((LivingEntity)event.getEntity()).equals(Bosses.boss)){
-			int health = Bosses.bossHealth;
-			int rawHealth = Bosses.boss.getHealth();
-			//WOLF STAGE
-			if(health%20 == 0)wolftrigger = true;
+		if(event.getEntity() instanceof LivingEntity){
+			if(((LivingEntity)event.getEntity()).equals(Bosses.boss)){
+				int health = Bosses.bossHealth;
+				int rawHealth = Bosses.boss.getHealth();
+				//WOLF STAGE
+				if(health%20 == 0)wolftrigger = true;
 
-			else if(wolftrigger){
-				for(int i =0; i<10;i++){
-					((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setAngry(true);
+				else if(wolftrigger){
+					for(int i =0; i<10;i++){
+						((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setAngry(true);
+					}
+					wolftrigger = false;
 				}
-				wolftrigger = false;
-			}
-			//POWER STAGE
-			if(health < 8000) powertrigger = true;
-			else if(powertrigger){
-				Bosses.boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10000, 5));
-			}
-			if(health < 5000) powertrigger2 = true;
-			else if(powertrigger2){
-				Bosses.boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10000, 4));
-			}
-			//FIRE STAGE
-			if(health < 2000){
-				Bosses.boss.setFireTicks(60);
-				List<Entity> entities = Bosses.boss.getNearbyEntities(5, 2, 5);
-				for(int i = 0;i<entities.size();i++){
-					entities.get(i).setFireTicks(60);
+				//POWER STAGE
+				if(health < 8000) powertrigger = true;
+				else if(powertrigger){
+					Bosses.boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10000, 5));
 				}
+				if(health < 5000) powertrigger2 = true;
+				else if(powertrigger2){
+					Bosses.boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10000, 4));
+				}
+				//FIRE STAGE
+				if(health < 2000){
+					Bosses.boss.setFireTicks(60);
+					List<Entity> entities = Bosses.boss.getNearbyEntities(5, 2, 5);
+					for(int i = 0;i<entities.size();i++){
+						entities.get(i).setFireTicks(60);
+					}
+				}
+				//
+				if(rawHealth >= (health/1000.0)){
+					Bosses.boss.damage(1, event.getDamager());
+					Bosses.bossHealth = health-event.getDamage();
+				}else{
+					Bosses.boss.damage(0, event.getDamager());
+					Bosses.bossHealth = health-event.getDamage();
+				}
+				if(Bosses.boss.getHealth() == 0){
+					Bosses.exist = false;
+					Bosses.boss.getWorld().dropItemNaturally(Bosses.boss.getLocation(), new ItemStack(Material.GOLD_INGOT, 1));
+					Bosses.boss.remove();
+				}
+				event.setCancelled(true);
 			}
-			//
-			if(rawHealth >= (health/1000.0)){
-				Bosses.boss.damage(1, event.getDamager());
-				Bosses.bossHealth = health-event.getDamage();
-			}else{
-				Bosses.boss.damage(0, event.getDamager());
-				Bosses.bossHealth = health-event.getDamage();
-			}
-			if(Bosses.boss.getHealth() == 0){
-				Bosses.exist = false;
-				Bosses.boss.getWorld().dropItemNaturally(Bosses.boss.getLocation(), new ItemStack(Material.GOLD_INGOT, 1));
-				Bosses.boss.remove();
-			}
-			event.setCancelled(true);
 		}
 		else if(event.getDamager() instanceof Player){
 			Player player = (Player)event.getDamager();

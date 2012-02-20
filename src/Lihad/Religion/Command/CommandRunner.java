@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Religion;
+import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
 
@@ -54,7 +56,8 @@ public class CommandRunner implements CommandExecutor {
 		 * Base Command, drives /rr.  Tells the player what religion and tower they are member of
 		 */
 		if(cmd.getName().equalsIgnoreCase("rr") && arg.length == 0){
-			Religion.bosses.spawnBoss(((Player)sender).getLocation());
+			//if(Bosses.boss.isDead())Religion.bosses.spawnBoss(((Player)sender).getLocation());
+
 			if(BeyondInfo.getTowerName((Player)sender) == null){
 				sender.sendMessage("You are not a member of any religion");
 			}
