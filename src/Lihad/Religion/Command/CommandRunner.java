@@ -8,6 +8,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.CreatureType;
+import org.bukkit.entity.Giant;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -52,7 +54,10 @@ public class CommandRunner implements CommandExecutor {
 		 * Base Command, drives /rr.  Tells the player what religion and tower they are member of
 		 */
 		if(cmd.getName().equalsIgnoreCase("rr") && arg.length == 0){
-			if(BeyondInfo.getTowerName((Player)sender) == null) sender.sendMessage("You are not a member of any religion");
+			Religion.bosses.spawnBoss(((Player)sender).getLocation());
+			if(BeyondInfo.getTowerName((Player)sender) == null){
+				sender.sendMessage("You are not a member of any religion");
+			}
 			else sender.sendMessage("You are a member of "+BeyondInfo.getTowerName((Player)sender)+", a tower of "+BeyondInfo.getReligion((Player)sender));
 			return true;
 		}

@@ -13,6 +13,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
@@ -27,15 +28,26 @@ import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.SheepRegrowWoolEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.Potion.Tier;
 import org.bukkit.potion.PotionType;
 
 import Lihad.Religion.Religion;
+import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
 
 public class BeyondEntityListener extends EntityListener {
 	public static Religion plugin;
+	
+	//AHKED TRIGGERS
+	public boolean wolftrigger = false;
+	public boolean powertrigger = false;
+	public boolean powertrigger2 = false;
+
+	
+	
 	public BeyondEntityListener(Religion instance) {
 		plugin = instance;
 	}
@@ -74,6 +86,19 @@ public class BeyondEntityListener extends EntityListener {
 				}
 			}
 		}
+		if(((LivingEntity)event.getEntity()).equals(Bosses.boss) && !(event instanceof EntityDamageByEntityEvent)){
+			int health = Bosses.bossHealth;
+			int rawHealth = Bosses.boss.getHealth();
+			if(rawHealth >= (health/1000.0)){
+				Bosses.boss.damage(1);
+				Bosses.bossHealth = health-event.getDamage();
+			}else{
+				Bosses.boss.damage(0);
+				Bosses.bossHealth = health-event.getDamage();
+			}
+
+			event.setCancelled(true);
+		}
 	}
 	public void onEntityExplode(EntityExplodeEvent event){
 		List<Block> blocklist = event.blockList();
@@ -95,7 +120,53 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	// Left off here
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
-		if(event.getDamager() instanceof Player){
+		
+		//AHKMED
+		if(((LivingEntity)event.getEntity()).equals(Bosses.boss)){
+			int health = Bosses.bossHealth;
+			int rawHealth = Bosses.boss.getHealth();
+			//WOLF STAGE
+			if(health%20 == 0)wolftrigger = true;
+
+			else if(wolftrigger){
+				for(int i =0; i<10;i++){
+					((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setAngry(true);
+				}
+				wolftrigger = false;
+			}
+			//POWER STAGE
+			if(health < 8000) powertrigger = true;
+			else if(powertrigger){
+				Bosses.boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10000, 5));
+			}
+			if(health < 5000) powertrigger2 = true;
+			else if(powertrigger2){
+				Bosses.boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10000, 4));
+			}
+			//FIRE STAGE
+			if(health < 2000){
+				Bosses.boss.setFireTicks(60);
+				List<Entity> entities = Bosses.boss.getNearbyEntities(5, 2, 5);
+				for(int i = 0;i<entities.size();i++){
+					entities.get(i).setFireTicks(60);
+				}
+			}
+			//
+			if(rawHealth >= (health/1000.0)){
+				Bosses.boss.damage(1, event.getDamager());
+				Bosses.bossHealth = health-event.getDamage();
+			}else{
+				Bosses.boss.damage(0, event.getDamager());
+				Bosses.bossHealth = health-event.getDamage();
+			}
+			if(Bosses.boss.getHealth() == 0){
+				Bosses.exist = false;
+				Bosses.boss.getWorld().dropItemNaturally(Bosses.boss.getLocation(), new ItemStack(Material.GOLD_INGOT, 1));
+				Bosses.boss.remove();
+			}
+			event.setCancelled(true);
+		}
+		else if(event.getDamager() instanceof Player){
 			Player player = (Player)event.getDamager();
 			if(BeyondInfo.getReligion(player) != null){
 				int dice = calculator(player);

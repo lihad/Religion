@@ -13,6 +13,7 @@ import org.bukkit.util.config.Configuration;
 import Lihad.Religion.Abilities.Personal;
 import Lihad.Religion.Abilities.SpellAoE;
 import Lihad.Religion.Abilities.TowerAoE;
+import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Command.CommandRunner;
 import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Config.BeyondConfigReader;
@@ -72,6 +73,8 @@ public class Religion extends JavaPlugin {
 	public static SpellAoE spell;
 	public static TowerAoE tower;
 	public static Personal personal;
+	
+	public static Bosses bosses;
 
 	
 	private final BeyondPluginListener pluginListener = new BeyondPluginListener(this);
@@ -114,6 +117,7 @@ public class Religion extends JavaPlugin {
 		tower = new TowerAoE(this);
 		personal = new Personal(this);
 		trades = new TradesDriver(this);
+		bosses = new Bosses(this);
 
 		//PermsManager
 		setupPermissions();

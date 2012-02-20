@@ -8,6 +8,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.plugin.Plugin;
 
 import Lihad.Religion.Religion;
+import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Information.BeyondInfo;
 
 
@@ -46,7 +47,7 @@ public class BeyondTimerTask extends TimerTask {
 				//
 				//
 			}
-			
+			if(Bosses.exist == false)Religion.bosses.spawnBoss(new Location(Religion.bosses.plugin.getServer().getWorld("BeyondSurvival"),1927,50,997));
 			Religion.trades.driver();
 			Religion.information.save();
 		}catch(Exception e){
@@ -54,8 +55,6 @@ public class BeyondTimerTask extends TimerTask {
 			e.printStackTrace();
 
 		}
-
-
 	}
-
 }
+//1927 50 997

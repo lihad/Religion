@@ -73,6 +73,7 @@ public class BeyondUtil {
 	public static String getChatColor(Player player, String towername){
 		String color = ChatColor.WHITE.toString();
 		if(BeyondInfo.getReligion(player) == null) color = ChatColor.WHITE.toString();
+		else if(towername == null) color = ChatColor.WHITE.toString();
 		else if(towername.equals("null")) color = ChatColor.WHITE.toString();
 		else if(BeyondInfo.getReligion(towername).equals(BeyondInfo.getReligion(player))) color = ChatColor.GREEN.toString();
 		else color = ChatColor.RED.toString();
