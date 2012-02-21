@@ -147,7 +147,7 @@ public class BeyondUtil {
 				|| stack.getType() == Material.LEATHER_CHESTPLATE
 				|| stack.getType() == Material.LEATHER_HELMET
 				|| stack.getType() == Material.LEATHER_LEGGINGS
-				|| stack.getType() == Material.WOOD_PICKAXE
+				|| stack.getType() == Material.WOOD_AXE
 				|| stack.getType() == Material.WOOD_SPADE
 				|| stack.getType() == Material.WOOD_PICKAXE
 				|| stack.getType() == Material.WOOD_SWORD)

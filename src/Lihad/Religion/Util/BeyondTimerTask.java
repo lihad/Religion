@@ -57,6 +57,7 @@ public class BeyondTimerTask extends TimerTask {
 	}
 
 	private void infoCleanUp(){
+		if(BeyondInfo.getCooldownPlayers() == null) return;
 		List<Player> players = BeyondInfo.getCooldownPlayers();
 		if(!players.isEmpty()){
 			for(int i=0;i<players.size();i++){

@@ -48,6 +48,7 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	
 	public void onEntityDamage(EntityDamageEvent event){
+
 		if(event.getEntity() instanceof Block){
 			Block block = (Block)event.getEntity();
 			if(block.getType() == Material.CHEST){
@@ -73,12 +74,8 @@ public class BeyondEntityListener extends EntityListener {
 			Player player = (Player)event.getEntity();
 			if(BeyondInfo.getClosestValidTower(player.getLocation()) ==  null || BeyondInfo.getReligion(player) == null) return;
 			else{
-				if(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(player.getLocation())).equals(BeyondInfo.getReligion(player))){
-					player.damage(event.getDamage()/2);
-					event.setCancelled(true);
-				}else{
-					player.damage(event.getDamage()+1);
-					event.setCancelled(true);
+				if(!BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(player.getLocation())).equals(BeyondInfo.getReligion(player))){
+					player.damage(1);
 				}
 			}
 		}
@@ -145,6 +142,7 @@ public class BeyondEntityListener extends EntityListener {
 				Religion.bosses.healthDepleteByEntity(event);
 				event.setCancelled(true);
 				
+
 
 				System.out.println(Bosses.bossHealth);
 				System.out.println(Bosses.boss.getHealth());

@@ -1,14 +1,21 @@
 package Lihad.Religion.Bosses;
 
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.CaveSpider;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Silverfish;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Spider;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -24,6 +31,7 @@ public class Bosses {
 	
 	public static LivingEntity boss;
 	public static int bossHealth;
+	
 	public static boolean exist = false;
 	
 	//AHKED TRIGGERS
@@ -36,9 +44,12 @@ public class Bosses {
 	}
 	
 	public void spawnBoss(Location location){
+		wolftrigger = false;
+		powertrigger = false;
+		powertrigger2 = false;
 		boss = location.getWorld().spawnCreature(location, CreatureType.PIG_ZOMBIE);
-		boss.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 10000, 2));
-		boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10000, 2));
+		boss.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 2));
+		boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 2));
 		bossHealth = 20000;
 		exist = true;
 	}
@@ -51,13 +62,24 @@ public class Bosses {
 		if(boss.getHealth() >= (bossHealth/1000.0)){
 			boss.damage(1, event.getDamager());
 			bossHealth = bossHealth-event.getDamage();
+			if(event.getDamager() instanceof Player){
+				((Player)event.getDamager()).sendMessage("Ahkmed has dropped below "+bossHealth+" health!!!");
+			}
+
 		}else{
 			boss.damage(0, event.getDamager());
-			bossHealth = bossHealth-event.getDamage();
+			bossHealth = bossHealth-(event.getDamage());
+			if(event.getDamager() instanceof Player){
+
+				bossHealth = bossHealth-enchantDamageCalculator((Player)event.getDamager(), event.getEntity());
+			}
 		}
 		if(Bosses.boss.getHealth() == 0){
-			//Bosses.exist = false;
-			Bosses.boss.getWorld().dropItemNaturally(Bosses.boss.getLocation(), new ItemStack(Material.GOLD_INGOT, 1));
+			ItemStack items = new ItemStack(Material.DIAMOND_SWORD, 1);
+			items.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 8);
+			items.addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, 4);
+
+			Bosses.boss.getWorld().dropItemNaturally(Bosses.boss.getLocation(),items);
 			Bosses.boss.remove();
 		}
 	}
@@ -86,11 +108,11 @@ public class Bosses {
 	public void stagePower(EntityDamageEvent event){
 		if(bossHealth < 8000) powertrigger = true;
 		else if(powertrigger){
-			boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10000, 5));
+			boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 5));
 		}
 		if(bossHealth < 5000) powertrigger2 = true;
 		else if(powertrigger2){
-			boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10000, 4));
+			boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 72000, 4));
 		}
 	}
 	public void stageFire(EntityDamageEvent event){
@@ -101,6 +123,49 @@ public class Bosses {
 				entities.get(i).setFireTicks(60);
 			}
 		}
+	}
+	
+	
+	public int enchantDamageCalculator(Player player, Entity entity){
+
+		int var = 0;
+		if(player.getItemInHand().getEnchantments() != null){
+
+			for(int i = 0; i<player.getItemInHand().getEnchantments().keySet().size();i++){
+				Enchantment enchantment = (Enchantment) player.getItemInHand().getEnchantments().keySet().toArray()[i];
+				int level = player.getItemInHand().getEnchantmentLevel(enchantment);
+				if(enchantment.equals(Enchantment.DAMAGE_ALL)){
+
+					for(int j=0;j<level;j++){
+						var = var+randomizer(3);
+					}
+				}
+				if(enchantment == Enchantment.DAMAGE_UNDEAD){
+					if(entity instanceof Zombie || entity instanceof PigZombie || entity instanceof Skeleton){
+						for(int j=0;j<level;j++){
+							var = var+randomizer(4);
+						}					}
+				}
+				if(enchantment == Enchantment.DAMAGE_ARTHROPODS){
+					if(entity instanceof Spider || entity instanceof CaveSpider || entity instanceof Silverfish){
+						for(int j=0;j<level;j++){
+							var = var+randomizer(4);
+						}
+					}
+				}
+				if(enchantment == Enchantment.ARROW_DAMAGE){
+					for(int j=0;j<level;j++){
+						var = var+randomizer(3);
+					}
+				}
+			}
+		}
+		return var;
+	}
+	public int randomizer(int max){
+		Random random = new Random();
+		int next = random.nextInt(max)+1;
+		return next;
 	}
 
 }

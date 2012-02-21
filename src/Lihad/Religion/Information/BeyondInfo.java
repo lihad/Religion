@@ -452,8 +452,10 @@ public class BeyondInfo {
 	}
 	public static List<Player> getCooldownPlayers(){
 		List<Player> players = new ArrayList<Player>();
-		for(int i=0;i<BeyondInfoReader.getKeyList("Cooldown").size();i++){
-			if(plugin.getServer().getPlayer(BeyondInfoReader.getKeyList("Cooldown").get(i)) != null)players.add(plugin.getServer().getPlayer(BeyondInfoReader.getKeyList("Cooldown").get(i)));
+		if(BeyondInfoReader.getKeyList("Cooldown") != null){
+			for(int i=0;i<BeyondInfoReader.getKeyList("Cooldown").size();i++){
+				if(plugin.getServer().getPlayer(BeyondInfoReader.getKeyList("Cooldown").get(i)) != null)players.add(plugin.getServer().getPlayer(BeyondInfoReader.getKeyList("Cooldown").get(i)));
+			}
 		}
 		return players;
 	}

@@ -41,14 +41,28 @@ public class BeyondPlayerListener extends PlayerListener {
 		if(closestFrom==null)closestFrom = "null";
 		if(closestTo==null)closestTo = "null";
 
+		////////////////////////////////
+		// TODO: This is crude. And ugly.
 		if(closestFrom.equals("null")&&!closestTo.equals("null")){
-			if(BeyondInfo.getCooldownPlayers().contains(event.getPlayer())){
+			if(BeyondInfo.getReligion(event.getPlayer()) != null){
+				if(BeyondInfo.getReligion(closestTo).equals(BeyondInfo.getReligion(event.getPlayer()))){
+
+				}else if(BeyondInfo.getCooldownPlayers().contains(event.getPlayer())){
+					if(System.currentTimeMillis()-BeyondInfo.getPlayerCooldown(event.getPlayer()) < 300000){
+						event.setTo(event.getFrom());
+						event.getPlayer().sendMessage(ChatColor.RED.toString()+"You're shell-shocked. Your will is too weak to continue in.");
+					}
+				}
+			}else if(BeyondInfo.getCooldownPlayers().contains(event.getPlayer())){
 				if(System.currentTimeMillis()-BeyondInfo.getPlayerCooldown(event.getPlayer()) < 300000){
 					event.setTo(event.getFrom());
 					event.getPlayer().sendMessage(ChatColor.RED.toString()+"You're shell-shocked. Your will is too weak to continue in.");
 				}
 			}
 		}
+			
+		////////////////////////////////	
+		
 		if(closestFrom.equals("null")&&!closestTo.equals("null")&&BeyondInfo.getReligion(event.getPlayer()) == null){
 			if(BeyondUtil.timestampReference(closestTo)){
 				event.setTo(event.getFrom());
@@ -97,7 +111,7 @@ public class BeyondPlayerListener extends PlayerListener {
 							player.sendMessage("You were healed by "+BeyondUtil.getChatColor(event.getPlayer(), BeyondInfo.getTowerName(player))+event.getPlayer().getName()+ChatColor.WHITE.toString());
 							player.setHealth(player.getHealth()+var);
 							
-							if(player.getItemInHand().getAmount() <= 1)player.setItemInHand(null);
+							if(event.getPlayer().getItemInHand().getAmount() <= 1)event.getPlayer().setItemInHand(null);
 							else event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
 						}
 					}else{
@@ -227,7 +241,6 @@ public class BeyondPlayerListener extends PlayerListener {
 					player.getItemInHand().setDurability((short)(player.getItemInHand().getDurability()-var));
 					if(event.getPlayer().getItemInHand().getAmount() == 1)event.getPlayer().setItemInHand(null);
 					else event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
-					event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
 					event.getPlayer().sendMessage("Awesome! You repaired "+player.getName()+"'s "+player.getItemInHand().getType().name()+" by "+var+" points!");
 					player.sendMessage("Alright! "+event.getPlayer().getName()+" repaired your "+player.getItemInHand().getType().name()+" by "+var+" points!");
 				}
