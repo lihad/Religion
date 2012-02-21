@@ -15,23 +15,25 @@ public class BeyondWorldListener extends WorldListener{
         plugin = instance;
     }
     public void onChunkLoad(ChunkLoadEvent event){
-    	
+    	//System.out.println("Comparing X "+event.getChunk().getX()+" to "+BeyondConfig.getAhkmedLocation().getChunk().getX());
+    	//if(event.getChunk()..getX() == (BeyondConfig.getAhkmedLocation().getChunk().getX()))System.out.println("Comparing Z"+event.getChunk().getZ()+" to "+BeyondConfig.getAhkmedLocation().getChunk().getZ());
+    	//System.out.println("----------------------");
+
+    	if(BeyondConfig.getAhkmedLocation().getChunk().isLoaded()){
+        	//   System.out.println(Bosses.exist);
+			//(Bosses.boss == null || !Bosses.exist){
+		    //	System.out.println("FIRE2");
+			//	Religion.bosses.spawnBoss(BeyondConfig.getAhkmedLocation());
+			//}
+    	}
+
     }
     public void onChunkUnload(ChunkUnloadEvent event){
-    	if(event.getChunk().equals(BeyondConfig.getAhkmedLocation().getChunk())){
-    		if(Bosses.exist)Bosses.exist = false;
+    	if(!BeyondConfig.getAhkmedLocation().getChunk().isLoaded()){
+    		//if(Bosses.exist)Bosses.exist = false;
     	}
     }
     public void onChunkPopulate(ChunkPopulateEvent event){
-    	System.out.println("FIRE");
-    	if(event.getChunk().equals(BeyondConfig.getAhkmedLocation().getChunk())){
-        	System.out.println("FIRE1");
 
-			if(Bosses.boss == null || !Bosses.exist){
-		    	System.out.println("FIRE2");
-
-				Religion.bosses.spawnBoss(BeyondConfig.getAhkmedLocation());
-			}
-    	}
     }
 }

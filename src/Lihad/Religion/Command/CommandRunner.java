@@ -16,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Religion;
 import Lihad.Religion.Bosses.Bosses;
+import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
 
@@ -56,8 +57,6 @@ public class CommandRunner implements CommandExecutor {
 		 * Base Command, drives /rr.  Tells the player what religion and tower they are member of
 		 */
 		if(cmd.getName().equalsIgnoreCase("rr") && arg.length == 0){
-			//if(Bosses.boss.isDead())Religion.bosses.spawnBoss(((Player)sender).getLocation());
-
 			if(BeyondInfo.getTowerName((Player)sender) == null){
 				sender.sendMessage("You are not a member of any religion");
 			}
@@ -180,6 +179,7 @@ public class CommandRunner implements CommandExecutor {
 		 */
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("details") && arg.length == 2){
 			if(BeyondInfo.hasTower(arg[1])){
+				Religion.bosses.spawnBoss(BeyondConfig.getAhkmedLocation());
 				sender.sendMessage("General Info");
 			}else{
 				sender.sendMessage("This is not a valid tower. The towers that exist are: "+BeyondInfo.getTowers(arg[0]));

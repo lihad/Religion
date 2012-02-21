@@ -22,6 +22,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
@@ -41,16 +42,11 @@ import Lihad.Religion.Util.BeyondUtil;
 public class BeyondEntityListener extends EntityListener {
 	public static Religion plugin;
 	
-	//AHKED TRIGGERS
-	public boolean wolftrigger = false;
-	public boolean powertrigger = false;
-	public boolean powertrigger2 = false;
-
-	
 	
 	public BeyondEntityListener(Religion instance) {
 		plugin = instance;
 	}
+	
 	public void onEntityDamage(EntityDamageEvent event){
 		if(event.getEntity() instanceof Block){
 			Block block = (Block)event.getEntity();
@@ -67,7 +63,7 @@ public class BeyondEntityListener extends EntityListener {
 					}
 				}
 			}
-		}else if(event instanceof EntityDamageByEntityEvent)onEntityDamageByEntity((EntityDamageByEntityEvent)event);
+		}
 
 		/**
 		 * The following 'if' makes players that take damage in their own religions AoE take half.  Those who take damage in opposing religion AoE
@@ -86,22 +82,21 @@ public class BeyondEntityListener extends EntityListener {
 				}
 			}
 		}
+		
+		
+		if(event instanceof EntityDamageByEntityEvent)onEntityDamageByEntity((EntityDamageByEntityEvent)event);
+
 		if(event.getEntity() instanceof LivingEntity){
 			if(((LivingEntity)event.getEntity()).equals(Bosses.boss) && !(event instanceof EntityDamageByEntityEvent)){
-				int health = Bosses.bossHealth;
-				int rawHealth = Bosses.boss.getHealth();
-				if(rawHealth >= (health/1000.0)){
-					Bosses.boss.damage(1);
-					Bosses.bossHealth = health-event.getDamage();
-				}else{
-					Bosses.boss.damage(0);
-					Bosses.bossHealth = health-event.getDamage();
-				}
+				if(!(((PigZombie)Bosses.boss).getTarget() == null))Religion.bosses.healthDeplete(event);
+				event.setDamage(0);
 
-				event.setCancelled(true);
+				System.out.println(Bosses.bossHealth);
+				System.out.println(Bosses.boss.getHealth());
 			}
 		}
 	}
+	
 	public void onEntityExplode(EntityExplodeEvent event){
 		List<Block> blocklist = event.blockList();
 		for(int b = 0;b<blocklist.size();b++){
@@ -120,66 +115,60 @@ public class BeyondEntityListener extends EntityListener {
 			}
 		}
 	}
-	// Left off here
-	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
-		
-		//AHKMED
-		if(event.getEntity() instanceof LivingEntity){
-			if(((LivingEntity)event.getEntity()).equals(Bosses.boss)){
-				int health = Bosses.bossHealth;
-				int rawHealth = Bosses.boss.getHealth();
-				//WOLF STAGE
-				if(health%20 == 0)wolftrigger = true;
 
-				else if(wolftrigger){
-					for(int i =0; i<10;i++){
-						((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setAngry(true);
-					}
-					wolftrigger = false;
-				}
-				//POWER STAGE
-				if(health < 8000) powertrigger = true;
-				else if(powertrigger){
-					Bosses.boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10000, 5));
-				}
-				if(health < 5000) powertrigger2 = true;
-				else if(powertrigger2){
-					Bosses.boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10000, 4));
-				}
-				//FIRE STAGE
-				if(health < 2000){
-					Bosses.boss.setFireTicks(60);
-					List<Entity> entities = Bosses.boss.getNearbyEntities(5, 2, 5);
-					for(int i = 0;i<entities.size();i++){
-						entities.get(i).setFireTicks(60);
+	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
+
+		//
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//
+		// "Ahkmed"
+		//
+		if(event.getEntity() instanceof LivingEntity){
+			if(((LivingEntity)event.getEntity()).equals(Bosses.boss) ){
+				if(event.getCause() == DamageCause.PROJECTILE){
+					if((((PigZombie)Bosses.boss).getTarget() == null)){
+						event.setCancelled(true);
+						return;
 					}
 				}
-				//
-				if(rawHealth >= (health/1000.0)){
-					Bosses.boss.damage(1, event.getDamager());
-					Bosses.bossHealth = health-event.getDamage();
-				}else{
-					Bosses.boss.damage(0, event.getDamager());
-					Bosses.bossHealth = health-event.getDamage();
-				}
-				if(Bosses.boss.getHealth() == 0){
-					Bosses.exist = false;
-					Bosses.boss.getWorld().dropItemNaturally(Bosses.boss.getLocation(), new ItemStack(Material.GOLD_INGOT, 1));
-					Bosses.boss.remove();
-				}
+				Religion.bosses.triggersAhkmed(event);
+				Religion.bosses.healthDepleteByEntity(event);
 				event.setCancelled(true);
+				
+
+				System.out.println(Bosses.bossHealth);
+				System.out.println(Bosses.boss.getHealth());
 			}
 		}
-		else if(event.getDamager() instanceof Player){
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+		
+		
+		if(event.getDamager() instanceof Player){
 			Player player = (Player)event.getDamager();
 			if(BeyondInfo.getReligion(player) != null){
 				int dice = calculator(player);
+					
+				
+				//
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//
+				// "Golden Fleece"
+				//
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Sheep){
 					if(event.getDamage() >= ((Sheep)event.getEntity()).getHealth() && calculator(player) < 20){
 						event.getEntity().remove();
 						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), new ItemStack(Material.GOLD_INGOT, 3));
 					}
 				}
+				
+				//
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//
+				// "Happy Creeper"
+				//
+				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Creeper){
 					if(event.getDamage() >= ((Creeper)event.getEntity()).getHealth()){
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
@@ -188,27 +177,28 @@ public class BeyondEntityListener extends EntityListener {
 								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 20)
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 20)){
 							event.getEntity().remove();
-							((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
-							((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
-							((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
-							((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
+							for(int i =0;i<5;i++){
+								((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
+							}
 						}else if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 30)
 								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 30)
 								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 30)
 								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 100)
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 100)){
 							event.getEntity().remove();
-							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
-							event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+							for(int i =0;i<10;i++){
+								event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+							}
 						}
 					}
 				}
+				
+				//
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//
+				// "Drunk Zombie"
+				//
+				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Zombie){
 					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth()){
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 7)
@@ -224,6 +214,13 @@ public class BeyondEntityListener extends EntityListener {
 						}
 					}
 				}
+				
+				//
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//
+				// "Slayer"
+				//
+				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
 					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
@@ -234,28 +231,25 @@ public class BeyondEntityListener extends EntityListener {
 							event.getEntity().remove();
 							ItemStack stack = new ItemStack(weaponTypeRandomizer(), 1);
 							while(stack.getEnchantments().isEmpty()){
-								try{
-									stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
-									Random chance = new Random();
-									int next = chance.nextInt(100);
-									if(next<10){
-										stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
-									}
-									if(next<5){
-										stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
-									}
-									if(next<1){
-										stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
-									}
-								}catch(IllegalArgumentException e){
-									System.out.println("[Religion] DEBUG - weaponpower");
-								}
+								stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								Random chance = new Random();
+								int next = chance.nextInt(100);
+								if(next<10)stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								if(next<5)stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								if(next<1)stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
 							}
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
 						}
 					}
 				}
+				
+				//
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//
+				// "Defender"
+				//
+				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
 					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 20)
@@ -268,20 +262,21 @@ public class BeyondEntityListener extends EntityListener {
 							stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
 							Random chance = new Random();
 							int next = chance.nextInt(100);
-							if(next<10){
-								stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
-							}
-							if(next<5){
-								stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
-							}
-							if(next<1){
-								stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
-							}
+							if(next<10)stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());							
+							if(next<5)stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+							if(next<1)stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
 						}
 					}
 				}
+				
+				//
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//
+				// "Tool Grinder"
+				//
+				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Enderman){
 					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth()){
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
@@ -292,22 +287,12 @@ public class BeyondEntityListener extends EntityListener {
 							event.getEntity().remove();
 							ItemStack stack = new ItemStack(toolTypeRandomizer(), 1);
 							while(stack.getEnchantments().isEmpty()){
-								try{
-									stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-									Random chance = new Random();
-									int next = chance.nextInt(100);
-									if(next<10){
-										stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-									}
-									if(next<5){
-										stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-									}
-									if(next<1){
-										stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-									}
-								}catch(IllegalArgumentException e){
-									System.out.println("[Religion] DEBUG - toolpower");
-								}
+								stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								Random chance = new Random();
+								int next = chance.nextInt(100);
+								if(next<10)stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								if(next<5)stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								if(next<1)stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
 							}
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
@@ -317,14 +302,23 @@ public class BeyondEntityListener extends EntityListener {
 			}
 		}
 	}
-	public int calculator(Player player){
+	
+	
+	//
+	//
+	// Helper Functions
+	//
+	//
+	
+	
+	private int calculator(Player player){
 		Random chance = new Random();
 		int next = chance.nextInt(1000);
 		int playerlevel = player.getLevel()/10;
 		if(playerlevel > 10)playerlevel = 10;
 		return (next - (playerlevel*3));
 	}
-	public PotionType potionTypeRandomizer(){
+	private PotionType potionTypeRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(9);
 		switch(next){
@@ -340,20 +334,20 @@ public class BeyondEntityListener extends EntityListener {
 		}
 		return PotionType.SPEED;
 	}
-	public Tier potionTierRandomizer(){
+	private Tier potionTierRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(3);
 		if(next < 2){
 			return Tier.ONE;
 		}else return Tier.TWO;
 	}
-	public boolean potionSplashRandomizer(){
+	private boolean potionSplashRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(2);
 		if(next == 0)return true;
 		else return false;
 	}
-	public Material weaponTypeRandomizer(){
+	private Material weaponTypeRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(100);
 		if(next<10)return Material.DIAMOND_SWORD;
@@ -361,7 +355,7 @@ public class BeyondEntityListener extends EntityListener {
 		else if(next<50)return Material.GOLD_SWORD;
 		else return Material.WOOD_SWORD;
 	}
-	public Enchantment weaponEnchantRandomizer(){
+	private Enchantment weaponEnchantRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(6);
 		switch(next){
@@ -374,7 +368,7 @@ public class BeyondEntityListener extends EntityListener {
 		}
 		return Enchantment.DAMAGE_ALL;
 	}
-	public int weaponLevelRandomizer(){
+	private int weaponLevelRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(100);
 		if(next<1)return 10;
@@ -388,7 +382,7 @@ public class BeyondEntityListener extends EntityListener {
 		else if(next<50)return 2;
 		else return 1;
 	}
-	public Material armorTypeRandomizer(){
+	private Material armorTypeRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(100);
 		if(next<2)return Material.DIAMOND_CHESTPLATE;
@@ -408,7 +402,7 @@ public class BeyondEntityListener extends EntityListener {
 		else if(next<86)return Material.LEATHER_HELMET;
 		else return Material.LEATHER_LEGGINGS;
 	}
-	public Enchantment armorEnchantRandomizer(){
+	private Enchantment armorEnchantRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(4);
 		switch(next){
@@ -419,7 +413,7 @@ public class BeyondEntityListener extends EntityListener {
 		}
 		return Enchantment.PROTECTION_EXPLOSIONS;
 	}
-	public int armorLevelRandomizer(){
+	private int armorLevelRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(100);
 		if(next<1)return 10;
@@ -433,7 +427,7 @@ public class BeyondEntityListener extends EntityListener {
 		else if(next<50)return 2;
 		else return 1;
 	}
-	public Material toolTypeRandomizer(){
+	private Material toolTypeRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(100);
 		if(next<4)return Material.DIAMOND_AXE;
@@ -452,7 +446,7 @@ public class BeyondEntityListener extends EntityListener {
 		else if(next<85)return Material.WOOD_AXE;
 		else return Material.WOOD_SPADE;
 	}
-	public Enchantment toolEnchantRandomizer(){
+	private Enchantment toolEnchantRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(4);
 		switch(next){
@@ -463,7 +457,7 @@ public class BeyondEntityListener extends EntityListener {
 		}
 		return Enchantment.PROTECTION_EXPLOSIONS;
 	}
-	public int toolLevelRandomizer(){
+	private int toolLevelRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(100);
 		if(next<1)return 10;

@@ -42,13 +42,10 @@ public class BeyondTimerTask extends TimerTask {
 				}else{
 					
 				}
-				
-				//
-				//
-				//
-				//
 			}
-			//if(Bosses.boss == null || !Bosses.exist)Religion.bosses.spawnBoss(BeyondConfig.getAhkmedLocation());
+			
+			Religion.bosses.spawnBoss(BeyondConfig.getAhkmedLocation());
+
 			Religion.trades.driver();
 			Religion.information.save();
 		}catch(Exception e){

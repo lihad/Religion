@@ -24,6 +24,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Religion;
+import Lihad.Religion.Bosses.Bosses;
+import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
 
@@ -75,8 +77,9 @@ public class BeyondPlayerListener extends PlayerListener {
 							event.getPlayer().sendMessage("You healed "+BeyondUtil.getChatColor(player, BeyondInfo.getTowerName(event.getPlayer()))+player.getName()+ChatColor.WHITE.toString()+" by "+var);
 							player.sendMessage("You were healed by "+BeyondUtil.getChatColor(event.getPlayer(), BeyondInfo.getTowerName(player))+event.getPlayer().getName()+ChatColor.WHITE.toString());
 							player.setHealth(player.getHealth()+var);
-							if(player.getItemInHand().getAmount() == 1)player.setItemInHand(null);
-							else player.getItemInHand().setAmount(player.getItemInHand().getAmount()-1);
+							
+							if(player.getItemInHand().getAmount() <= 1)player.setItemInHand(null);
+							else event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
 						}
 					}else{
 						event.getPlayer().sendMessage("You failed to heal "+BeyondUtil.getChatColor(player, BeyondInfo.getTowerName(event.getPlayer()))+player.getName());
@@ -206,6 +209,8 @@ public class BeyondPlayerListener extends PlayerListener {
 					((Player)living).getItemInHand().setDurability((short)(((Player)living).getItemInHand().getDurability()-var));
 					if(event.getPlayer().getItemInHand().getAmount() == 1)event.getPlayer().setItemInHand(null);
 					else event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
+
+					event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
 					event.getPlayer().sendMessage("Awesome! You repaired "+((Player)living).getName()+"'s "+((Player)living).getItemInHand().getType().name()+" by "+var+" points!");
 					((Player)living).sendMessage("Alright! "+event.getPlayer().getName()+" repaired your "+((Player)living).getItemInHand().getType().name()+" by "+var+" points!");
 				}
