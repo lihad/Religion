@@ -62,6 +62,23 @@ public class BeyondPlayerListener extends PlayerListener {
 			event.getPlayer().sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(event.getPlayer(), closestTo) + closestTo);
 		}
 
+
+		if(event.getPlayer().getWorld().equals(BeyondConfig.getAhkmedLocation().getWorld())){
+			if(BeyondConfig.getAhkmedLocation().distance(event.getPlayer().getLocation()) < 50 && !Bosses.exist){
+				System.out.println("SPAWN AHKMED");
+				Religion.bosses.spawnBoss(BeyondConfig.getAhkmedLocation());
+			}
+		}
+		if(Bosses.boss != null){
+			if(Bosses.boss.getNearbyEntities(50, 128, 50).isEmpty()){
+				Bosses.exist = false;
+				Bosses.boss = null;
+				System.out.println("AHKMED GONE");
+			}
+		}
+
+
+
 	}
 	public void onPlayerInteract(PlayerInteractEvent event){
 		if(event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.heal") && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
@@ -193,31 +210,29 @@ public class BeyondPlayerListener extends PlayerListener {
 		}
 	}
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
-		LivingEntity living = null;
 		if(event.getPlayer().getItemInHand().getType() == Material.LEATHER && Religion.handler.has(event.getPlayer(), "religion.repair")){
-			if(event.getRightClicked() instanceof LivingEntity) living = (LivingEntity)event.getRightClicked();
-			if(!(living == null) && (living instanceof Player)){
+			if(event.getRightClicked() instanceof Player){
+				Player player = (Player) event.getRightClicked();
 				int var = repairChance();
 				if(var == 0){
-					event.getPlayer().sendMessage("Oh No! The Leather broke without repairing! Poor "+((Player)living).getName());
-					((Player)living).sendMessage("Oh No! "+event.getPlayer().getName()+" has failed to repair your item!");
-				}else if(((Player)living).getItemInHand().getDurability() <= 0){
+					event.getPlayer().sendMessage("Oh No! The Leather broke without repairing! Poor "+player.getName());
+					player.sendMessage("Oh No! "+event.getPlayer().getName()+" has failed to repair your item!");
+				}else if(player.getItemInHand().getDurability() <= 0){
 					event.getPlayer().sendMessage("The item you are trying to repair is already at its maximum potential!");
-				}else if(((Player)living).getItemInHand().getEnchantments().keySet().size() > 0){
+				}else if(player.getItemInHand().getEnchantments().keySet().size() > 0){
 					event.getPlayer().sendMessage("You lack the potential to repair this item...");
 				}else{
-					((Player)living).getItemInHand().setDurability((short)(((Player)living).getItemInHand().getDurability()-var));
+					player.getItemInHand().setDurability((short)(player.getItemInHand().getDurability()-var));
 					if(event.getPlayer().getItemInHand().getAmount() == 1)event.getPlayer().setItemInHand(null);
 					else event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
-
 					event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
-					event.getPlayer().sendMessage("Awesome! You repaired "+((Player)living).getName()+"'s "+((Player)living).getItemInHand().getType().name()+" by "+var+" points!");
-					((Player)living).sendMessage("Alright! "+event.getPlayer().getName()+" repaired your "+((Player)living).getItemInHand().getType().name()+" by "+var+" points!");
+					event.getPlayer().sendMessage("Awesome! You repaired "+player.getName()+"'s "+player.getItemInHand().getType().name()+" by "+var+" points!");
+					player.sendMessage("Alright! "+event.getPlayer().getName()+" repaired your "+player.getItemInHand().getType().name()+" by "+var+" points!");
 				}
 			}
 		}
 	}
-	
+
 	public void onPlayerRespawn(PlayerRespawnEvent event){
 		if(BeyondInfo.getTowerName(event.getPlayer())== null && !(BeyondInfo.getClosestValidTower(event.getRespawnLocation()) == null) && event.isBedSpawn()){
 			event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());

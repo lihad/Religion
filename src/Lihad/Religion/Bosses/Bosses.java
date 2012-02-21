@@ -41,7 +41,7 @@ public class Bosses {
 		boss.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 10000, 2));
 		boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 10000, 2));
 		bossHealth = 20000;
-		//exist = true;
+		exist = true;
 	}
 	public void healthDeplete(EntityDamageEvent event){
 		if(boss.getHealth() >= (bossHealth/1000.0))boss.damage(1);

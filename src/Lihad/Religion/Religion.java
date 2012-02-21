@@ -141,8 +141,8 @@ public class Religion extends JavaPlugin {
         pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Priority.Normal, this);
         pm.registerEvent(Event.Type.PLAYER_TELEPORT, this.playerListener, Priority.Normal, this);
        // pm.registerEvent(Event.Type.CHUNK_LOAD, this.worldListener, Priority.Normal, this);
-       // pm.registerEvent(Event.Type.CHUNK_UNLOAD, this.worldListener, Priority.Normal, this);
-       // pm.registerEvent(Event.Type.CHUNK_POPULATED, this.worldListener, Priority.Normal, this);
+       // pm.registerEvent(Event.Type.CHUNK_UNLOAD, this.worldListener, Priority.Monitor, this);
+       // pm.registerEvent(Event.Type.CHUNK_POPULATED, this.worldListener, Priority.Monitor, this);
 
 
 		//TimerManager

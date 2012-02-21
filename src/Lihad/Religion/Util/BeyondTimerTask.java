@@ -45,7 +45,6 @@ public class BeyondTimerTask extends TimerTask {
 			}
 			
 			Bosses.chunk = BeyondConfig.getAhkmedLocation().getChunk();
-			Religion.bosses.spawnBoss(BeyondConfig.getAhkmedLocation());
 
 			Religion.trades.driver();
 			Religion.information.save();
