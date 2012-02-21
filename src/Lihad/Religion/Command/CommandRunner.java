@@ -147,9 +147,11 @@ public class CommandRunner implements CommandExecutor {
 			if(!BeyondInfo.hasPlayer((Player)sender)){
 				sender.sendMessage("You are not a member of a tower, and thus, this command does nothing");
 			}
-			else if(BeyondInfo.getLeader((Player)sender).equals(((Player)sender).getName())){
+			else if(BeyondInfo.getLeader((Player)sender) != null){
+				if(BeyondInfo.getLeader((Player)sender).equals(((Player)sender).getName())){
 				BeyondUtil.towerBroadcast(BeyondInfo.getTowerName((Player)sender), "The leader of Tower "+BeyondInfo.getTowerName((Player)sender)+" has parished");
 				BeyondInfo.removeTower(BeyondInfo.getReligion(BeyondInfo.getTowerName((Player)sender)), BeyondInfo.getTowerName((Player)sender));
+				}
 			}else{
 				BeyondInfo.removePlayer((Player)sender);
 				sender.sendMessage("You have left your tower and religion");

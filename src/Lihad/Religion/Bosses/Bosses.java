@@ -2,6 +2,7 @@ package Lihad.Religion.Bosses;
 
 import java.util.List;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.CreatureType;
@@ -22,8 +23,9 @@ public class Bosses {
 	public static Religion plugin;
 	
 	public static LivingEntity boss;
+	public static Chunk chunk;
 	public static int bossHealth;
-	//public static boolean exist = false;
+	public static boolean exist = false;
 	
 	//AHKED TRIGGERS
 	public boolean wolftrigger = false;
