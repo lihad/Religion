@@ -1,10 +1,12 @@
 package Lihad.Religion.Util;
 
+import java.util.List;
 import java.util.TimerTask;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import Lihad.Religion.Religion;
@@ -44,8 +46,7 @@ public class BeyondTimerTask extends TimerTask {
 				}
 			}
 			
-			Bosses.chunk = BeyondConfig.getAhkmedLocation().getChunk();
-
+			infoCleanUp();
 			Religion.trades.driver();
 			Religion.information.save();
 		}catch(Exception e){
@@ -54,5 +55,15 @@ public class BeyondTimerTask extends TimerTask {
 
 		}
 	}
+
+	private void infoCleanUp(){
+		List<Player> players = BeyondInfo.getCooldownPlayers();
+		if(!players.isEmpty()){
+			for(int i=0;i<players.size();i++){
+				if(System.currentTimeMillis()-BeyondInfo.getPlayerCooldown(players.get(i)) > 300000){
+					BeyondInfo.removeCooldown(players.get(i));
+				}
+			}
+		}
+	}
 }
-//1927 50 997

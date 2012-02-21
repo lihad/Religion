@@ -450,6 +450,16 @@ public class BeyondInfo {
 		}
 		return players;
 	}
+	public static List<Player> getCooldownPlayers(){
+		List<Player> players = new ArrayList<Player>();
+		for(int i=0;i<BeyondInfoReader.getKeyList("Cooldown").size();i++){
+			if(plugin.getServer().getPlayer(BeyondInfoReader.getKeyList("Cooldown").get(i)) != null)players.add(plugin.getServer().getPlayer(BeyondInfoReader.getKeyList("Cooldown").get(i)));
+		}
+		return players;
+	}
+	public static long getPlayerCooldown(Player player){
+		return BeyondInfoReader.getLong("Cooldown."+player.getName());
+	}
 
 	//has Functions
 	/**
@@ -550,6 +560,9 @@ public class BeyondInfo {
 	public static void setTimestamp(String towername, long timestamp){
 		BeyondInfoWriter.writeConfigurationLong("Religions."+getReligion(towername)+".Towers."+towername+".Timestamp", timestamp);
 	}
+	public static void setPlayerCooldown(Player player){
+		BeyondInfoWriter.writeConfigurationLong("Cooldown."+player.getName(), System.currentTimeMillis());
+	}
 	//add Functions
 	public static void addPlayer(Player player, String towername){
 		setPlayerPath(player,towername);
@@ -641,6 +654,9 @@ public class BeyondInfo {
 	}
 	public static void removeTrades(String towername, String trade){
 		BeyondInfoWriter.writeConfigurationNull("Religions."+getReligion(towername)+".Towers."+towername+".Trades."+trade);
+	}
+	public static void removeCooldown(Player player){
+		BeyondInfoWriter.writeConfigurationNull("Cooldown."+player.getName());
 	}
 	//is Functions
 	public static boolean isTowerArea(Location location, String towername){

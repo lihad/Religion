@@ -23,7 +23,6 @@ public class Bosses {
 	public static Religion plugin;
 	
 	public static LivingEntity boss;
-	public static Chunk chunk;
 	public static int bossHealth;
 	public static boolean exist = false;
 	

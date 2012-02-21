@@ -115,6 +115,16 @@ public class BeyondEntityListener extends EntityListener {
 			}
 		}
 	}
+	public void onEntityDeath(EntityDeathEvent event){
+		if(event.getEntity() instanceof Player){
+			Player player = (Player)event.getEntity();
+			if(BeyondInfo.getClosestValidTower(player.getLocation()) != null && BeyondInfo.getReligion(player) != null){
+				if(!BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(player.getLocation())).equals(BeyondInfo.getReligion(player))){
+					BeyondInfo.setPlayerCooldown(player);
+				}
+			}
+		}
+	}
 
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
 

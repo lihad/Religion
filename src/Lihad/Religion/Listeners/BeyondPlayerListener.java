@@ -41,7 +41,14 @@ public class BeyondPlayerListener extends PlayerListener {
 		if(closestFrom==null)closestFrom = "null";
 		if(closestTo==null)closestTo = "null";
 
-
+		if(closestFrom.equals("null")&&!closestTo.equals("null")){
+			if(BeyondInfo.getCooldownPlayers().contains(event.getPlayer())){
+				if(System.currentTimeMillis()-BeyondInfo.getPlayerCooldown(event.getPlayer()) < 300000){
+					event.setTo(event.getFrom());
+					event.getPlayer().sendMessage(ChatColor.RED.toString()+"You're shell-shocked. Your will is too weak to continue in.");
+				}
+			}
+		}
 		if(closestFrom.equals("null")&&!closestTo.equals("null")&&BeyondInfo.getReligion(event.getPlayer()) == null){
 			if(BeyondUtil.timestampReference(closestTo)){
 				event.setTo(event.getFrom());
@@ -61,8 +68,6 @@ public class BeyondPlayerListener extends PlayerListener {
 		if(!closestFrom.equals(closestTo)){
 			event.getPlayer().sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(event.getPlayer(), closestTo) + closestTo);
 		}
-
-
 		if(event.getPlayer().getWorld().equals(BeyondConfig.getAhkmedLocation().getWorld())){
 			if(BeyondConfig.getAhkmedLocation().distance(event.getPlayer().getLocation()) < 50 && !Bosses.exist){
 				System.out.println("SPAWN AHKMED");
@@ -76,9 +81,6 @@ public class BeyondPlayerListener extends PlayerListener {
 				System.out.println("AHKMED GONE");
 			}
 		}
-
-
-
 	}
 	public void onPlayerInteract(PlayerInteractEvent event){
 		if(event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.heal") && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
