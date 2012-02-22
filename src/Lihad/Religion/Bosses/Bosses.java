@@ -1,6 +1,8 @@
 package Lihad.Religion.Bosses;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.Chunk;
@@ -25,14 +27,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import Lihad.Religion.Religion;
+import Lihad.Religion.Config.BeyondConfig;
 
 public class Bosses {
 	public static Religion plugin;
 	
-	public static LivingEntity boss;
-	public static int bossHealth;
-	
-	public static boolean exist = false;
+    public static Map<Location, String> configBossMap = BeyondConfig.getBossLocation();
+    public static Map<LivingEntity, Integer> bossHealthMap = new HashMap<LivingEntity, Integer>();
+    public static Map<LivingEntity, Boolean> bossExistMap = new HashMap<LivingEntity, Boolean>();
+    public static Map<String, LivingEntity> bossNameMap = new HashMap<String, LivingEntity>();
 	
 	//AHKED TRIGGERS
 	public boolean wolftrigger = false;
@@ -42,62 +45,104 @@ public class Bosses {
 	public Bosses(Religion instance) {
 		plugin = instance;
 	}
-	
-	public void spawnBoss(Location location){
-		wolftrigger = false;
-		powertrigger = false;
-		powertrigger2 = false;
-		boss = location.getWorld().spawnCreature(location, CreatureType.PIG_ZOMBIE);
-		boss.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 2));
-		boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 2));
-		bossHealth = 20000;
-		exist = true;
+	public void bossInit(){
+		for(int i = 0;i<configBossMap.size();i++){
+			spawnBoss((Location)configBossMap.keySet().toArray()[i], configBossMap.get((Location)configBossMap.keySet().toArray()[i]));
+		}
 	}
+	public void spawnBoss(Location location, String bossname){
+		
+		LivingEntity boss = location.getWorld().spawnCreature(location, getCreatureType(bossname));
+		loadTriggers(bossname);
+		setSpawnBossPotionEffects(boss, bossname);
+		bossHealthMap.put(boss, getBossHealth(bossname));
+		bossExistMap.put(boss, true);
+		bossNameMap.put(bossname, boss);
+	}
+	private void loadTriggers(String bossname){
+		if(bossname.equals("Ahkmed")){
+			wolftrigger = false;
+			powertrigger = false;
+			powertrigger2 = false;
+		}
+	}
+	private CreatureType getCreatureType(String bossname){
+		if(bossname.equals("Ahkmed"))return CreatureType.PIG_ZOMBIE;
+		else return null;
+	}
+	private int getBossHealth(String bossname){
+		if(bossname.equals("Ahkmed"))return 20000;
+		else return 0;
+	}
+	private void setSpawnBossPotionEffects(LivingEntity entity, String bossname){
+		if(bossname.equals("Ahkmed")){
+			entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 2));
+			entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 2));
+			entity.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 72000, 4));
+		}
+	}
+	
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 	public void healthDeplete(EntityDamageEvent event){
-		if(boss.getHealth() >= (bossHealth/1000.0))boss.damage(1);
-		//else boss.damage(0);
-		bossHealth = bossHealth-event.getDamage();
+		LivingEntity boss = ((LivingEntity)event.getEntity());
+		if(boss.getHealth() >= (bossHealthMap.get(boss)/1000.0)){
+			System.out.println("FIRE NORMAL "+boss.getHealth()+" to "+(bossHealthMap.get(boss)/1000.0));
+			boss.setHealth(boss.getHealth()-1);
+			//flinch add?
+		}
+		bossHealthMap.put(boss, bossHealthMap.get(boss)-event.getDamage());
 	}
 	public void healthDepleteByEntity(EntityDamageByEntityEvent event){
-		if(boss.getHealth() >= (bossHealth/1000.0)){
-			boss.damage(1, event.getDamager());
-			bossHealth = bossHealth-event.getDamage();
+		LivingEntity boss = ((LivingEntity)event.getEntity());
+		if((double)boss.getHealth() >= (bossHealthMap.get(boss)/1000.0)){
+			System.out.println("FIRE ATTACK "+boss.getHealth()+" to "+(bossHealthMap.get(boss)/1000.0));
+			((PigZombie)boss).setTarget((LivingEntity) event.getDamager());
+			boss.setHealth(boss.getHealth()-1);
+			bossHealthMap.put(boss, bossHealthMap.get(boss)-event.getDamage());
 			if(event.getDamager() instanceof Player){
-				((Player)event.getDamager()).sendMessage("Ahkmed has dropped below "+bossHealth+" health!!!");
+				((Player)event.getDamager()).sendMessage("Ahkmed has dropped below "+bossHealthMap.get(boss)+" health!!!");
 			}
 
 		}else{
-			boss.damage(0, event.getDamager());
-			bossHealth = bossHealth-(event.getDamage());
+			((PigZombie)boss).setTarget((LivingEntity) event.getDamager());
+			bossHealthMap.put(boss, bossHealthMap.get(boss)-event.getDamage());
 			if(event.getDamager() instanceof Player){
-
-				bossHealth = bossHealth-enchantDamageCalculator((Player)event.getDamager(), event.getEntity());
+				bossHealthMap.put(boss, bossHealthMap.get(boss)-enchantDamageCalculator((Player)event.getDamager(), event.getEntity()));
 			}
 		}
-		if(Bosses.boss.getHealth() == 0){
+		if(boss.getHealth() == 0){
 			ItemStack items = new ItemStack(Material.DIAMOND_SWORD, 1);
 			items.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, 8);
 			items.addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, 4);
 
-			Bosses.boss.getWorld().dropItemNaturally(Bosses.boss.getLocation(),items);
-			Bosses.boss.remove();
+			boss.getWorld().dropItemNaturally(boss.getLocation(),items);
+			boss.remove();
+			//bossHealthMap.remove(boss);
 		}
 	}
-
-
+	public void damageTriggers(EntityDamageEvent event, String bossname){
+		if(bossname.equals("Ahkmed")){
+			stageWolf(event);
+			stagePower(event);
+			stageFire(event);
+		}
+	}
 	
 	//
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//
-	// "Ahkmed"
+	// "Ahkmed" Triggers
 	//
-	public void triggersAhkmed(EntityDamageEvent event){
-		stageWolf(event);
-		stagePower(event);
-		stageFire(event);
-	}
 	public void stageWolf(EntityDamageEvent event){
-		if(bossHealth%100 == 0)wolftrigger = true;
+		LivingEntity boss = ((LivingEntity)event.getEntity());
+		if(bossHealthMap.get(boss)%50 == 0)wolftrigger = true;
 		else if(wolftrigger){
 			for(int i =0; i<10;i++){
 				((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setAngry(true);
@@ -106,17 +151,19 @@ public class Bosses {
 		}
 	}
 	public void stagePower(EntityDamageEvent event){
-		if(bossHealth < 8000) powertrigger = true;
+		LivingEntity boss = ((LivingEntity)event.getEntity());
+		if(bossHealthMap.get(boss) < 8000) powertrigger = true;
 		else if(powertrigger){
 			boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 5));
 		}
-		if(bossHealth < 5000) powertrigger2 = true;
+		if(bossHealthMap.get(boss) < 5000) powertrigger2 = true;
 		else if(powertrigger2){
 			boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 72000, 4));
 		}
 	}
 	public void stageFire(EntityDamageEvent event){
-		if(bossHealth < 2000){
+		LivingEntity boss = ((LivingEntity)event.getEntity());
+		if(bossHealthMap.get(boss) < 2000){
 			boss.setFireTicks(60);
 			List<Entity> entities = boss.getNearbyEntities(5, 2, 5);
 			for(int i = 0;i<entities.size();i++){
@@ -124,6 +171,9 @@ public class Bosses {
 			}
 		}
 	}
+	//
+	//
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	
 	public int enchantDamageCalculator(Player player, Entity entity){

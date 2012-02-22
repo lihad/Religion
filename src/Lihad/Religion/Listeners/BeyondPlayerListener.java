@@ -4,12 +4,15 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -82,17 +85,48 @@ public class BeyondPlayerListener extends PlayerListener {
 		if(!closestFrom.equals(closestTo)){
 			event.getPlayer().sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(event.getPlayer(), closestTo) + closestTo);
 		}
-		if(event.getPlayer().getWorld().equals(BeyondConfig.getAhkmedLocation().getWorld())){
-			if(BeyondConfig.getAhkmedLocation().distance(event.getPlayer().getLocation()) < 50 && !Bosses.exist){
-				System.out.println("SPAWN AHKMED");
-				Religion.bosses.spawnBoss(BeyondConfig.getAhkmedLocation());
+		//BOSS SPAWNER
+		for(int a = 0;a<Bosses.configBossMap.size();a++){
+			Location location = (Location) Bosses.configBossMap.keySet().toArray()[a];
+			if(event.getPlayer().getWorld().equals(location.getWorld())){
+				if(location.distance(event.getPlayer().getLocation()) < 50 && !Bosses.bossExistMap.get(Bosses.bossNameMap.get(Bosses.configBossMap.get(location)))){
+					System.out.println("BOSS SPAWN");
+					Religion.bosses.spawnBoss(location, Bosses.configBossMap.get(location));
+				}
+
 			}
+
 		}
-		if(Bosses.boss != null){
-			if(Bosses.boss.getNearbyEntities(50, 128, 50).isEmpty()){
-				Bosses.exist = false;
-				Bosses.boss = null;
-				System.out.println("AHKMED GONE");
+		if(Bosses.bossHealthMap != null){
+			for(int a = 0; a<Bosses.bossHealthMap.size();a++){
+				Creature boss = (Creature) Bosses.bossHealthMap.keySet().toArray()[a];
+				if(boss.getNearbyEntities(50, 128, 50).isEmpty()){
+					Bosses.bossExistMap.put(boss, false);
+					boss.remove();
+					//Bosses.bossHealthMap.remove(boss);
+					System.out.println("BOSS GONE");
+
+
+				}
+				else if(boss.getTarget() != null){
+					if(boss.getTarget().getWorld().equals(boss.getWorld())){
+						if((boss).getLocation().distance((boss).getTarget().getLocation()) > 50){
+							List<Entity> entities = boss.getNearbyEntities(50, 128, 50);
+							for(int i = 0; i<entities.size(); i++){
+								if(entities.get(i) instanceof Player){
+									boss.setTarget((LivingEntity) entities.get(i));
+								}
+							}
+						}
+					}else{
+						List entities = boss.getNearbyEntities(50, 128, 50);
+						for(int i = 0; i<entities.size(); i++){
+							if(entities.get(i) instanceof Player){
+								boss.setTarget((LivingEntity) entities.get(i));
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -190,7 +224,10 @@ public class BeyondPlayerListener extends PlayerListener {
 			//
 			//
 			//
-			if((!BeyondInfo.getTowerName(event.getPlayer()).equals(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation()))) && BeyondInfo.getReligion(event.getPlayer()).equals(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation())))){
+			if(BeyondInfo.getTowerName(event.getPlayer()) == null){
+				event.getPlayer().sendMessage("You must be a member of a Religion to interact with this chest.");
+				event.setCancelled(true);
+			}else if((!BeyondInfo.getTowerName(event.getPlayer()).equals(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation()))) && BeyondInfo.getReligion(event.getPlayer()).equals(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation())))){
 				event.getPlayer().sendMessage("You need to be a member of this tower to interact with this chest in that manner.");
 				event.setCancelled(true);
 			}else if(BeyondInfo.getTowerName(event.getPlayer()).equals(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation()))){

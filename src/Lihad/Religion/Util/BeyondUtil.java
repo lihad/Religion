@@ -161,7 +161,7 @@ public class BeyondUtil {
 				|| stack.getType() == Material.GOLD_CHESTPLATE
 				|| stack.getType() == Material.GOLD_HELMET
 				|| stack.getType() == Material.GOLD_LEGGINGS
-				|| stack.getType() == Material.GOLD_PICKAXE
+				|| stack.getType() == Material.GOLD_AXE
 				|| stack.getType() == Material.GOLD_SPADE
 				|| stack.getType() == Material.GOLD_PICKAXE
 				|| stack.getType() == Material.GOLD_SWORD)
@@ -170,7 +170,7 @@ public class BeyondUtil {
 				|| stack.getType() == Material.IRON_CHESTPLATE
 				|| stack.getType() == Material.IRON_HELMET
 				|| stack.getType() == Material.IRON_LEGGINGS
-				|| stack.getType() == Material.IRON_PICKAXE
+				|| stack.getType() == Material.IRON_AXE
 				|| stack.getType() == Material.IRON_SPADE
 				|| stack.getType() == Material.IRON_PICKAXE
 				|| stack.getType() == Material.IRON_SWORD)
@@ -179,7 +179,7 @@ public class BeyondUtil {
 				|| stack.getType() == Material.DIAMOND_CHESTPLATE
 				|| stack.getType() == Material.DIAMOND_HELMET
 				|| stack.getType() == Material.DIAMOND_LEGGINGS
-				|| stack.getType() == Material.DIAMOND_PICKAXE
+				|| stack.getType() == Material.DIAMOND_AXE
 				|| stack.getType() == Material.DIAMOND_SPADE
 				|| stack.getType() == Material.DIAMOND_PICKAXE
 				|| stack.getType() == Material.DIAMOND_SWORD)

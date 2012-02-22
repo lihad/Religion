@@ -151,6 +151,9 @@ public class CommandRunner implements CommandExecutor {
 				if(BeyondInfo.getLeader((Player)sender).equals(((Player)sender).getName())){
 				BeyondUtil.towerBroadcast(BeyondInfo.getTowerName((Player)sender), "The leader of Tower "+BeyondInfo.getTowerName((Player)sender)+" has parished");
 				BeyondInfo.removeTower(BeyondInfo.getReligion(BeyondInfo.getTowerName((Player)sender)), BeyondInfo.getTowerName((Player)sender));
+				}else{
+					BeyondInfo.removePlayer((Player)sender);
+					sender.sendMessage("You have left your tower and religion");
 				}
 			}else{
 				BeyondInfo.removePlayer((Player)sender);
@@ -170,7 +173,7 @@ public class CommandRunner implements CommandExecutor {
 		/**
 		 * Drives '/rr <religion> list' Lists all towers associated with param religion
 		 */
-		else if(cmd.getName().equalsIgnoreCase("rr") && BeyondInfo.getReligions().contains(arg[0]) && arg[1].equals("list") && arg.length == 2){
+		else if(arg.length == 2 && cmd.getName().equalsIgnoreCase("rr") && BeyondInfo.getReligions().contains(arg[0]) && arg[1].equals("list")){
 			sender.sendMessage("The towers that exist are: "+BeyondInfo.getTowers(arg[0]));
 			return true;
 		}
@@ -181,7 +184,6 @@ public class CommandRunner implements CommandExecutor {
 		 */
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("details") && arg.length == 2){
 			if(BeyondInfo.hasTower(arg[1])){
-				Religion.bosses.spawnBoss(BeyondConfig.getAhkmedLocation());
 				sender.sendMessage("General Info");
 			}else{
 				sender.sendMessage("This is not a valid tower. The towers that exist are: "+BeyondInfo.getTowers(arg[0]));

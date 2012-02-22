@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
@@ -83,13 +84,15 @@ public class BeyondEntityListener extends EntityListener {
 		
 		if(event instanceof EntityDamageByEntityEvent)onEntityDamageByEntity((EntityDamageByEntityEvent)event);
 
-		if(event.getEntity() instanceof LivingEntity){
-			if(((LivingEntity)event.getEntity()).equals(Bosses.boss) && !(event instanceof EntityDamageByEntityEvent)){
-				if(!(((PigZombie)Bosses.boss).getTarget() == null))Religion.bosses.healthDeplete(event);
-				event.setDamage(0);
-
-				System.out.println(Bosses.bossHealth);
-				System.out.println(Bosses.boss.getHealth());
+		if(event.getEntity() instanceof Creature){
+			if((Bosses.bossHealthMap.containsKey(event.getEntity())) && !(event instanceof EntityDamageByEntityEvent)){
+				for(int i = 0;i<Bosses.bossHealthMap.size();i++){
+					LivingEntity entity = (LivingEntity) Bosses.bossHealthMap.keySet().toArray()[i];
+					if(entity.equals(event.getEntity())){
+						if(!(((Creature)entity).getTarget() == null))Religion.bosses.healthDeplete(event);
+						event.setCancelled(true);
+					}
+				}
 			}
 		}
 	}
@@ -128,24 +131,26 @@ public class BeyondEntityListener extends EntityListener {
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
-		// "Ahkmed"
+		// "Bosses"
 		//
-		if(event.getEntity() instanceof LivingEntity){
-			if(((LivingEntity)event.getEntity()).equals(Bosses.boss) ){
-				if(event.getCause() == DamageCause.PROJECTILE){
-					if((((PigZombie)Bosses.boss).getTarget() == null)){
-						event.setCancelled(true);
-						return;
+		if(event.getEntity() instanceof Creature){
+			for(int i = 0;i<Bosses.bossHealthMap.size();i++){
+				LivingEntity entity = (LivingEntity) Bosses.bossHealthMap.keySet().toArray()[i];
+				if(entity.equals(event.getEntity())){
+					if(event.getCause() == DamageCause.PROJECTILE){
+						if((((Creature)entity).getTarget() == null)){
+							event.setCancelled(true);
+							return;
+						}
 					}
+					for(int j=0;j<Bosses.bossNameMap.size();j++){
+						if(Bosses.bossNameMap.get(Bosses.bossNameMap.keySet().toArray()[j]).equals(entity)){
+							Religion.bosses.damageTriggers(event, (String) Bosses.bossNameMap.keySet().toArray()[j]);
+						}
+					}
+					Religion.bosses.healthDepleteByEntity(event);
+					event.setCancelled(true);
 				}
-				Religion.bosses.triggersAhkmed(event);
-				Religion.bosses.healthDepleteByEntity(event);
-				event.setCancelled(true);
-				
-
-
-				System.out.println(Bosses.bossHealth);
-				System.out.println(Bosses.boss.getHealth());
 			}
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +158,7 @@ public class BeyondEntityListener extends EntityListener {
 
 		
 		
-		if(event.getDamager() instanceof Player){
+		if(event.getDamager() instanceof Player && !Bosses.bossHealthMap.containsKey(event.getEntity())){
 			Player player = (Player)event.getDamager();
 			if(BeyondInfo.getReligion(player) != null){
 				int dice = calculator(player);

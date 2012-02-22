@@ -440,6 +440,16 @@ public class BeyondInfo {
 		}
 		return players;
 	}
+	public static List<String> getTowerPlayerNames(String towername){
+		List<String> playernames = BeyondInfoReader.getKeyList("Players");
+		List<String> names = new ArrayList<String>();
+		for(int i=0;i<playernames.size();i++){
+			if(BeyondInfoReader.getString("Players."+playernames.get(i)).contains(towername)){
+				names.add(playernames.get(i));
+			}
+		}
+		return names;
+	}
 	public static List<Player> getReligionPlayers(String religion){
 		List<Player> players = new ArrayList<Player>();
 		List<Player> playersall = getOnlineReligionPlayers();
@@ -624,7 +634,7 @@ public class BeyondInfo {
 	 * @param towername
 	 */
 	public static void removeTower(String religion, String towername){
-		List<Player> players = getTowerPlayers(towername);
+		List<String> players = getTowerPlayerNames(towername);
 		for(int i =0; i<players.size();i++){
 			removePlayer(players.get(i));
 		}

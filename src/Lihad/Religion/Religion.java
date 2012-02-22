@@ -152,6 +152,8 @@ public class Religion extends JavaPlugin {
 		cmd = new CommandRunner(this);
 		getCommand("rr").setExecutor(cmd);
 		
+		//BossInitiallizer
+		bosses.bossInit();
 		System.out.println("[Religion] Has launched successfully.");
 		System.out.println("-----------------------------------------");
 	}
