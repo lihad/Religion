@@ -27,6 +27,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityListener;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.SheepRegrowWoolEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
@@ -49,7 +50,6 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	
 	public void onEntityDamage(EntityDamageEvent event){
-
 		if(event.getEntity() instanceof Block){
 			Block block = (Block)event.getEntity();
 			if(block.getType() == Material.CHEST){
@@ -80,7 +80,6 @@ public class BeyondEntityListener extends EntityListener {
 				}
 			}
 		}
-		
 		
 		if(event instanceof EntityDamageByEntityEvent)onEntityDamageByEntity((EntityDamageByEntityEvent)event);
 
@@ -125,6 +124,15 @@ public class BeyondEntityListener extends EntityListener {
 			}
 		}
 	}
+	public void onExplosionPrime(ExplosionPrimeEvent event){
+		if(event.getEntity() instanceof LivingEntity){
+			if(Bosses.bossHealthMap.containsKey((LivingEntity)event.getEntity())){
+				event.setCancelled(true);
+
+
+			}
+		}
+	}
 
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
 
@@ -161,7 +169,7 @@ public class BeyondEntityListener extends EntityListener {
 		if(event.getDamager() instanceof Player && !Bosses.bossHealthMap.containsKey(event.getEntity())){
 			Player player = (Player)event.getDamager();
 			if(BeyondInfo.getReligion(player) != null){
-				int dice = calculator(player);
+				int dice = BeyondUtil.calculator(player);
 					
 				
 				//
@@ -170,7 +178,7 @@ public class BeyondEntityListener extends EntityListener {
 				// "Golden Fleece"
 				//
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Sheep){
-					if(event.getDamage() >= ((Sheep)event.getEntity()).getHealth() && calculator(player) < 20){
+					if(event.getDamage() >= ((Sheep)event.getEntity()).getHealth() && BeyondUtil.calculator(player) < 20){
 						event.getEntity().remove();
 						event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), new ItemStack(Material.GOLD_INGOT, 3));
 					}
@@ -220,7 +228,7 @@ public class BeyondEntityListener extends EntityListener {
 								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 7)
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 7)){
 							event.getEntity().remove();
-							Potion potion = new Potion(potionTypeRandomizer(), potionTierRandomizer(), potionSplashRandomizer());
+							Potion potion = new Potion(BeyondUtil.potionTypeRandomizer(), BeyondUtil.potionTierRandomizer(), BeyondUtil.potionSplashRandomizer());
 							ItemStack stack = new ItemStack(Material.POTION, 1);
 							potion.apply(stack);
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);	
@@ -242,14 +250,14 @@ public class BeyondEntityListener extends EntityListener {
 								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
 							event.getEntity().remove();
-							ItemStack stack = new ItemStack(weaponTypeRandomizer(), 1);
+							ItemStack stack = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
 							while(stack.getEnchantments().isEmpty()){
-								stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
 								Random chance = new Random();
 								int next = chance.nextInt(100);
-								if(next<10)stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
-								if(next<5)stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
-								if(next<1)stack.addUnsafeEnchantment(weaponEnchantRandomizer(), weaponLevelRandomizer());
+								if(next<10)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(),BeyondUtil.weaponLevelRandomizer());
+								if(next<5)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+								if(next<1)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
 							}
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
@@ -271,13 +279,13 @@ public class BeyondEntityListener extends EntityListener {
 								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
 							event.getEntity().remove();
-							ItemStack stack = new ItemStack(armorTypeRandomizer(), 1);
-							stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+							ItemStack stack = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
+							stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
 							Random chance = new Random();
 							int next = chance.nextInt(100);
-							if(next<10)stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());							
-							if(next<5)stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
-							if(next<1)stack.addUnsafeEnchantment(armorEnchantRandomizer(), armorLevelRandomizer());
+							if(next<10)stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());							
+							if(next<5)stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+							if(next<1)stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
 						}
@@ -298,14 +306,14 @@ public class BeyondEntityListener extends EntityListener {
 								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 30)
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
 							event.getEntity().remove();
-							ItemStack stack = new ItemStack(toolTypeRandomizer(), 1);
+							ItemStack stack = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
 							while(stack.getEnchantments().isEmpty()){
-								stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
 								Random chance = new Random();
 								int next = chance.nextInt(100);
-								if(next<10)stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-								if(next<5)stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
-								if(next<1)stack.addUnsafeEnchantment(toolEnchantRandomizer(), toolLevelRandomizer());
+								if(next<10)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+								if(next<5)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+								if(next<1)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
 							}
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
@@ -317,171 +325,5 @@ public class BeyondEntityListener extends EntityListener {
 	}
 	
 	
-	//
-	//
-	// Helper Functions
-	//
-	//
-	
-	
-	private int calculator(Player player){
-		Random chance = new Random();
-		int next = chance.nextInt(1000);
-		int playerlevel = player.getLevel()/10;
-		if(playerlevel > 10)playerlevel = 10;
-		return (next - (playerlevel*3));
-	}
-	private PotionType potionTypeRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(9);
-		switch(next){
-		case 0: return PotionType.SPEED;
-		case 1: return PotionType.SLOWNESS;
-		case 2: return PotionType.FIRE_RESISTANCE;
-		case 3: return PotionType.REGEN;
-		case 4: return PotionType.INSTANT_DAMAGE;
-		case 5: return PotionType.INSTANT_HEAL;
-		case 6: return PotionType.POISON;
-		case 7: return PotionType.WEAKNESS;
-		case 8: return PotionType.STRENGTH;
-		}
-		return PotionType.SPEED;
-	}
-	private Tier potionTierRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(3);
-		if(next < 2){
-			return Tier.ONE;
-		}else return Tier.TWO;
-	}
-	private boolean potionSplashRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(2);
-		if(next == 0)return true;
-		else return false;
-	}
-	private Material weaponTypeRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(100);
-		if(next<10)return Material.DIAMOND_SWORD;
-		else if(next<25)return Material.IRON_SWORD;
-		else if(next<50)return Material.GOLD_SWORD;
-		else return Material.WOOD_SWORD;
-	}
-	private Enchantment weaponEnchantRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(6);
-		switch(next){
-		case 0: return Enchantment.LOOT_BONUS_MOBS;
-		case 1: return Enchantment.KNOCKBACK;
-		case 2: return Enchantment.FIRE_ASPECT;
-		case 3: return Enchantment.DAMAGE_UNDEAD;
-		case 4: return Enchantment.DAMAGE_ARTHROPODS;
-		case 5: return Enchantment.DAMAGE_ALL;
-		}
-		return Enchantment.DAMAGE_ALL;
-	}
-	private int weaponLevelRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(100);
-		if(next<1)return 10;
-		else if(next<3)return 9;
-		else if(next<6)return 8;
-		else if(next<10)return 7;
-		else if(next<15)return 6;
-		else if(next<20)return 5;
-		else if(next<30)return 4;
-		else if(next<40)return 3;
-		else if(next<50)return 2;
-		else return 1;
-	}
-	private Material armorTypeRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(100);
-		if(next<2)return Material.DIAMOND_CHESTPLATE;
-		else if(next<5)return Material.DIAMOND_BOOTS;
-		else if(next<7)return Material.DIAMOND_HELMET;
-		else if(next<10)return Material.DIAMOND_LEGGINGS;
-		else if(next<13)return Material.IRON_CHESTPLATE;
-		else if(next<17)return Material.IRON_BOOTS;
-		else if(next<21)return Material.IRON_HELMET;
-		else if(next<25)return Material.IRON_LEGGINGS;
-		else if(next<29)return Material.GOLD_CHESTPLATE;
-		else if(next<36)return Material.GOLD_BOOTS;
-		else if(next<43)return Material.GOLD_HELMET;
-		else if(next<50)return Material.GOLD_LEGGINGS;
-		else if(next<60)return Material.LEATHER_CHESTPLATE;
-		else if(next<73)return Material.LEATHER_BOOTS;
-		else if(next<86)return Material.LEATHER_HELMET;
-		else return Material.LEATHER_LEGGINGS;
-	}
-	private Enchantment armorEnchantRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(4);
-		switch(next){
-		case 0: return Enchantment.PROTECTION_FIRE;
-		case 1: return Enchantment.PROTECTION_PROJECTILE;
-		case 2: return Enchantment.PROTECTION_ENVIRONMENTAL;
-		case 3: return Enchantment.PROTECTION_EXPLOSIONS;
-		}
-		return Enchantment.PROTECTION_EXPLOSIONS;
-	}
-	private int armorLevelRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(100);
-		if(next<1)return 10;
-		else if(next<3)return 9;
-		else if(next<6)return 8;
-		else if(next<10)return 7;
-		else if(next<15)return 6;
-		else if(next<20)return 5;
-		else if(next<30)return 4;
-		else if(next<40)return 3;
-		else if(next<50)return 2;
-		else return 1;
-	}
-	private Material toolTypeRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(100);
-		if(next<4)return Material.DIAMOND_AXE;
-		else if(next<7)return Material.DIAMOND_PICKAXE;
-		else if(next<10)return Material.DIAMOND_SPADE;
-		else if(next<15)return Material.IRON_AXE;
-		else if(next<20)return Material.IRON_PICKAXE;
-		else if(next<25)return Material.IRON_SPADE;
-		else if(next<29)return Material.GOLD_AXE;
-		else if(next<33)return Material.GOLD_PICKAXE;
-		else if(next<37)return Material.GOLD_SPADE;
-		else if(next<41)return Material.STONE_AXE;
-		else if(next<45)return Material.STONE_PICKAXE;
-		else if(next<50)return Material.STONE_SPADE;
-		else if(next<60)return Material.WOOD_PICKAXE;
-		else if(next<85)return Material.WOOD_AXE;
-		else return Material.WOOD_SPADE;
-	}
-	private Enchantment toolEnchantRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(4);
-		switch(next){
-		case 0: return Enchantment.DURABILITY;
-		case 1: return Enchantment.LOOT_BONUS_BLOCKS;
-		case 2: return Enchantment.DIG_SPEED;
-		case 3: return Enchantment.SILK_TOUCH;
-		}
-		return Enchantment.PROTECTION_EXPLOSIONS;
-	}
-	private int toolLevelRandomizer(){
-		Random chance = new Random();
-		int next = chance.nextInt(100);
-		if(next<1)return 10;
-		else if(next<3)return 9;
-		else if(next<6)return 8;
-		else if(next<10)return 7;
-		else if(next<15)return 6;
-		else if(next<20)return 5;
-		else if(next<30)return 4;
-		else if(next<40)return 3;
-		else if(next<50)return 2;
-		else return 1;
-	}
+
 }

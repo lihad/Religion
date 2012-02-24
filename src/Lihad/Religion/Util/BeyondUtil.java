@@ -1,6 +1,7 @@
 package Lihad.Religion.Util;
 
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -9,6 +10,8 @@ import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionType;
+import org.bukkit.potion.Potion.Tier;
 
 import Lihad.Religion.Information.BeyondInfo;
 
@@ -215,5 +218,172 @@ public class BeyondUtil {
 		else if(index >= 4)return ChatColor.GREEN.toString();
 		else if(index >= 2)return ChatColor.YELLOW.toString();
 		else return ChatColor.GRAY.toString();
+	}
+	//
+	//
+	// Helper Functions
+	//
+	//
+	
+	
+	public static int calculator(Player player){
+		Random chance = new Random();
+		int next = chance.nextInt(1000);
+		int playerlevel = player.getLevel()/10;
+		if(playerlevel > 10)playerlevel = 10;
+		return (next - (playerlevel*3));
+	}
+	public static PotionType potionTypeRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(9);
+		switch(next){
+		case 0: return PotionType.SPEED;
+		case 1: return PotionType.SLOWNESS;
+		case 2: return PotionType.FIRE_RESISTANCE;
+		case 3: return PotionType.REGEN;
+		case 4: return PotionType.INSTANT_DAMAGE;
+		case 5: return PotionType.INSTANT_HEAL;
+		case 6: return PotionType.POISON;
+		case 7: return PotionType.WEAKNESS;
+		case 8: return PotionType.STRENGTH;
+		}
+		return PotionType.SPEED;
+	}
+	public static Tier potionTierRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(3);
+		if(next < 2){
+			return Tier.ONE;
+		}else return Tier.TWO;
+	}
+	public static boolean potionSplashRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(2);
+		if(next == 0)return true;
+		else return false;
+	}
+	public static Material weaponTypeRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(100);
+		if(next<10)return Material.DIAMOND_SWORD;
+		else if(next<25)return Material.IRON_SWORD;
+		else if(next<50)return Material.GOLD_SWORD;
+		else return Material.WOOD_SWORD;
+	}
+	public static Enchantment weaponEnchantRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(6);
+		switch(next){
+		case 0: return Enchantment.LOOT_BONUS_MOBS;
+		case 1: return Enchantment.KNOCKBACK;
+		case 2: return Enchantment.FIRE_ASPECT;
+		case 3: return Enchantment.DAMAGE_UNDEAD;
+		case 4: return Enchantment.DAMAGE_ARTHROPODS;
+		case 5: return Enchantment.DAMAGE_ALL;
+		}
+		return Enchantment.DAMAGE_ALL;
+	}
+	public static int weaponLevelRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(100);
+		if(next<1)return 10;
+		else if(next<3)return 9;
+		else if(next<6)return 8;
+		else if(next<10)return 7;
+		else if(next<15)return 6;
+		else if(next<20)return 5;
+		else if(next<30)return 4;
+		else if(next<40)return 3;
+		else if(next<50)return 2;
+		else return 1;
+	}
+	public static Material armorTypeRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(100);
+		if(next<2)return Material.DIAMOND_CHESTPLATE;
+		else if(next<5)return Material.DIAMOND_BOOTS;
+		else if(next<7)return Material.DIAMOND_HELMET;
+		else if(next<10)return Material.DIAMOND_LEGGINGS;
+		else if(next<13)return Material.IRON_CHESTPLATE;
+		else if(next<17)return Material.IRON_BOOTS;
+		else if(next<21)return Material.IRON_HELMET;
+		else if(next<25)return Material.IRON_LEGGINGS;
+		else if(next<29)return Material.GOLD_CHESTPLATE;
+		else if(next<36)return Material.GOLD_BOOTS;
+		else if(next<43)return Material.GOLD_HELMET;
+		else if(next<50)return Material.GOLD_LEGGINGS;
+		else if(next<60)return Material.LEATHER_CHESTPLATE;
+		else if(next<73)return Material.LEATHER_BOOTS;
+		else if(next<86)return Material.LEATHER_HELMET;
+		else return Material.LEATHER_LEGGINGS;
+	}
+	public static Enchantment armorEnchantRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(4);
+		switch(next){
+		case 0: return Enchantment.PROTECTION_FIRE;
+		case 1: return Enchantment.PROTECTION_PROJECTILE;
+		case 2: return Enchantment.PROTECTION_ENVIRONMENTAL;
+		case 3: return Enchantment.PROTECTION_EXPLOSIONS;
+		}
+		return Enchantment.PROTECTION_EXPLOSIONS;
+	}
+	public static int armorLevelRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(100);
+		if(next<1)return 10;
+		else if(next<3)return 9;
+		else if(next<6)return 8;
+		else if(next<10)return 7;
+		else if(next<15)return 6;
+		else if(next<20)return 5;
+		else if(next<30)return 4;
+		else if(next<40)return 3;
+		else if(next<50)return 2;
+		else return 1;
+	}
+	public static Material toolTypeRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(100);
+		if(next<4)return Material.DIAMOND_AXE;
+		else if(next<7)return Material.DIAMOND_PICKAXE;
+		else if(next<10)return Material.DIAMOND_SPADE;
+		else if(next<15)return Material.IRON_AXE;
+		else if(next<20)return Material.IRON_PICKAXE;
+		else if(next<25)return Material.IRON_SPADE;
+		else if(next<29)return Material.GOLD_AXE;
+		else if(next<33)return Material.GOLD_PICKAXE;
+		else if(next<37)return Material.GOLD_SPADE;
+		else if(next<41)return Material.STONE_AXE;
+		else if(next<45)return Material.STONE_PICKAXE;
+		else if(next<50)return Material.STONE_SPADE;
+		else if(next<60)return Material.WOOD_PICKAXE;
+		else if(next<85)return Material.WOOD_AXE;
+		else return Material.WOOD_SPADE;
+	}
+	public static Enchantment toolEnchantRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(4);
+		switch(next){
+		case 0: return Enchantment.DURABILITY;
+		case 1: return Enchantment.LOOT_BONUS_BLOCKS;
+		case 2: return Enchantment.DIG_SPEED;
+		case 3: return Enchantment.SILK_TOUCH;
+		}
+		return Enchantment.PROTECTION_EXPLOSIONS;
+	}
+	public static int toolLevelRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(100);
+		if(next<1)return 10;
+		else if(next<3)return 9;
+		else if(next<6)return 8;
+		else if(next<10)return 7;
+		else if(next<15)return 6;
+		else if(next<20)return 5;
+		else if(next<30)return 4;
+		else if(next<40)return 3;
+		else if(next<50)return 2;
+		else return 1;
 	}
 }

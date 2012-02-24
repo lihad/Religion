@@ -97,16 +97,17 @@ public class BeyondPlayerListener extends PlayerListener {
 			}
 
 		}
-		if(Bosses.bossHealthMap != null){
+		//
+		//
+		//
+		if(Bosses.bossHealthMap != null && Bosses.bossExistMap.containsValue(true)){
 			for(int a = 0; a<Bosses.bossHealthMap.size();a++){
 				Creature boss = (Creature) Bosses.bossHealthMap.keySet().toArray()[a];
 				if(boss.getNearbyEntities(50, 128, 50).isEmpty()){
 					Bosses.bossExistMap.put(boss, false);
 					boss.remove();
 					//Bosses.bossHealthMap.remove(boss);
-					System.out.println("BOSS GONE");
-
-
+					//System.out.println("BOSS GONE");
 				}
 				else if(boss.getTarget() != null){
 					if(boss.getTarget().getWorld().equals(boss.getWorld())){
@@ -119,12 +120,34 @@ public class BeyondPlayerListener extends PlayerListener {
 							}
 						}
 					}else{
-						List entities = boss.getNearbyEntities(50, 128, 50);
+						List<Entity> entities = boss.getNearbyEntities(10, 2, 10);
 						for(int i = 0; i<entities.size(); i++){
 							if(entities.get(i) instanceof Player){
 								boss.setTarget((LivingEntity) entities.get(i));
 							}
 						}
+					}
+				}
+				else if(boss.getTarget() == null){
+					List<Entity> entities = boss.getNearbyEntities(10, 2, 10);
+					if(!entities.isEmpty()){
+						for(int i = 0; i<entities.size(); i++){
+							if(entities.get(i) instanceof Player){
+								boss.setTarget((LivingEntity) entities.get(i));
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+		if(event.getPlayer().getNearbyEntities(20, 20, 20).contains(Bosses.bossNameMap.get("Xtal")) && Bosses.bossExistMap.get(Bosses.bossNameMap.get("Xtal"))==true &&((Creature)Bosses.bossNameMap.get("Xtal")).getTarget() != null){
+			Random chance = new Random();
+			for(int i=0;i<event.getPlayer().getNearbyEntities(20, 20, 20).size();i++){
+				if(event.getPlayer().getNearbyEntities(20, 20, 20).get(i)instanceof Player){
+					int random = chance.nextInt(1000);
+					if(random<1 && !event.getPlayer().getNearbyEntities(20, 20, 20).get(i).equals((LivingEntity)Bosses.bossNameMap.get("Xtal"))){
+						event.getPlayer().getNearbyEntities(20, 20, 20).get(i).getWorld().strikeLightning(event.getPlayer().getNearbyEntities(20, 20, 20).get(i).getLocation());
 					}
 				}
 			}

@@ -29,9 +29,9 @@ public class BeyondConfig {
 	public static int getMaximumAoE(){
 		return BeyondConfigReader.getInt("MaximumAoe");
 	}
-	public static Location getAhkmedLocation(){
+	public static Location getBossSimpleLocation(String bossname){
 		String[] array;
-		String string = BeyondConfigReader.getString("Ahkmed");
+		String string = BeyondConfigReader.getString("Bosses."+bossname);
 		array = string.split(",");
 		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 		return location;	
@@ -47,6 +47,9 @@ public class BeyondConfig {
 			map.put(location, names.get(i));
 		}
 		return map;
+	}
+	public static List<String> getBosses(){
+		return BeyondConfigReader.getKeyList("Bosses");
 	}
 	//has Functions
 	//set Functions

@@ -11,7 +11,8 @@ import Lihad.Religion.Religion;
 public class UpdateTimer {
 	public static Religion plugin;
 	public static Timer timer;
-	public static TimerTask task;
+
+	//public static TimerTask task;
 	public static Date date;
 	
     public UpdateTimer(Religion instance) {
@@ -27,5 +28,5 @@ public class UpdateTimer {
     	Calendar cal = Calendar.getInstance();    	
     	//TODO: Timer value needs to be configurable through Relgion.Config.BeyondConfig
     	timer.scheduleAtFixedRate(Religion.task, cal.getTime(),  1800000);
-    } 
+    }
 }
