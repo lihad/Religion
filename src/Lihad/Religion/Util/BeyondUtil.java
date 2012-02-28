@@ -431,7 +431,7 @@ public class BeyondUtil {
 		try
 		{
 			if (Religion.logBlock.getBlockChanges(params).size() > 0)
-				return false;
+				return true;
 		} catch (SQLException e)
 		{
 			Religion.severe("LogBlock exception: " + e.getLocalizedMessage());
@@ -441,6 +441,6 @@ public class BeyondUtil {
 			Religion.warning("LogBlock returned a null, probably means no changes nearby: " + e.getLocalizedMessage());
 			e.printStackTrace();
 		}
-		return true;
+		return false;
 	}
 }
