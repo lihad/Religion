@@ -93,13 +93,13 @@ public class BeyondInfo {
 	}
 	/**
 	 * 
-	 * @return Returns a list of all towers
+	 * @return Returns a list of all towers (returns empty list if no religions defined)
 	 */
 	public static List<String> getTowersAll(){
 		List<String> all = new ArrayList<String>();
-		for(int i=0;i<getReligions().size();i++){
-			all.addAll(getTowers(getReligions().get(i)));
-		}
+		if (getReligions()!= null)
+			for(int i=0;i<getReligions().size();i++)
+				all.addAll(getTowers(getReligions().get(i)));
 		return all;
 	}
 	/**
