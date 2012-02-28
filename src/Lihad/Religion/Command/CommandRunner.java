@@ -307,6 +307,16 @@ public class CommandRunner implements CommandExecutor {
 			}else ((Player)sender).sendMessage("This player either doesn't exist, or isn't online");
 			return true;
 		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("dz") && arg.length == 1){
+			Location location = BeyondInfo.getNearestDZLocation(((Player)sender).getLocation());
+			if(location != null){
+				((Player)sender).sendMessage("The nearest DZ is located at: X"+location.getBlockX()+" Z"+location.getBlockZ());
+			}else{
+				((Player)sender).sendMessage("There are currently no Devastation Zones that need repair. Check later.");
+			}
+			return true;
+		}
+
 
 		
 		else return false;

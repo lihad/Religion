@@ -472,6 +472,27 @@ public class BeyondInfo {
 	public static long getPlayerCooldown(Player player){
 		return BeyondInfoReader.getLong("Cooldown."+player.getName());
 	}
+	public static List<String> getDevastationZones(){
+		return BeyondInfoReader.getKeyList("DZ");
+	}
+	public static Location getDevastationZone(String areaname){
+		String[] array;
+		String string = BeyondInfoReader.getString("DZ."+areaname);
+		array = string.split(",");
+		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
+		return location;
+	}
+	public static Location getNearestDZLocation(Location location){
+		Location closest = null;
+		double distance = 1000000;
+		for(int i = 0;i<getDevastationZones().size();i++){
+			if(location.distance(getDevastationZone(getDevastationZones().get(i)))<distance){
+				distance = location.distance(getDevastationZone(getDevastationZones().get(i)));
+				closest = getDevastationZone(getDevastationZones().get(i));
+			}
+		}
+		return closest;
+	}
 
 	//has Functions
 	/**
@@ -575,6 +596,9 @@ public class BeyondInfo {
 	public static void setPlayerCooldown(Player player){
 		BeyondInfoWriter.writeConfigurationLong("Cooldown."+player.getName(), System.currentTimeMillis());
 	}
+	public static void setDevastationZone(String areaname, Location location){
+		BeyondInfoWriter.writeConfigurationString("DZ."+areaname, areaname);
+	}
 	//add Functions
 	public static void addPlayer(Player player, String towername){
 		setPlayerPath(player,towername);
@@ -621,7 +645,7 @@ public class BeyondInfo {
 		String towername = BeyondInfoReader.getString("Religions."+BeyondInfoReader.getString("Players."+playername)+".Name");
 		if(BeyondInfoReader.getKeyList("Players").contains(playername)){
 			int count = getTowerMemberCount(towername);
-			removeTrusted(towername, playername);
+			removeTrusted(towername, playername);  
 			setTowerMemberCount(towername, count-1);
 			BeyondInfoWriter.writeConfigurationNull("Players."+playername);
 		}else{
@@ -638,6 +662,9 @@ public class BeyondInfo {
 		for(int i =0; i<players.size();i++){
 			removePlayer(players.get(i));
 		}
+		//ADDS DEVASTATION ZONE
+		setDevastationZone(towername, BeyondInfo.getTowerLocation(towername));
+		//
 		BeyondInfoWriter.writeConfigurationNull("Religions."+religion+".Towers."+towername);
 	}
 	public static void removeTrusted(Player playerToBeRemoved, String towername){
@@ -670,6 +697,9 @@ public class BeyondInfo {
 	public static void removeCooldown(Player player){
 		BeyondInfoWriter.writeConfigurationNull("Cooldown."+player.getName());
 	}
+	public static void removeDevastationZone(String areaname){
+		BeyondInfoWriter.writeConfigurationNull("DZ."+areaname);
+	}
 	//is Functions
 	public static boolean isTowerArea(Location location, String towername){
 		if(Math.pow((location.getBlockX()-getTowerLocation(towername).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getTowerLocation(towername).getBlockZ()), 2) < Math.pow(getTowerAoE(towername), 2)) return true;
@@ -696,6 +726,14 @@ public class BeyondInfo {
 	public static boolean isPlayerLeader(Player player){
 		if(getLeader(player).equals(player.getName()))return true;
 		else return false;
+	}
+	public static boolean isDevastationZone(Location location){
+		List<String> zones = getDevastationZones();
+		if(zones.isEmpty())return false;
+		for(int i=0;i<zones.size();i++){
+			if(Math.pow((location.getBlockX()-getDevastationZone(zones.get(i)).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getDevastationZone(zones.get(i)).getBlockZ()), 2) < 50) return true;
+		}
+		return false;
 	}
 }
 

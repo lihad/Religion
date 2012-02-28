@@ -163,6 +163,9 @@ public class BeyondPlayerListener extends PlayerListener {
 				}
 			}
 		}
+		if(BeyondInfo.isDevastationZone(event.getTo()) && !BeyondInfo.isDevastationZone(event.getFrom())){
+			event.getPlayer().sendMessage("You are entering a Devastation Zone (DZ)");
+		}
 	}
 	public void onPlayerInteract(PlayerInteractEvent event){
 		if(event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.heal") && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
