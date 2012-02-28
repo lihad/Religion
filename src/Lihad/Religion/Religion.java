@@ -197,7 +197,7 @@ public class Religion extends JavaPlugin {
 	 * Logs an informative message to the console, prefaced with this plugin's header
 	 * @param message: String
 	 */
-	protected static void info(String message)
+	public static void info(String message)
 	{
 		log.info(header + ChatColor.WHITE + message);
 	}
@@ -207,7 +207,7 @@ public class Religion extends JavaPlugin {
 	 * Used to log severe problems that have prevented normal execution of the plugin
 	 * @param message: String
 	 */
-	protected static void severe(String message)
+	public static void severe(String message)
 	{
 		log.severe(header + ChatColor.RED + message);
 	}
@@ -217,7 +217,7 @@ public class Religion extends JavaPlugin {
 	 * Used to log problems that could interfere with the plugin's ability to meet admin expectations
 	 * @param message: String
 	 */
-	protected static void warning(String message)
+	public static void warning(String message)
 	{
 		log.warning(header + ChatColor.YELLOW + message);
 	}
@@ -227,7 +227,7 @@ public class Religion extends JavaPlugin {
 	 * @param level: Logging level under which to send the message
 	 * @param message: String
 	 */
-	protected static void log(java.util.logging.Level level, String message)
+	public static void log(java.util.logging.Level level, String message)
 	{
 		log.log(level, header + message);
 	}

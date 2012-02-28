@@ -1,11 +1,15 @@
 package Lihad.Religion.Util;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -13,6 +17,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
 import org.bukkit.potion.Potion.Tier;
 
+import de.diddiz.LogBlock.BlockChange;
+import de.diddiz.LogBlock.QueryParams;
+import de.diddiz.LogBlock.QueryParams.BlockChangeType;
+
+import Lihad.Religion.Religion;
 import Lihad.Religion.Information.BeyondInfo;
 
 /**
@@ -385,5 +394,51 @@ public class BeyondUtil {
 		else if(next<40)return 3;
 		else if(next<50)return 2;
 		else return 1;
+	}
+	
+	/**
+	 * @param block - Location where player wants to place a tower
+	 */
+	public static boolean isActiveArea(Player iCanHasTowerPlz, Block block)
+	{
+		QueryParams params = new QueryParams(Religion.logBlock);
+		String religion = BeyondInfo.getReligion(iCanHasTowerPlz);
+		List<Player> coReligionists = BeyondInfo.getReligionPlayers(religion);
+		Iterator<Player> iter = coReligionists.iterator();
+		params.players = new ArrayList<String>();
+		while(iter.hasNext())
+			params.players.add(iter.next().getName());
+		params.players.add("\"Fire\"");
+		params.players.add("\"Enderman\"");
+		params.players.add("\"Water\"");
+		params.players.add("\"WaterFlow\"");
+		params.players.add("\"Lava\"");
+		params.players.add("\"LavaFlow\"");
+		params.players.add("\"Creeper\"");
+		params.players.add("\"Environment\"");
+
+		params.bct = BlockChangeType.CREATED;
+		params.limit = 500;
+		params.since = 20160;
+		params.world = block.getWorld();
+		params.needDate = true;
+		params.needType = true;
+		params.needData = true;
+		params.needPlayer = true;
+		params.excludePlayersMode = true;
+		try
+		{
+			if (Religion.logBlock.getBlockChanges(params).size() > 0)
+				return false;
+		} catch (SQLException e)
+		{
+			Religion.severe("LogBlock exception: " + e.getLocalizedMessage());
+			e.printStackTrace();
+		} catch (NullPointerException e)
+		{
+			Religion.warning("LogBlock returned a null, probably means no changes nearby: " + e.getLocalizedMessage());
+			e.printStackTrace();
+		}
+		return true;
 	}
 }
