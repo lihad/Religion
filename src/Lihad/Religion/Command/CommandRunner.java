@@ -316,8 +316,17 @@ public class CommandRunner implements CommandExecutor {
 			}
 			return true;
 		}
-
-
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("dz") && arg[0].equals("remove") && arg.length == 2){
+			List<String> zones = BeyondInfo.getDevastationZones();
+			if(zones == null)return false;
+			for(int i=0;i<zones.size();i++){
+				if(BeyondInfo.isDevastationZone(((Player)sender).getLocation(), zones.get(i))){
+					BeyondInfo.removeDevastationZone(zones.get(i));
+					break;
+				}
+			}
+			return true;
+		}
 		
 		else return false;
 	}

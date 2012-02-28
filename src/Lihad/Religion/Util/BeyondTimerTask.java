@@ -48,6 +48,7 @@ public class BeyondTimerTask extends TimerTask {
 			}
 			
 			infoCleanUp();
+			areaCleanUpForDZ();
 			Religion.trades.driver();
 			Religion.information.save();
 		}catch(Exception e){
@@ -64,6 +65,15 @@ public class BeyondTimerTask extends TimerTask {
 			for(int i=0;i<players.size();i++){
 				if(System.currentTimeMillis()-BeyondInfo.getPlayerCooldown(players.get(i)) > 300000){
 					BeyondInfo.removeCooldown(players.get(i));
+				}
+			}
+		}
+	}
+	private void areaCleanUpForDZ(){
+		for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
+			for(int j=0;j<BeyondInfo.getDevastationZones().size();j++){
+				if(BeyondInfo.isTowerArea(BeyondInfo.getDevastationZoneLocation(BeyondInfo.getDevastationZones().get(j)), BeyondInfo.getTowersAll().get(i))){
+					BeyondInfo.removeDevastationZone(BeyondInfo.getDevastationZones().get(j));
 				}
 			}
 		}

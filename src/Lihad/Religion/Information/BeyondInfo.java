@@ -488,7 +488,7 @@ public class BeyondInfo {
 	public static List<String> getDevastationZones(){
 		return BeyondInfoReader.getKeyList("DZ");
 	}
-	public static Location getDevastationZone(String areaname){
+	public static Location getDevastationZoneLocation(String areaname){
 		String[] array;
 		String string = BeyondInfoReader.getString("DZ."+areaname);
 		array = string.split(",");
@@ -499,9 +499,9 @@ public class BeyondInfo {
 		Location closest = null;
 		double distance = 1000000;
 		for(int i = 0;i<getDevastationZones().size();i++){
-			if(location.distance(getDevastationZone(getDevastationZones().get(i)))<distance){
-				distance = location.distance(getDevastationZone(getDevastationZones().get(i)));
-				closest = getDevastationZone(getDevastationZones().get(i));
+			if(location.distance(getDevastationZoneLocation(getDevastationZones().get(i)))<distance){
+				distance = location.distance(getDevastationZoneLocation(getDevastationZones().get(i)));
+				closest = getDevastationZoneLocation(getDevastationZones().get(i));
 			}
 		}
 		return closest;
@@ -744,8 +744,12 @@ public class BeyondInfo {
 		List<String> zones = getDevastationZones();
 		if(zones == null)return false;
 		for(int i=0;i<zones.size();i++){
-			if(Math.pow((location.getBlockX()-getDevastationZone(zones.get(i)).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getDevastationZone(zones.get(i)).getBlockZ()), 2) < Math.pow(50,2)) return true;
+			if(Math.pow((location.getBlockX()-getDevastationZoneLocation(zones.get(i)).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getDevastationZoneLocation(zones.get(i)).getBlockZ()), 2) < Math.pow(50,2)) return true;
 		}
+		return false;
+	}
+	public static boolean isDevastationZone(Location location, String areaname){
+		if(Math.pow((location.getBlockX()-getDevastationZoneLocation(areaname).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getDevastationZoneLocation(areaname).getBlockZ()), 2) < Math.pow(50,2)) return true;
 		return false;
 	}
 	public static boolean is500Tower(Location location){
