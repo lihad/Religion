@@ -399,10 +399,11 @@ public class BeyondUtil {
 	/**
 	 * @param block - Location where player wants to place a tower
 	 */
-	public static boolean isActiveArea(Player iCanHasTowerPlz, Block block)
+	public static boolean isActiveArea(Player iCanHasTowerPlz, String religion, Block block)
 	{
+		//Player parameter will be used when we add some code for them to invite others to join the new tower...?
+		
 		QueryParams params = new QueryParams(Religion.logBlock);
-		String religion = BeyondInfo.getReligion(iCanHasTowerPlz);
 		List<Player> coReligionists = BeyondInfo.getReligionPlayers(religion);
 		Iterator<Player> iter = coReligionists.iterator();
 		params.players = new ArrayList<String>();
