@@ -399,6 +399,19 @@ public class BeyondInfo {
 		}
 		return closest;
 	}
+	public static String getClosestTower(Location location){
+		List<String> alltowers = getTowersAll();
+		String closest = null;
+		double distance = 1000000;
+		for(int i = 0;i<alltowers.size();i++){
+			if(getDistanceToTower(location, alltowers.get(i))<distance && isTowerArea(location, alltowers.get(i))){
+				distance = getDistanceToTower(location, alltowers.get(i));
+				closest = alltowers.get(i);
+			}
+		}
+		return closest;
+	}
+
 	/**
 	 * 
 	 * @param location
@@ -597,7 +610,7 @@ public class BeyondInfo {
 		BeyondInfoWriter.writeConfigurationLong("Cooldown."+player.getName(), System.currentTimeMillis());
 	}
 	public static void setDevastationZone(String areaname, Location location){
-		BeyondInfoWriter.writeConfigurationString("DZ."+areaname, areaname);
+		BeyondInfoWriter.writeConfigurationString("DZ."+areaname, location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
 	}
 	//add Functions
 	public static void addPlayer(Player player, String towername){
@@ -729,9 +742,19 @@ public class BeyondInfo {
 	}
 	public static boolean isDevastationZone(Location location){
 		List<String> zones = getDevastationZones();
-		if(zones.isEmpty())return false;
+		if(zones == null)return false;
 		for(int i=0;i<zones.size();i++){
-			if(Math.pow((location.getBlockX()-getDevastationZone(zones.get(i)).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getDevastationZone(zones.get(i)).getBlockZ()), 2) < 50) return true;
+			if(Math.pow((location.getBlockX()-getDevastationZone(zones.get(i)).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getDevastationZone(zones.get(i)).getBlockZ()), 2) < Math.pow(50,2)) return true;
+		}
+		return false;
+	}
+	public static boolean is500Tower(Location location){
+		List<String> alltowers = getTowersAll();
+		double distance = 500;
+		for(int i = 0;i<alltowers.size();i++){
+			if(getDistanceToTower(location, alltowers.get(i))<distance){
+				return true;
+			}
 		}
 		return false;
 	}

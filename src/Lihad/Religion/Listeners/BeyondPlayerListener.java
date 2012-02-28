@@ -164,7 +164,16 @@ public class BeyondPlayerListener extends PlayerListener {
 			}
 		}
 		if(BeyondInfo.isDevastationZone(event.getTo()) && !BeyondInfo.isDevastationZone(event.getFrom())){
-			event.getPlayer().sendMessage("You are entering a Devastation Zone (DZ)");
+			event.getPlayer().sendMessage(ChatColor.GRAY.toString()+"You are entering a Devastation Zone (DZ)");
+		}
+		if(BeyondInfo.isDevastationZone(event.getFrom()) && !BeyondInfo.isDevastationZone(event.getTo())){
+			event.getPlayer().sendMessage(ChatColor.GRAY.toString()+"You are leaving a Devastation Zone (DZ)");
+		}
+		if(BeyondInfo.is500Tower(event.getTo()) && !BeyondInfo.is500Tower(event.getFrom()) && !BeyondInfo.hasPlayer(event.getPlayer())){
+			event.getPlayer().sendMessage(ChatColor.RED.toString()+"The dark eye of "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getClosestTower(event.getTo())+ChatColor.RED.toString()+" is watching your every move. Build at your own risk. Type "+ChatColor.WHITE.toString()+"/reach"+ChatColor.RED.toString()+" for more info");
+		}
+		if(BeyondInfo.is500Tower(event.getFrom()) && !BeyondInfo.is500Tower(event.getTo()) && !BeyondInfo.hasPlayer(event.getPlayer())){
+			event.getPlayer().sendMessage(ChatColor.GREEN.toString()+"You have passed into the wilderness.");
 		}
 	}
 	public void onPlayerInteract(PlayerInteractEvent event){
