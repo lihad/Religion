@@ -407,6 +407,7 @@ public class BeyondUtil {
 		List<Player> coReligionists = BeyondInfo.getReligionPlayers(religion);
 		Iterator<Player> iter = coReligionists.iterator();
 		params.players = new ArrayList<String>();
+		params.players.add(iCanHasTowerPlz.getName());
 		while(iter.hasNext())
 			params.players.add(iter.next().getName());
 		params.players.add("\"Fire\"");
