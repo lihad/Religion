@@ -36,9 +36,11 @@ public class BeyondBlockListener extends BlockListener {
 					}
 					if(BeyondInfo.hasPlayer(event.getPlayer())){
 						event.getPlayer().sendMessage("You are already a member of a religion!");
+						return;
 					}
 					if(BeyondUtil.isActiveArea(event.getPlayer(), event.getLine(1), event.getBlock())){
 						event.getPlayer().sendMessage("This area is already being used.  Move away, or get the other players to join your religion!");
+						return;
 					}
 					BeyondInfo.addTower(event.getPlayer(), event.getLine(1), event.getLine(2), event.getBlock().getLocation());
 					if(event.getBlock().getRelative(1, 0, 0).getType() == Material.CHEST) event.getBlock().getRelative(1, 0, 0).setTypeId(0);
