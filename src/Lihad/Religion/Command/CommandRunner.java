@@ -150,9 +150,9 @@ public class CommandRunner implements CommandExecutor {
 			else if(BeyondInfo.getLeader((Player)sender) != null){
 				if(BeyondInfo.getLeader((Player)sender).equals(((Player)sender).getName())){
 				BeyondUtil.towerBroadcast(BeyondInfo.getTowerName((Player)sender), "The leader of Tower "+BeyondInfo.getTowerName((Player)sender)+" has parished");
-				BeyondInfo.removeTower(BeyondInfo.getReligion(BeyondInfo.getTowerName((Player)sender)), BeyondInfo.getTowerName((Player)sender));
 				BeyondInfo.getTowerLocation(BeyondInfo.getTowerName((Player)sender)).getWorld().createExplosion(BeyondInfo.getTowerLocation(BeyondInfo.getTowerName((Player)sender)), 5, true);
 				BeyondInfo.getTowerLocation(BeyondInfo.getTowerName((Player)sender)).getBlock().setTypeId(0);
+				BeyondInfo.removeTower(BeyondInfo.getReligion(BeyondInfo.getTowerName((Player)sender)), BeyondInfo.getTowerName((Player)sender));
 				}else{
 					BeyondInfo.removePlayer((Player)sender);
 					sender.sendMessage("You have left your tower and religion");
@@ -167,7 +167,6 @@ public class CommandRunner implements CommandExecutor {
 			Bosses.bossExistMap.clear();
 			Bosses.bossHealthMap.clear();
 			Bosses.bossMaxHealthMap.clear();
-
 			Religion.bosses.bossInit();
 			return true;
 		}
