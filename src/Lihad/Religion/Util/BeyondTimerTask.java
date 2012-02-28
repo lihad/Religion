@@ -70,6 +70,7 @@ public class BeyondTimerTask extends TimerTask {
 		}
 	}
 	private void areaCleanUpForDZ(){
+		if(BeyondInfo.getTowersAll() == null || BeyondInfo.getDevastationZones() == null)return;
 		for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
 			for(int j=0;j<BeyondInfo.getDevastationZones().size();j++){
 				if(BeyondInfo.isTowerArea(BeyondInfo.getDevastationZoneLocation(BeyondInfo.getDevastationZones().get(j)), BeyondInfo.getTowersAll().get(i))){
