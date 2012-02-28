@@ -2,6 +2,7 @@ package Lihad.Religion;
 
 import java.io.File;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
@@ -33,6 +34,8 @@ import Lihad.Religion.Util.UpdateTimer;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
+import de.diddiz.LogBlock.LogBlock;
+
 @SuppressWarnings("deprecation")
 public class Religion extends JavaPlugin {
 	
@@ -53,11 +56,17 @@ public class Religion extends JavaPlugin {
 	 * 
 	 */
 	
+	/** Name of the plugin, used in output messages */
+	protected static String name = "Religion";
+	/** Header used for console and player output messages */
+	protected static String header = "[" + name + "] ";
 	
+	public static java.util.logging.Logger log = java.util.logging.Logger.getLogger("Minecraft");
 	
     public static Configuration configuration;
     public static Configuration information;
 	public static PermissionHandler handler;
+	public static LogBlock logBlock;
 	public static CommandExecutor cmd;
     public static UpdateTimer timer;
     public static BeyondTimerTask task;
@@ -123,6 +132,7 @@ public class Religion extends JavaPlugin {
 		bosses = new Bosses(this);
 
 		//PermsManager
+		
 		setupPermissions();
 		
 		//PluginManager
@@ -164,11 +174,61 @@ public class Religion extends JavaPlugin {
 		Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
 		
 		if (permissionsPlugin != null) {
+			info("Succesfully connected to Permissions!");
 			handler = ((Permissions) permissionsPlugin).getHandler();
-
 		} else {
-			System.out.println("[Religion] Permissions has failed to connect");
+			handler = null;
+			warning("Disconnected from Permissions...what could possibly go wrong?");
 		}
 	}
 
+	public void setupLogBlock() {
+		logBlock = (LogBlock)this.getServer().getPluginManager().getPlugin("LogBlock");
+		
+		if (logBlock != null) {
+			info("Successfully connected to LogBlock!");
+		} else {
+			warning("Disconnected from LogBlock; towers will be denied until it is re-enabled.");
+		}
+	}
+	
+	
+	/**
+	 * Logs an informative message to the console, prefaced with this plugin's header
+	 * @param message: String
+	 */
+	public static void info(String message)
+	{
+		log.info(header + ChatColor.WHITE + message);
+	}
+
+	/**
+	 * Logs a severe error message to the console, prefaced with this plugin's header
+	 * Used to log severe problems that have prevented normal execution of the plugin
+	 * @param message: String
+	 */
+	public static void severe(String message)
+	{
+		log.severe(header + ChatColor.RED + message);
+	}
+
+	/**
+	 * Logs a warning message to the console, prefaced with this plugin's header
+	 * Used to log problems that could interfere with the plugin's ability to meet admin expectations
+	 * @param message: String
+	 */
+	public static void warning(String message)
+	{
+		log.warning(header + ChatColor.YELLOW + message);
+	}
+
+	/**
+	 * Logs a message to the console, prefaced with this plugin's header
+	 * @param level: Logging level under which to send the message
+	 * @param message: String
+	 */
+	public static void log(java.util.logging.Level level, String message)
+	{
+		log.log(level, header + message);
+	}
 }
