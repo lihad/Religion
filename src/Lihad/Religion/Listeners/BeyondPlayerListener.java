@@ -89,7 +89,7 @@ public class BeyondPlayerListener extends PlayerListener {
 		for(int a = 0;a<Bosses.configBossMap.size();a++){
 			Location location = (Location) Bosses.configBossMap.keySet().toArray()[a];
 			if(event.getPlayer().getWorld().equals(location.getWorld())){
-				if(location.distance(event.getPlayer().getLocation()) < 50 && !Bosses.bossExistMap.get(Bosses.bossNameMap.get(Bosses.configBossMap.get(location)))){
+				if((location.distance(event.getPlayer().getLocation()) < 40 &&Bosses.bossExistMap.isEmpty()) || (location.distance(event.getPlayer().getLocation()) < 40 && !Bosses.bossExistMap.get(Bosses.bossNameMap.get(Bosses.configBossMap.get(location))))){
 					System.out.println("BOSS SPAWN");
 					Religion.bosses.spawnBoss(location, Bosses.configBossMap.get(location));
 				}
@@ -100,42 +100,53 @@ public class BeyondPlayerListener extends PlayerListener {
 		//
 		//
 		//
-		if(Bosses.bossHealthMap != null && Bosses.bossExistMap.containsValue(true)){
+		if(Bosses.bossExistMap != null && Bosses.bossExistMap.containsValue(true)){
+			//System.out.println("-------------------------");
+
+			//System.out.println(Bosses.bossExistMap);
+			//System.out.println(Bosses.bossHealthMap);
+			//System.out.println(Bosses.bossMaxHealthMap);
+			//System.out.println(Bosses.bossNameMap);
+
+			//System.out.println("-------------------------");
+
 			for(int a = 0; a<Bosses.bossHealthMap.size();a++){
 				Creature boss = (Creature) Bosses.bossHealthMap.keySet().toArray()[a];
-				if(boss.getNearbyEntities(50, 128, 50).isEmpty()){
-					Bosses.bossExistMap.put(boss, false);
+				List<Entity> list = boss.getNearbyEntities(40, 40, 40);
+				if(list.isEmpty()){
+					System.out.println("Despawn1");
+					Bosses.bossExistMap.remove(boss);
+					Bosses.bossHealthMap.remove(boss);
+					Bosses.bossMaxHealthMap.remove(boss);
 					boss.remove();
-					//Bosses.bossHealthMap.remove(boss);
-					//System.out.println("BOSS GONE");
-				}
-				else if(boss.getTarget() != null){
-					if(boss.getTarget().getWorld().equals(boss.getWorld())){
-						if((boss).getLocation().distance((boss).getTarget().getLocation()) > 50){
-							List<Entity> entities = boss.getNearbyEntities(50, 128, 50);
-							for(int i = 0; i<entities.size(); i++){
-								if(entities.get(i) instanceof Player){
-									boss.setTarget((LivingEntity) entities.get(i));
-								}
-							}
-						}
-					}else{
-						List<Entity> entities = boss.getNearbyEntities(10, 2, 10);
-						for(int i = 0; i<entities.size(); i++){
-							if(entities.get(i) instanceof Player){
-								boss.setTarget((LivingEntity) entities.get(i));
-							}
+				}else{
+					for(int j=0;j<list.size();j++){
+						if(list.get(j) instanceof Player){
+							break;
+						}else if(list.size()-1==j){
+							System.out.println("Despawn2");
+							Bosses.bossExistMap.remove(boss);
+							Bosses.bossHealthMap.remove(boss);
+							Bosses.bossMaxHealthMap.remove(boss);
+							boss.remove();
+							break;
 						}
 					}
 				}
-				else if(boss.getTarget() == null){
-					List<Entity> entities = boss.getNearbyEntities(10, 2, 10);
-					if(!entities.isEmpty()){
-						for(int i = 0; i<entities.size(); i++){
-							if(entities.get(i) instanceof Player){
-								boss.setTarget((LivingEntity) entities.get(i));
+				if(boss.getTarget() != null){
+					if(!list.contains(boss.getTarget())){
+						for(int i = 0; i<list.size(); i++){
+							if(list.get(i) instanceof Player){
+								boss.setTarget((LivingEntity) list.get(i));
 								break;
 							}
+						}
+					}
+				}else{
+					for(int i = 0; i<list.size(); i++){
+						if(list.get(i) instanceof Player){
+							boss.setTarget((LivingEntity) list.get(i));
+							break;
 						}
 					}
 				}

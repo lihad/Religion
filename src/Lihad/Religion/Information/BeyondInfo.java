@@ -609,7 +609,7 @@ public class BeyondInfo {
 			int count = getTowerMemberCount(player);
 			removeTrusted(getTowerName(player), player.getName());
 			setTowerMemberCount(player, count-1);
-			BeyondInfoWriter.writeConfigurationNull("Players."+player.getName());
+			BeyondInfoWriter.writeConfigurationNull("Players."+player.getName());   
 		}else{
 			System.out.println("[Religion] Player, "+player.getName()+", was attmepted to be removed.  Failed for a reason or another");
 		}

@@ -96,7 +96,7 @@ public class Bosses {
 		else return null;
 	}
 	private int getBossHealth(String bossname){
-		if(bossname.equals("Ahkmed"))return 20000;
+		if(bossname.equals("Ahkmed"))return 10000;
 		if(bossname.equals("Xtal"))return 50000;
 		else return 0;
 	}
@@ -104,9 +104,15 @@ public class Bosses {
 		if(bossname.equals("Ahkmed")){
 			entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 2));
 			entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 2));
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 72000, 2));
+			entity.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 72000, 1));
 		}
 		if(bossname.equals("Xtal")){
+			entity.getWorld().strikeLightningEffect(entity.getLocation());
+			entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 5));
+			entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 5));
+			entity.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 72000, 1));
+		}
+		if(bossname.equals("Jamal")){
 			entity.getWorld().strikeLightningEffect(entity.getLocation());
 			entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 5));
 			entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 5));
@@ -216,7 +222,6 @@ public class Bosses {
 		if(bossHealthMap.get(boss) < 5000) powertrigger2 = true;
 		else if(powertrigger2){
 			boss.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 72000, 4));
-			boss.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 72000, 3));
 			boss.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 8));
 
 
@@ -322,7 +327,11 @@ public class Bosses {
 	private List<ItemStack> bossLootTable(LivingEntity entity){
 		int chance = randomizer(100);
 		List<ItemStack> stack = bossRandomLootPump();
-		
+		stack.addAll(bossRandomLootPump());
+		stack.addAll(bossRandomLootPump());
+		stack.addAll(bossRandomLootPump());
+		stack.addAll(bossRandomLootPump());
+
 		if(Bosses.bossNameMap.get("Ahkmed").equals((LivingEntity)entity)){
 			stack.add(new ItemStack(Material.GOLD_INGOT, chancizerForHotDrops()+1));
 			if(chance<10){
