@@ -428,10 +428,15 @@ public class BeyondUtil {
 		params.needData = true;
 		params.needPlayer = true;
 		params.excludePlayersMode = true;
+		List<BlockChange> changes = new ArrayList<BlockChange>();
 		try
 		{
-			if (Religion.logBlock.getBlockChanges(params).size() > 0)
+			changes = Religion.logBlock.getBlockChanges(params);
+			if (changes.size() > 0)
+			{
+				Religion.info(changes.get(0).toString());
 				return true;
+			}
 		} catch (SQLException e)
 		{
 			Religion.severe("LogBlock exception: " + e.getLocalizedMessage());
