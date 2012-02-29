@@ -308,15 +308,17 @@ public class CommandRunner implements CommandExecutor {
 			return true;
 		}
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("dz") && arg.length == 1){
-			Location location = BeyondInfo.getNearestDZLocation(((Player)sender).getLocation());
-			if(location != null){
-				((Player)sender).sendMessage("The nearest DZ is located at: X"+location.getBlockX()+" Z"+location.getBlockZ());
+			if(BeyondInfo.getDevastationZones() != null){
+				Location location = BeyondInfo.getNearestDZLocation(((Player)sender).getLocation());
+				if(location != null){
+					((Player)sender).sendMessage("The nearest DZ is located at: X"+location.getBlockX()+" Z"+location.getBlockZ());
+				}
 			}else{
 				((Player)sender).sendMessage("There are currently no Devastation Zones that need repair. Check later.");
 			}
 			return true;
 		}
-		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("dz") && arg[0].equals("remove") && arg.length == 2 && Religion.handler.has(((Player)sender), "religion.dz")){
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("dz") && arg[1].equals("remove") && arg.length == 2 && Religion.handler.has(((Player)sender), "religion.dz")){
 			List<String> zones = BeyondInfo.getDevastationZones();
 			if(zones == null)return false;
 			for(int i=0;i<zones.size();i++){
@@ -325,6 +327,10 @@ public class CommandRunner implements CommandExecutor {
 					break;
 				}
 			}
+			return true;
+		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("holy") && arg[1].equals("set") && arg.length == 2 && BeyondInfo.isPlayerLeader((Player)sender)){
+			BeyondInfo.setHolyZone(BeyondInfo.getTowerName(((Player)sender)), ((Player)sender).getLocation());
 			return true;
 		}
 		

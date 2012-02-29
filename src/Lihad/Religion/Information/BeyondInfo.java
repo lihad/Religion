@@ -102,7 +102,7 @@ public class BeyondInfo {
 				all.addAll(getTowers(getReligions().get(i)));
 		return all;
 	}
-	/**
+	/** 
 	 * 
 	 * @param religion
 	 * @param towername
@@ -382,6 +382,11 @@ public class BeyondInfo {
 		if(!location.getWorld().getName().equals(BeyondInfo.getTowerLocation(towername).getWorld().getName())) return 1000000;
 		return Math.sqrt(Math.pow((location.getBlockX()-getTowerLocation(towername).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getTowerLocation(towername).getBlockZ()), 2));
 	}
+	public static double getDistanceToHolyZone(Location location, String towername){
+		if(!location.getWorld().getName().equals(BeyondInfo.getHolyZoneLocation(towername).getWorld().getName())) return 1000000;
+		return Math.sqrt(Math.pow((location.getBlockX()-getHolyZoneLocation(towername).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getHolyZoneLocation(towername).getBlockZ()), 2));
+
+	}
 	/**
 	 * 
 	 * @param location
@@ -404,7 +409,7 @@ public class BeyondInfo {
 		String closest = null;
 		double distance = 1000000;
 		for(int i = 0;i<alltowers.size();i++){
-			if(getDistanceToTower(location, alltowers.get(i))<distance && isTowerArea(location, alltowers.get(i))){
+			if(getDistanceToTower(location, alltowers.get(i))<distance){
 				distance = getDistanceToTower(location, alltowers.get(i));
 				closest = alltowers.get(i);
 			}
@@ -506,7 +511,13 @@ public class BeyondInfo {
 		}
 		return closest;
 	}
-
+	public static Location getHolyZoneLocation(String towername){
+		String[] array;
+		String string = BeyondInfoReader.getString("Religions."+getReligion(towername)+".Towers."+towername+".HolyZone");
+		array = string.split(",");
+		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
+		return location;
+	}
 	//has Functions
 	/**
 	 * Simply checks to see if player exists in the information.yml
@@ -611,6 +622,9 @@ public class BeyondInfo {
 	}
 	public static void setDevastationZone(String areaname, Location location){
 		BeyondInfoWriter.writeConfigurationString("DZ."+areaname, location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
+	}
+	public static void setHolyZone(String towername, Location location){
+		BeyondInfoWriter.writeConfigurationString("Religions."+getReligion(towername)+".Towers."+towername+".HolyZone", location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
 	}
 	//add Functions
 	public static void addPlayer(Player player, String towername){
@@ -757,6 +771,19 @@ public class BeyondInfo {
 		double distance = 500;
 		for(int i = 0;i<alltowers.size();i++){
 			if(getDistanceToTower(location, alltowers.get(i))<distance){
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean isHolyZone(Location location){
+		List<String> alltowers = getTowersAll();
+		double distance = 50;
+		for(int i = 0;i<alltowers.size();i++){
+			if(BeyondInfoReader.getString("Religions."+getReligion(alltowers.get(i))+".Towers."+alltowers.get(i)+".HolyZone") == null){
+				continue;
+			}
+			else if(getDistanceToHolyZone(location, alltowers.get(i))<distance){
 				return true;
 			}
 		}

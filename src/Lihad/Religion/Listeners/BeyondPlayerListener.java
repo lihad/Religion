@@ -175,6 +175,12 @@ public class BeyondPlayerListener extends PlayerListener {
 		if(BeyondInfo.is500Tower(event.getFrom()) && !BeyondInfo.is500Tower(event.getTo()) && !BeyondInfo.hasPlayer(event.getPlayer())){
 			event.getPlayer().sendMessage(ChatColor.GREEN.toString()+"You have passed into the wilderness.");
 		}
+		if(BeyondInfo.isHolyZone(event.getTo()) && !BeyondInfo.isHolyZone(event.getFrom())){
+			event.getPlayer().sendMessage(ChatColor.GREEN.toString()+"You have entered a Holy Area. No Griefing allowed!");
+		}
+		if(BeyondInfo.isHolyZone(event.getFrom()) && !BeyondInfo.isHolyZone(event.getTo())){
+			event.getPlayer().sendMessage(ChatColor.RED.toString()+"You have left a Holy Area.");
+		}
 	}
 	public void onPlayerInteract(PlayerInteractEvent event){
 		if(event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.heal") && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
