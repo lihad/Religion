@@ -504,6 +504,9 @@ public class BeyondInfo {
 		Location closest = null;
 		double distance = 1000000;
 		for(int i = 0;i<getDevastationZones().size();i++){
+			if(location.getWorld().equals(getDevastationZoneLocation(getDevastationZones().get(i)).getWorld())){
+				continue;
+			}
 			if(location.distance(getDevastationZoneLocation(getDevastationZones().get(i)))<distance){
 				distance = location.distance(getDevastationZoneLocation(getDevastationZones().get(i)));
 				closest = getDevastationZoneLocation(getDevastationZones().get(i));
@@ -537,6 +540,10 @@ public class BeyondInfo {
 			return false;			
 		}
 		catch(Exception e){ return false; }
+	}
+	public static boolean hasHolyZone(String towername){
+		if(BeyondInfoReader.getString("Religions."+getReligion(towername)+".Towers."+towername+".HolyZone") != null)return true;
+		else return false;
 	}
 	public static boolean hasTrade(String towername, String trade){
 		if(BeyondInfoReader.getKeyList("Religions."+getReligion(towername)+".Towers."+towername+".Trades") != null){

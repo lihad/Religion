@@ -312,6 +312,8 @@ public class CommandRunner implements CommandExecutor {
 				Location location = BeyondInfo.getNearestDZLocation(((Player)sender).getLocation());
 				if(location != null){
 					((Player)sender).sendMessage("The nearest DZ is located at: X"+location.getBlockX()+" Z"+location.getBlockZ());
+				}else{
+					((Player)sender).sendMessage("There are currently no Devastation Zones that need repair. Check later.");
 				}
 			}else{
 				((Player)sender).sendMessage("There are currently no Devastation Zones that need repair. Check later.");
@@ -330,6 +332,14 @@ public class CommandRunner implements CommandExecutor {
 			return true;
 		}
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("holy") && arg[1].equals("set") && arg.length == 2 && BeyondInfo.isPlayerLeader((Player)sender)){
+			if(BeyondInfo.getDistanceToTower(((Player)sender).getLocation(), BeyondInfo.getClosestValidTower(((Player)sender).getLocation())) < 600){
+				((Player)sender).sendMessage("This Holy Zone is too close to a tower to be set.");
+				return true;
+			}
+			if(BeyondInfo.hasHolyZone(BeyondInfo.getTowerName(((Player)sender)))){
+				((Player)sender).sendMessage("A Holy Zone has already been set for your tower.");
+				return true;
+			}
 			BeyondInfo.setHolyZone(BeyondInfo.getTowerName(((Player)sender)), ((Player)sender).getLocation());
 			return true;
 		}
