@@ -59,6 +59,7 @@ public class BeyondInfo {
 		List<String> religions = getReligions();
 		for(int i = 0;i<religions.size();i++){
 			List<String> towers = getTowers(religions.get(i));
+			if(towers == null) continue;
 			for(int j = 0;j<towers.size();j++){
 				if(getTowerLocation(towers.get(j)).equals(location)){
 					return religions.get(i);
@@ -344,6 +345,7 @@ public class BeyondInfo {
 		List<String> religions = getReligions();
 		for(int i = 0;i<religions.size();i++){
 			List<String> towers = getTowers(religions.get(i));
+			if(towers == null)continue;
 			for(int j = 0;j<towers.size();j++){
 				List<String> trades = getTrades(towers.get(j));
 				if(trades == null) continue;
