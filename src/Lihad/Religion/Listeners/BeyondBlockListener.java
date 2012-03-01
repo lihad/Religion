@@ -2,9 +2,10 @@ package Lihad.Religion.Listeners;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import Lihad.Religion.Religion;
@@ -12,7 +13,7 @@ import Lihad.Religion.Abilities.SpellAoE;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
 
-public class BeyondBlockListener extends BlockListener {
+public class BeyondBlockListener implements Listener {
 	public static Religion plugin;
 	public BeyondBlockListener(Religion instance) {
 		plugin = instance;
@@ -21,6 +22,7 @@ public class BeyondBlockListener extends BlockListener {
 	 * TODO: Make it so a tower can not be named after a religion.
 	 * TODO: Make it so only those without a religion/tower can start a new tower
 	 */
+	@EventHandler
 	public void onSignChange(SignChangeEvent event){
 		if(event.getBlock().getLocation().getBlockY() > 119 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) == null){
 			//TODO: make statement "event.getLine(2).length() > 4" be > a configurable value.  That value is the minimum length a tower name can be.
@@ -90,6 +92,7 @@ public class BeyondBlockListener extends BlockListener {
 
 		}
 	}
+	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
 		if(event.getBlock().getType() == Material.CHEST){
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
@@ -105,6 +108,7 @@ public class BeyondBlockListener extends BlockListener {
 			}
 		}
 	}
+	@EventHandler
 	public void onBlockDamage(BlockDamageEvent event){
 		if(event.getBlock().getType() == Material.CHEST){
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
@@ -120,6 +124,7 @@ public class BeyondBlockListener extends BlockListener {
 			}
 		}
 	}
+	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event){
 		// TODO: Make this less terrible
 		/**

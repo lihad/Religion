@@ -50,7 +50,7 @@ public class BeyondTimerTask extends TimerTask {
 			infoCleanUp();
 			areaCleanUpForDZ();
 			Religion.trades.driver();
-			Religion.information.save();
+			Religion.saveInfoFile();
 		}catch(Exception e){
 			System.out.println("[Religion] [ERROR] [NO TOWER] Lihad knows why you are seeing this, ask him");
 			e.printStackTrace();

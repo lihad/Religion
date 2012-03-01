@@ -1,10 +1,11 @@
 package Lihad.Religion.Bosses;
 
-import org.bukkit.event.entity.EntityListener;
+
+import org.bukkit.event.Listener;
 
 import Lihad.Religion.Religion;
 
-public class BossesEntityListener extends EntityListener {
+public class BossesEntityListener implements Listener {
 	public static Religion plugin;
 
 

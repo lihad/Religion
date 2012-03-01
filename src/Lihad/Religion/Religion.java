@@ -1,15 +1,17 @@
 package Lihad.Religion;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.event.Event;
-import org.bukkit.event.Event.Priority;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 
 import Lihad.Religion.Abilities.Personal;
 import Lihad.Religion.Abilities.SpellAoE;
@@ -63,8 +65,8 @@ public class Religion extends JavaPlugin {
 	
 	public static java.util.logging.Logger log = java.util.logging.Logger.getLogger("Minecraft");
 	
-    public static Configuration configuration;
-    public static Configuration information;
+    public static FileConfiguration configuration;
+    public static YamlConfiguration information;
 	public static PermissionHandler handler;
 	public static LogBlock logBlock;
 	public static CommandExecutor cmd;
@@ -102,8 +104,12 @@ public class Religion extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		UpdateTimer.timer.cancel();
-		configuration.save();
-		information.save();
+		this.saveConfig();
+		try {
+			saveInfoFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -111,12 +117,19 @@ public class Religion extends JavaPlugin {
 		System.out.println("-----------------------------------------");
 		
 		//ConfigManager
-		configuration = getConfiguration();
-		configuration.load();
+		configuration = this.getConfig();
 		
 		//InfoManager
-		information = new Configuration(infoFile);
-		information.load();
+		information = new YamlConfiguration();
+		try {
+			information.load(infoFile);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InvalidConfigurationException e) {
+			e.printStackTrace();
+		}
 		
 		//ClassManager
 		configwrite = new BeyondConfigWriter(this);
@@ -137,21 +150,10 @@ public class Religion extends JavaPlugin {
 		
 		//PluginManager
 		PluginManager pm = getServer().getPluginManager();
-        pm.registerEvent(Event.Type.SIGN_CHANGE, this.blockListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_BREAK, this.blockListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_DAMAGE, this.blockListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLUGIN_ENABLE, this.pluginListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_MOVE, this.playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_INTERACT, this.playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.ENTITY_DAMAGE, this.entityListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.ENTITY_EXPLODE, this.entityListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.BLOCK_PLACE, this.blockListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_BED_ENTER, this.playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_INTERACT_ENTITY, this.playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_RESPAWN, this.playerListener, Priority.Lowest, this);
-        pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.PLAYER_TELEPORT, this.playerListener, Priority.Normal, this);
-        pm.registerEvent(Event.Type.EXPLOSION_PRIME, this.entityListener, Priority.Normal, this);
+        pm.registerEvents(blockListener, this);
+        pm.registerEvents(pluginListener, this);
+        pm.registerEvents(playerListener, this);
+        pm.registerEvents(entityListener, this);
 
         //pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Priority.Normal, this);
 
@@ -230,5 +232,8 @@ public class Religion extends JavaPlugin {
 	public static void log(java.util.logging.Level level, String message)
 	{
 		log.log(level, header + message);
+	}
+	public static void saveInfoFile() throws IOException{
+		information.save(infoFile);
 	}
 }

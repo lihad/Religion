@@ -1,54 +1,45 @@
 package Lihad.Religion.Listeners;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
-import org.bukkit.event.entity.SheepRegrowWoolEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.potion.Potion.Tier;
-import org.bukkit.potion.PotionType;
 
 import Lihad.Religion.Religion;
 import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
 
-public class BeyondEntityListener extends EntityListener {
+public class BeyondEntityListener implements Listener {
 	public static Religion plugin;
 	
 	
 	public BeyondEntityListener(Religion instance) {
 		plugin = instance;
 	}
-	
+	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event){
 		if(event.getEntity() instanceof Block){
 			Block block = (Block)event.getEntity();
@@ -95,7 +86,7 @@ public class BeyondEntityListener extends EntityListener {
 			}
 		}
 	}
-	
+	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event){
 		List<Block> blocklist = event.blockList();
 		for(int b = 0;b<blocklist.size();b++){
@@ -114,6 +105,7 @@ public class BeyondEntityListener extends EntityListener {
 			}
 		}
 	}
+	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event){
 		if(event.getEntity() instanceof Player){
 			Player player = (Player)event.getEntity();
@@ -124,6 +116,7 @@ public class BeyondEntityListener extends EntityListener {
 			}
 		}
 	}
+	@EventHandler
 	public void onExplosionPrime(ExplosionPrimeEvent event){
 		if(event.getEntity() instanceof LivingEntity){
 			if(Bosses.bossHealthMap.containsKey((LivingEntity)event.getEntity())){
@@ -133,7 +126,7 @@ public class BeyondEntityListener extends EntityListener {
 			}
 		}
 	}
-
+	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
 
 		//
@@ -199,7 +192,7 @@ public class BeyondEntityListener extends EntityListener {
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 20)){
 							event.getEntity().remove();
 							for(int i =0;i<5;i++){
-								((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.WOLF)).setOwner(player);
+								((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), EntityType.WOLF)).setOwner(player);
 							}
 						}else if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 30)
 								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 30)
@@ -208,7 +201,7 @@ public class BeyondEntityListener extends EntityListener {
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 100)){
 							event.getEntity().remove();
 							for(int i =0;i<10;i++){
-								event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), CreatureType.CHICKEN);
+								event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), EntityType.CHICKEN);
 							}
 						}
 					}

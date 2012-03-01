@@ -6,20 +6,18 @@ import java.util.Random;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.TreeType;
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -32,11 +30,12 @@ import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
 
-public class BeyondPlayerListener extends PlayerListener {
+public class BeyondPlayerListener implements Listener {
 	public static Religion plugin;
 	public BeyondPlayerListener(Religion instance) {
 		plugin = instance;
 	}
+	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event){
 		String closestFrom = BeyondInfo.getClosestValidTower(event.getFrom());
 		String closestTo = BeyondInfo.getClosestValidTower(event.getTo());
@@ -182,6 +181,7 @@ public class BeyondPlayerListener extends PlayerListener {
 			event.getPlayer().sendMessage(ChatColor.RED.toString()+"You have left a Holy Area.");
 		}
 	}
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
 		if(event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.heal") && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
 			List<Entity> entities = event.getPlayer().getNearbyEntities(5, 2, 5);
@@ -303,6 +303,7 @@ public class BeyondPlayerListener extends PlayerListener {
 			}
 		}
 	}
+	@EventHandler
 	public void onPlayerBedEnter(PlayerBedEnterEvent event){
 		if(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower((event.getBed().getLocation()))) == null){
 			return;
@@ -314,6 +315,7 @@ public class BeyondPlayerListener extends PlayerListener {
 			event.setCancelled(true);
 		}
 	}
+	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
 		if(event.getPlayer().getItemInHand().getType() == Material.LEATHER && Religion.handler.has(event.getPlayer(), "religion.repair")){
 			if(event.getRightClicked() instanceof Player){
@@ -336,7 +338,7 @@ public class BeyondPlayerListener extends PlayerListener {
 			}
 		}
 	}
-
+	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event){
 		if(BeyondInfo.getTowerName(event.getPlayer())== null && !(BeyondInfo.getClosestValidTower(event.getRespawnLocation()) == null) && event.isBedSpawn()){
 			event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());
@@ -347,6 +349,7 @@ public class BeyondPlayerListener extends PlayerListener {
 		}
 
 	}
+	@EventHandler
 	public void onPlayerTeleport(PlayerTeleportEvent event){
 		if(Religion.handler.has(event.getPlayer(), "religion.tp") || event.getPlayer().isOp()) return;
 		if(BeyondInfo.getReligion(event.getPlayer())==null && BeyondInfo.getClosestValidTower(event.getTo()) != null){
@@ -360,6 +363,7 @@ public class BeyondPlayerListener extends PlayerListener {
 			}
 		}
 	}
+	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event){
 		
 	}

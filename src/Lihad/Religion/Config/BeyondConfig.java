@@ -3,6 +3,7 @@ package Lihad.Religion.Config;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
@@ -38,18 +39,18 @@ public class BeyondConfig {
 	}
 	public static Map<Location,String> getBossLocation(){
 	    Map<Location, String> map = new HashMap<Location, String>();
-		List<String> names = BeyondConfigReader.getKeyList("Bosses");
+		Set<String> names = BeyondConfigReader.getKeyList("Bosses");
 		if (names != null)
 			for(int i = 0; i<names.size(); i++){
 				String[] array;
-				String string = BeyondConfigReader.getString("Bosses."+names.get(i));
+				String string = BeyondConfigReader.getString("Bosses."+(String)names.toArray()[i]);
 				array = string.split(",");
 				Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
-				map.put(location, names.get(i));
+				map.put(location, (String) names.toArray()[i]);
 			}
 		return map;
 	}
-	public static List<String> getBosses(){
+	public static Set<String> getBosses(){
 		return BeyondConfigReader.getKeyList("Bosses");
 	}
 	//has Functions

@@ -2,6 +2,7 @@ package Lihad.Religion.Information;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import Lihad.Religion.Religion;
 
@@ -42,8 +43,8 @@ public class BeyondInfoReader {
     	}
     	return array; 	
     }
-	public static List<String> getKeyList(String path){
-    	return Religion.information.getKeys(path);
+	public static Set<String> getKeyList(String path){
+    	return Religion.information.getConfigurationSection(path).getKeys(true);
     }
     public static boolean getBoolean(String string, boolean arg) {
         return Religion.information.getBoolean(string, arg);
