@@ -26,7 +26,7 @@ public class BeyondInfo {
 	 * @return A list of all the Religions, string form.
 	 */
 	public static List<String> getReligions(){
-		return Arrays.asList((String[])BeyondInfoReader.getKeyList("Religions").toArray());
+		return BeyondInfoReader.getKeyList("Religions");
 	}
 	/**
 	 * @param towername
@@ -46,6 +46,7 @@ public class BeyondInfo {
 	public static String getReligion(Player player){
 		List<String> religionList = getReligions();
 		for(int i = 0; i<religionList.size();i++){
+			if(getTowers(religionList.get(i)) == null)continue;
 			if(getTowers(religionList.get(i)).contains(getTowerName(player))) return religionList.get(i);
 		}
 		return null;
@@ -71,7 +72,7 @@ public class BeyondInfo {
 	 * @return Returns a list of towers from a specified religion
 	 */
 	public static List<String> getTowers(String religion){
-		return Arrays.asList((String[])BeyondInfoReader.getKeyList("Religions."+religion+".Towers").toArray());
+		return BeyondInfoReader.getKeyList("Religions."+religion+".Towers");
 	}
 	/**
 	 * @param location
@@ -96,8 +97,10 @@ public class BeyondInfo {
 	public static List<String> getTowersAll(){
 		List<String> all = new ArrayList<String>();
 		if (getReligions()!= null)
-			for(int i=0;i<getReligions().size();i++)
+			for(int i=0;i<getReligions().size();i++){
+				if(getTowers(getReligions().get(i)) == null) continue;
 				all.addAll(getTowers(getReligions().get(i)));
+			}
 		return all;
 	}
 	/** 
@@ -328,7 +331,7 @@ public class BeyondInfo {
 	//
 	//
 	public static List<String> getTrades(String towername){
-		return Arrays.asList((String[])BeyondInfoReader.getKeyList("Religions."+getReligion(towername)+".Towers."+towername+".Trades").toArray());
+		return BeyondInfoReader.getKeyList("Religions."+getReligion(towername)+".Towers."+towername+".Trades");
 	}
 	public static Location getTradeLocation(String towername, String trade){
 		String[] array;
@@ -435,7 +438,7 @@ public class BeyondInfo {
 	 * @return Returns all players associated with any religion
 	 */
 	public static List<Player> getOnlineReligionPlayers(){
-		List<String> strings = Arrays.asList((String[])BeyondInfoReader.getKeyList("Players").toArray());
+		List<String> strings = BeyondInfoReader.getKeyList("Players");
 		List<Player> players = new ArrayList<Player>();
 		for(int i=0;i<strings.size();i++){
 			if(plugin.getServer().getPlayer(strings.get(i)) != null)players.add(plugin.getServer().getPlayer(strings.get(i)));
@@ -457,7 +460,7 @@ public class BeyondInfo {
 		return players;
 	}
 	public static List<String> getTowerPlayerNames(String towername){
-		List<String> playernames = Arrays.asList((String[])BeyondInfoReader.getKeyList("Players").toArray());
+		List<String> playernames = BeyondInfoReader.getKeyList("Players");
 		List<String> names = new ArrayList<String>();
 		for(int i=0;i<playernames.size();i++){
 			if(BeyondInfoReader.getString("Players."+playernames.get(i)).contains(towername)){
@@ -479,7 +482,7 @@ public class BeyondInfo {
 	public static List<Player> getCooldownPlayers(){
 		List<Player> players = new ArrayList<Player>();
 		if(BeyondInfoReader.getKeyList("Cooldown") != null){
-			List<String> cool = Arrays.asList((String[])BeyondInfoReader.getKeyList("Cooldown").toArray());
+			List<String> cool = BeyondInfoReader.getKeyList("Cooldown");
 			for(int i=0;i<BeyondInfoReader.getKeyList("Cooldown").size();i++){
 				if(plugin.getServer().getPlayer(cool.get(i)) != null)players.add(plugin.getServer().getPlayer(cool.get(i)));
 			}
@@ -490,7 +493,7 @@ public class BeyondInfo {
 		return BeyondInfoReader.getLong("Cooldown."+player.getName());
 	}
 	public static List<String> getDevastationZones(){
-		return Arrays.asList((String[])BeyondInfoReader.getKeyList("DZ").toArray());
+		return BeyondInfoReader.getKeyList("DZ");
 	}
 	public static Location getDevastationZoneLocation(String areaname){
 		String[] array;

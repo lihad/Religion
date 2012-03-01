@@ -28,6 +28,7 @@ public class TradesDriver {
 		List<String> religions = BeyondInfo.getReligions();
 		for(int i = 0;i<religions.size();i++){
 			List<String> towers = BeyondInfo.getTowers(religions.get(i));
+			if(towers == null)continue;
 			for(int j = 0;j<towers.size();j++){
 				List<String> trades = BeyondInfo.getTrades(towers.get(j));
 				if(trades==null)continue;
@@ -45,6 +46,7 @@ public class TradesDriver {
 		List<String> religions = BeyondInfo.getReligions();
 		for(int i = 0;i<religions.size();i++){
 			List<String> towers = BeyondInfo.getTowers(religions.get(i));
+			if(towers == null)continue;
 			for(int j = 0;j<towers.size();j++){
 				List<String> trades = BeyondInfo.getTrades(towers.get(j));
 				if(trades==null)continue;
