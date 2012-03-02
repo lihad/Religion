@@ -32,6 +32,10 @@ public class BeyondBlockListener implements Listener {
 						event.getPlayer().sendMessage("This name is already being used - try a different one.");
 						return;
 					}
+					if(BeyondInfo.isSpawnZone(event.getPlayer().getLocation())){
+						event.getPlayer().sendMessage("This name is already being used - try a different one.");
+						return;
+					}
 					if(event.getLine(2).contains(" ") || event.getLine(2).contains("?") || event.getLine(2).contains("!") || event.getLine(2).contains(".")|| event.getLine(2).contains(",")|| event.getLine(2).contains("'")){
 						event.getPlayer().sendMessage("Your tower may have no spaces or symbols in the name.");
 						return;

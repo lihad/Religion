@@ -35,6 +35,7 @@ public class BeyondInfo {
 	public static String getReligion(String towername){
 		List<String> religionList = getReligions();
 		for(int i = 0; i<religionList.size();i++){
+			if(getTowers(religionList.get(i)) == null)continue;
 			if(getTowers(religionList.get(i)).contains(towername)) return religionList.get(i);
 		}
 		return null;
@@ -775,6 +776,11 @@ public class BeyondInfo {
 	}
 	public static boolean isDevastationZone(Location location, String areaname){
 		if(Math.pow((location.getBlockX()-getDevastationZoneLocation(areaname).getBlockX()), 2)+ Math.pow((location.getBlockZ()-getDevastationZoneLocation(areaname).getBlockZ()), 2) < Math.pow(50,2)) return true;
+		return false;
+	}
+	public static boolean isSpawnZone(Location location){
+		Location spawn = location.getWorld().getSpawnLocation();
+		if(Math.pow((location.getBlockX()-spawn.getBlockX()), 2)+ Math.pow((location.getBlockZ()-spawn.getBlockZ()), 2) < Math.pow(1500,2)) return true;
 		return false;
 	}
 	public static boolean is500Tower(Location location){
