@@ -27,6 +27,7 @@ public class BeyondTimerTask extends TimerTask {
 					Chest chest = (Chest) location.getBlock().getState();
 					int amount = 0;
 					for(int j=0;j<27;j++){
+						if(chest.getInventory().getItem(j) == null) continue;
 						if(chest.getInventory().getItem(j).getType() == Material.GOLD_INGOT){
 							amount = amount+chest.getInventory().getItem(j).getAmount();
 						}

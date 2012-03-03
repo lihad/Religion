@@ -47,7 +47,7 @@ public class BeyondInfoReader {
     }
 	public static List<String> getKeyList(String path){
 		if(Religion.information.getConfigurationSection(path) == null)return null;
-		Set<String> raw = Religion.information.getConfigurationSection(path).getKeys(true);
+		Set<String> raw = Religion.information.getConfigurationSection(path).getKeys(false);
     	return Arrays.asList(raw.toArray(new String[raw.size()]));
     }
     public static boolean getBoolean(String string, boolean arg) {

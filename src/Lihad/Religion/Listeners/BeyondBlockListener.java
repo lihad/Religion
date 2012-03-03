@@ -33,7 +33,7 @@ public class BeyondBlockListener implements Listener {
 						return;
 					}
 					if(BeyondInfo.isSpawnZone(event.getPlayer().getLocation())){
-						event.getPlayer().sendMessage("This name is already being used - try a different one.");
+						event.getPlayer().sendMessage("You need to be farther away from spawn!!.");
 						return;
 					}
 					if(event.getLine(2).contains(" ") || event.getLine(2).contains("?") || event.getLine(2).contains("!") || event.getLine(2).contains(".")|| event.getLine(2).contains(",")|| event.getLine(2).contains("'")){

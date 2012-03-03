@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionType;
@@ -101,6 +102,7 @@ public class BeyondUtil {
 	public static int getChestAmount(Chest chest, Material material){
 		int amount = 0;
 		for(int i=0; i<chest.getInventory().getSize(); i++){
+			if(chest.getInventory().getItem(i) == null) continue;
 			if(chest.getInventory().getItem(i).getType() == material){
 				amount = amount+chest.getInventory().getItem(i).getAmount();
 			}
@@ -408,6 +410,12 @@ public class BeyondUtil {
 		Iterator<Player> iter = coReligionists.iterator();
 		params.players = new ArrayList<String>();
 		params.players.add(iCanHasTowerPlz.getName());
+		List<Entity> entities = iCanHasTowerPlz.getNearbyEntities(5, 10, 5);
+		if(entities != null){
+			for(int i = 0; i<entities.size(); i++){
+				if(entities.get(i) instanceof Player) params.players.add(((Player)entities.get(i)).getName());
+			}
+		}
 		while(iter.hasNext())
 			params.players.add(iter.next().getName());
 		params.players.add("Fire");

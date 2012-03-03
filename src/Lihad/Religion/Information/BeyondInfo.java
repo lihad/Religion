@@ -137,6 +137,7 @@ public class BeyondInfo {
 		array = string.split(",");
 		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 		return location;
+		
 	}
 	/**
 	 * NOTE: using this when player has no defined religion will result in a nullpointer
