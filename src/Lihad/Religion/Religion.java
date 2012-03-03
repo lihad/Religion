@@ -105,6 +105,22 @@ public class Religion extends JavaPlugin {
 	public void onDisable() {
 		UpdateTimer.timer.cancel();
 		this.saveConfig();
+		info("BeyondEntityListener statistics:");
+		info("onEntityDamage took " + entityListener.timer_onEntityDamage + "ms "
+				+ " for a total of " + entityListener.count_onEntityDamage 
+				+ " runs, avg: " + (entityListener.timer_onEntityDamage / entityListener.count_onEntityDamage) + "ms");
+		info("onEntityDamageByEntity took " + entityListener.timer_onEntityDamageByEntity + "ms "
+				+ " for a total of " + entityListener.count_onEntityDamageByEntity 
+				+ " runs, avg: " + (entityListener.timer_onEntityDamageByEntity / entityListener.count_onEntityDamageByEntity) + "ms");
+		info("onEntityDeath took " + entityListener.timer_onEntityDeath + "ms "
+				+ " for a total of " + entityListener.count_onEntityDeath 
+				+ " runs, avg: " + (entityListener.timer_onEntityDeath / entityListener.count_onEntityDeath) + "ms");
+		info("onEntityExplode took " + entityListener.timer_onEntityExplode + "ms "
+				+ " for a total of " + entityListener.count_onEntityExplode 
+				+ " runs, avg: " + (entityListener.timer_onEntityExplode / entityListener.count_onEntityExplode) + "ms");
+		info("onExplosionPrime took " + entityListener.timer_onExplosionPrime + "ms "
+				+ " for a total of " + entityListener.count_onExplosionPrime 
+				+ " runs, avg: " + (entityListener.timer_onExplosionPrime / entityListener.count_onExplosionPrime) + "ms");
 		try {
 			saveInfoFile();
 		} catch (IOException e) {

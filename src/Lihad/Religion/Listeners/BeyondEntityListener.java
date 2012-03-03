@@ -33,14 +33,29 @@ import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
 
 public class BeyondEntityListener implements Listener {
-	public static Religion plugin;
 	
+	public static Religion plugin;
+
+	
+	public long timer_onEntityDamage = 0;
+	public long count_onEntityDamage = 0;
+	public long timer_onEntityExplode = 0;
+	public long count_onEntityExplode = 0;
+	public long timer_onEntityDeath = 0;
+	public long count_onEntityDeath = 0;
+	public long timer_onExplosionPrime = 0;
+	public long count_onExplosionPrime = 0;
+	public long timer_onEntityDamageByEntity = 0;
+	public long count_onEntityDamageByEntity = 0;
 	
 	public BeyondEntityListener(Religion instance) {
 		plugin = instance;
 	}
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+		
 		if(event.getEntity() instanceof Block){
 			Block block = (Block)event.getEntity();
 			if(block.getType() == Material.CHEST){
@@ -85,9 +100,16 @@ public class BeyondEntityListener implements Listener {
 				}
 			}
 		}
+		
+		//TRACKING
+		this.timer_onEntityDamage += (System.currentTimeMillis() - start);
+		this.count_onEntityDamage++;
 	}
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+
 		List<Block> blocklist = event.blockList();
 		for(int b = 0;b<blocklist.size();b++){
 			if(blocklist.get(b).getType() == Material.CHEST){
@@ -104,9 +126,16 @@ public class BeyondEntityListener implements Listener {
 				}
 			}
 		}
+
+		//TRACKING
+		this.timer_onEntityExplode += (System.currentTimeMillis() - start);
+		this.count_onEntityExplode++;
 	}
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+
 		if(event.getEntity() instanceof Player){
 			Player player = (Player)event.getEntity();
 			if(BeyondInfo.getClosestValidTower(player.getLocation()) != null && BeyondInfo.getReligion(player) != null){
@@ -115,9 +144,16 @@ public class BeyondEntityListener implements Listener {
 				}
 			}
 		}
+
+		//TRACKING
+		this.timer_onEntityDeath += (System.currentTimeMillis() - start);
+		this.count_onEntityDeath++;
 	}
 	@EventHandler
 	public void onExplosionPrime(ExplosionPrimeEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+
 		if(event.getEntity() instanceof LivingEntity){
 			if(Bosses.bossHealthMap.containsKey((LivingEntity)event.getEntity())){
 				event.setCancelled(true);
@@ -125,9 +161,17 @@ public class BeyondEntityListener implements Listener {
 
 			}
 		}
+
+		//TRACKING
+		this.timer_onExplosionPrime+= (System.currentTimeMillis() - start);
+		this.count_onExplosionPrime++;
 	}
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
+
+		//TRACKING
+		long start = System.currentTimeMillis();
+
 
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -315,6 +359,9 @@ public class BeyondEntityListener implements Listener {
 				}
 			}
 		}
+		//TRACKING
+		this.timer_onEntityDamageByEntity+= (System.currentTimeMillis() - start);
+		this.count_onEntityDamageByEntity++;
 	}
 	
 	
