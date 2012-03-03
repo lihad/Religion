@@ -35,8 +35,28 @@ public class BeyondPlayerListener implements Listener {
 	public BeyondPlayerListener(Religion instance) {
 		plugin = instance;
 	}
+
+	//TRACKING
+	public long timer_onPlayerMove = 0;
+	public long count_onPlayerMove = 0;
+	public long timer_onPlayerInteract = 0;
+	public long count_onPlayerInteract = 0;
+	public long timer_onPlayerBedEnter = 0;
+	public long count_onPlayerBedEnter = 0;
+	public long timer_onPlayerInteractEntity = 0;
+	public long count_onPlayerInteractEntity = 0;
+	public long timer_onPlayerRespawn = 0;
+	public long count_onPlayerRespawn = 0;
+	public long timer_onPlayerTeleport = 0;
+	public long count_onPlayerTeleport = 0;
+	public long timer_onPlayerChat = 0;
+	public long count_onPlayerChat = 0;
+	
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+		
 		String closestFrom = BeyondInfo.getClosestValidTower(event.getFrom());
 		String closestTo = BeyondInfo.getClosestValidTower(event.getTo());
 
@@ -183,6 +203,9 @@ public class BeyondPlayerListener implements Listener {
 	}
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+		
 		if(event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.heal") && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
 			List<Entity> entities = event.getPlayer().getNearbyEntities(5, 2, 5);
 			for(int i = 0; i<entities.size();i++){
@@ -205,13 +228,17 @@ public class BeyondPlayerListener implements Listener {
 					}
 				}
 			}
+			
+			//TRACKING
+			this.timer_onPlayerMove += (System.currentTimeMillis() - start);
+			this.count_onPlayerMove++;
 		}
 		
 		
 		
 		
 		
-		///// ON"Y CHEST INTERACTS AFTER THIS POINT
+		///// ONLY CHEST INTERACTS AFTER THIS POINT
 		if(event.getClickedBlock() == null)return;
 		else if(event.getClickedBlock().getType() == Material.CHEST && BeyondInfo.getReligion(event.getClickedBlock().getLocation()) != null){
 			if(BeyondInfo.getReligion(event.getPlayer()) == null && BeyondUtil.timestampReference(BeyondInfo.getTower(event.getClickedBlock().getLocation()))){
@@ -302,9 +329,16 @@ public class BeyondPlayerListener implements Listener {
 				event.setCancelled(true);
 			}
 		}
+		
+		//TRACKING
+		this.timer_onPlayerInteract += (System.currentTimeMillis() - start);
+		this.count_onPlayerInteract++;
 	}
 	@EventHandler
 	public void onPlayerBedEnter(PlayerBedEnterEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+		
 		if(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower((event.getBed().getLocation()))) == null){
 			return;
 		}else if(BeyondInfo.getReligion(event.getPlayer()) == null){
@@ -314,9 +348,16 @@ public class BeyondPlayerListener implements Listener {
 			event.getPlayer().sendMessage("You can not bare to sleep in the halls of these heretics!");
 			event.setCancelled(true);
 		}
+		
+		//TRACKING
+		this.timer_onPlayerBedEnter += (System.currentTimeMillis() - start);
+		this.count_onPlayerBedEnter++;
 	}
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+		
 		if(event.getPlayer().getItemInHand().getType() == Material.LEATHER && Religion.handler.has(event.getPlayer(), "religion.repair")){
 			if(event.getRightClicked() instanceof Player){
 				Player player = (Player) event.getRightClicked();
@@ -337,9 +378,16 @@ public class BeyondPlayerListener implements Listener {
 				}
 			}
 		}
+		
+		//TRACKING
+		this.timer_onPlayerInteractEntity += (System.currentTimeMillis() - start);
+		this.count_onPlayerInteractEntity++;
 	}
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+		
 		if(BeyondInfo.getTowerName(event.getPlayer())== null && !(BeyondInfo.getClosestValidTower(event.getRespawnLocation()) == null) && event.isBedSpawn()){
 			event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());
 		}else if(BeyondInfo.getTowerName(event.getPlayer())== null)return;
@@ -347,10 +395,16 @@ public class BeyondPlayerListener implements Listener {
 		else if(BeyondInfo.getClosestValidTower(event.getRespawnLocation()).equals(BeyondInfo.getReligion(event.getPlayer()))){
 			event.setRespawnLocation(event.getPlayer().getWorld().getSpawnLocation());
 		}
-
+		
+		//TRACKING
+		this.timer_onPlayerRespawn += (System.currentTimeMillis() - start);
+		this.count_onPlayerRespawn++;
 	}
 	@EventHandler
 	public void onPlayerTeleport(PlayerTeleportEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+		
 		if(Religion.handler.has(event.getPlayer(), "religion.tp") || event.getPlayer().isOp()) return;
 		if(BeyondInfo.getReligion(event.getPlayer())==null && BeyondInfo.getClosestValidTower(event.getTo()) != null){
 			event.setTo(event.getFrom());
@@ -362,10 +416,21 @@ public class BeyondPlayerListener implements Listener {
 				event.getPlayer().sendMessage("Your connection with the destination has been severed by "+BeyondInfo.getClosestValidTower(event.getTo()));
 			}
 		}
+		
+		//TRACKING
+		this.timer_onPlayerTeleport += (System.currentTimeMillis() - start);
+		this.count_onPlayerTeleport++;
 	}
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
 		
+		
+		
+		//TRACKING
+		this.timer_onPlayerChat += (System.currentTimeMillis() - start);
+		this.count_onPlayerChat++;
 	}
 	public int inventoryRandomizer(Inventory inventory){
 		Random chance = new Random();

@@ -98,11 +98,43 @@ public class Religion extends JavaPlugin {
 	
 	public static File infoFile = new File("plugins/Religion/information.yml");
 
+	public void printResults(double timer, double count, String name)
+	{
+		double avg = 0;
+		if (count != 0)
+			avg = timer/count;
+		info(name + " took " + timer + "ms " + " for a total of " + count + "runs - average: " + avg + "ms/run");
+		return;
+	}
 
 	@Override
 	public void onDisable() {
 		UpdateTimer.timer.cancel();
 		this.saveConfig();
+		info("");
+		info("BeyondEntityListener statistics:");
+		printResults(entityListener.timer_onEntityDamage, entityListener.count_onEntityDamage, "onEntityDamage");
+		printResults(entityListener.timer_onEntityDamageByEntity, entityListener.count_onEntityDamageByEntity, "onEntityDamageByEntity");
+		printResults(entityListener.timer_onEntityDeath, entityListener.count_onEntityDeath, "onEntityDeath");
+		printResults(entityListener.timer_onEntityExplode, entityListener.count_onEntityExplode, "onEntityExplode");
+		printResults(entityListener.timer_onExplosionPrime, entityListener.count_onExplosionPrime, "onExplosionPrime");
+		info("");
+		info("BeyondPlayerListener statistics:");
+		printResults(playerListener.timer_onPlayerBedEnter, playerListener.count_onPlayerBedEnter, "onPlayerBedEnter");
+		printResults(playerListener.timer_onPlayerChat, playerListener.count_onPlayerChat, "onPlayerChat");
+		printResults(playerListener.timer_onPlayerInteract, playerListener.count_onPlayerInteract, "onPlayerInteract");
+		printResults(playerListener.timer_onPlayerInteractEntity, playerListener.count_onPlayerInteractEntity, "onPlayerInteractEntity");
+		printResults(playerListener.timer_onPlayerMove, playerListener.count_onPlayerMove, "onPlayerMove");
+		printResults(playerListener.timer_onPlayerRespawn, playerListener.count_onPlayerRespawn, "onPlayerRespawn");
+		printResults(playerListener.timer_onPlayerTeleport, playerListener.count_onPlayerTeleport, "onPlayerTeleport");
+		info("");
+		info("BeyondBlockListener statistics:");
+		printResults(blockListener.timer_onBlockBreak, blockListener.count_onBlockBreak, "onBlockBreak");
+		printResults(blockListener.timer_onBlockDamage, blockListener.count_onBlockDamage, "onBlockDamage");
+		printResults(blockListener.timer_onBlockPlace, blockListener.count_onBlockPlace, "onBlockPlace");
+		printResults(blockListener.timer_onSignChange, blockListener.count_onSignChange, "onSignChange");
+		info("");
+
 		try {
 			saveInfoFile();
 		} catch (IOException e) {
