@@ -121,6 +121,21 @@ public class Religion extends JavaPlugin {
 		info("onExplosionPrime took " + entityListener.timer_onExplosionPrime + "ms "
 				+ " for a total of " + entityListener.count_onExplosionPrime 
 				+ " runs, avg: " + (entityListener.timer_onExplosionPrime / entityListener.count_onExplosionPrime) + "ms");
+
+		info("BeyondBlockListener statistics:");
+		info("onBlockBreak took " + blockListener.timer_onBlockBreak + "ms "
+				+ " for a total of " + blockListener.count_onBlockBreak 
+				+ " runs, avg: " + (blockListener.timer_onBlockBreak / blockListener.count_onBlockBreak) + "ms");
+		info("onBlockDamage took " + blockListener.timer_onBlockDamage + "ms "
+				+ " for a total of " + blockListener.count_onBlockDamage 
+				+ " runs, avg: " + (blockListener.timer_onBlockDamage / blockListener.count_onBlockDamage) + "ms");
+		info("onBlockPlace took " + blockListener.timer_onBlockPlace + "ms "
+				+ " for a total of " + blockListener.count_onBlockPlace
+				+ " runs, avg: " + (blockListener.timer_onBlockPlace / blockListener.count_onBlockPlace) + "ms");
+		info("onSignChange took " + blockListener.timer_onSignChange + "ms "
+				+ " for a total of " + blockListener.count_onSignChange
+				+ " runs, avg: " + (blockListener.timer_onSignChange / blockListener.count_onSignChange) + "ms");
+
 		try {
 			saveInfoFile();
 		} catch (IOException e) {

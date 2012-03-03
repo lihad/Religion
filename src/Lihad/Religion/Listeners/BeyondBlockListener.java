@@ -18,12 +18,27 @@ public class BeyondBlockListener implements Listener {
 	public BeyondBlockListener(Religion instance) {
 		plugin = instance;
 	}
+
+	//TRACKING
+	public long timer_onSignChange = 0;
+	public long count_onSignChange = 0;
+	public long timer_onBlockBreak = 0;
+	public long count_onBlockBreak = 0;
+	public long timer_onBlockDamage = 0;
+	public long count_onBlockDamage = 0;
+	public long timer_onBlockPlace = 0;
+	public long count_onBlockPlace = 0;
+
+	
 	/**
 	 * TODO: Make it so a tower can not be named after a religion.
 	 * TODO: Make it so only those without a religion/tower can start a new tower
 	 */
 	@EventHandler
 	public void onSignChange(SignChangeEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+
 		if(event.getBlock().getLocation().getBlockY() > 119 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) == null){
 			//TODO: make statement "event.getLine(2).length() > 4" be > a configurable value.  That value is the minimum length a tower name can be.
 			if(event.getLine(0).equals("[Religion]") && !(event.getLine(1).equals(null))&& (event.getLine(2).length() > 4)){
@@ -95,9 +110,17 @@ public class BeyondBlockListener implements Listener {
 		}else{
 
 		}
+		
+		//TRACKING - WON'T WORK FOR ALL THOSE RETURN STATEMENTS
+		this.timer_onSignChange += (System.currentTimeMillis() - start);
+		this.count_onSignChange++;
+
 	}
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+
 		if(event.getBlock().getType() == Material.CHEST){
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
 				if(event.getBlock().getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i)))){
@@ -111,9 +134,17 @@ public class BeyondBlockListener implements Listener {
 				}
 			}
 		}
+		
+		//TRACKING
+		this.timer_onBlockBreak += (System.currentTimeMillis() - start);
+		this.count_onBlockBreak++;
+
 	}
 	@EventHandler
 	public void onBlockDamage(BlockDamageEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+
 		if(event.getBlock().getType() == Material.CHEST){
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
 				if(event.getBlock().getLocation().equals(BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i)))){
@@ -127,9 +158,17 @@ public class BeyondBlockListener implements Listener {
 				}
 			}
 		}
+		
+		//TRACKING
+		this.timer_onBlockDamage += (System.currentTimeMillis() - start);
+		this.count_onBlockDamage++;
+
 	}
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event){
+		//TRACKING
+		long start = System.currentTimeMillis();
+
 		// TODO: Make this less terrible
 		/**
 		 * 
@@ -146,5 +185,10 @@ public class BeyondBlockListener implements Listener {
 				if(BeyondUtil.isNextTo(BeyondInfo.getTradeLocation(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()), BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).get(i)), place)) event.setCancelled(true);
 			}
 		}
+
+		//TRACKING
+		this.timer_onBlockPlace += (System.currentTimeMillis() - start);
+		this.count_onBlockPlace++;
+
 	}
 }
