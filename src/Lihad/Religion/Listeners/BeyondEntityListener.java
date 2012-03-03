@@ -36,7 +36,6 @@ public class BeyondEntityListener implements Listener {
 	
 	public static Religion plugin;
 
-	
 	//TRACKING
 	public long timer_onEntityDamage = 0;
 	public long count_onEntityDamage = 0;

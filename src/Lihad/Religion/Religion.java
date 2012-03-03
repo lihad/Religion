@@ -100,41 +100,42 @@ public class Religion extends JavaPlugin {
 	
 	public static File infoFile = new File("plugins/Religion/information.yml");
 
+	public void printResults(double timer, double count, String name)
+	{
+		double avg = 0;
+		if (count != 0)
+			avg = timer/count;
+		info(name + " took " + timer + "ms " + " for a total of " + count + "runs - average: " + avg + "ms/run");
+		return;
+	}
 
 	@Override
 	public void onDisable() {
 		UpdateTimer.timer.cancel();
 		this.saveConfig();
+		info("");
 		info("BeyondEntityListener statistics:");
-		info("onEntityDamage took " + entityListener.timer_onEntityDamage + "ms "
-				+ " for a total of " + entityListener.count_onEntityDamage 
-				+ " runs, avg: " + (entityListener.timer_onEntityDamage / entityListener.count_onEntityDamage) + "ms");
-		info("onEntityDamageByEntity took " + entityListener.timer_onEntityDamageByEntity + "ms "
-				+ " for a total of " + entityListener.count_onEntityDamageByEntity 
-				+ " runs, avg: " + (entityListener.timer_onEntityDamageByEntity / entityListener.count_onEntityDamageByEntity) + "ms");
-		info("onEntityDeath took " + entityListener.timer_onEntityDeath + "ms "
-				+ " for a total of " + entityListener.count_onEntityDeath 
-				+ " runs, avg: " + (entityListener.timer_onEntityDeath / entityListener.count_onEntityDeath) + "ms");
-		info("onEntityExplode took " + entityListener.timer_onEntityExplode + "ms "
-				+ " for a total of " + entityListener.count_onEntityExplode 
-				+ " runs, avg: " + (entityListener.timer_onEntityExplode / entityListener.count_onEntityExplode) + "ms");
-		info("onExplosionPrime took " + entityListener.timer_onExplosionPrime + "ms "
-				+ " for a total of " + entityListener.count_onExplosionPrime 
-				+ " runs, avg: " + (entityListener.timer_onExplosionPrime / entityListener.count_onExplosionPrime) + "ms");
-
+		printResults(entityListener.timer_onEntityDamage, entityListener.count_onEntityDamage, "onEntityDamage");
+		printResults(entityListener.timer_onEntityDamageByEntity, entityListener.count_onEntityDamageByEntity, "onEntityDamageByEntity");
+		printResults(entityListener.timer_onEntityDeath, entityListener.count_onEntityDeath, "onEntityDeath");
+		printResults(entityListener.timer_onEntityExplode, entityListener.count_onEntityExplode, "onEntityExplode");
+		printResults(entityListener.timer_onExplosionPrime, entityListener.count_onExplosionPrime, "onExplosionPrime");
+		info("");
+		info("BeyondPlayerListener statistics:");
+		printResults(playerListener.timer_onPlayerBedEnter, playerListener.count_onPlayerBedEnter, "onPlayerBedEnter");
+		printResults(playerListener.timer_onPlayerChat, playerListener.count_onPlayerChat, "onPlayerChat");
+		printResults(playerListener.timer_onPlayerInteract, playerListener.count_onPlayerInteract, "onPlayerInteract");
+		printResults(playerListener.timer_onPlayerInteractEntity, playerListener.count_onPlayerInteractEntity, "onPlayerInteractEntity");
+		printResults(playerListener.timer_onPlayerMove, playerListener.count_onPlayerMove, "onPlayerMove");
+		printResults(playerListener.timer_onPlayerRespawn, playerListener.count_onPlayerRespawn, "onPlayerRespawn");
+		printResults(playerListener.timer_onPlayerTeleport, playerListener.count_onPlayerTeleport, "onPlayerTeleport");
+		info("");
 		info("BeyondBlockListener statistics:");
-		info("onBlockBreak took " + blockListener.timer_onBlockBreak + "ms "
-				+ " for a total of " + blockListener.count_onBlockBreak 
-				+ " runs, avg: " + (blockListener.timer_onBlockBreak / blockListener.count_onBlockBreak) + "ms");
-		info("onBlockDamage took " + blockListener.timer_onBlockDamage + "ms "
-				+ " for a total of " + blockListener.count_onBlockDamage 
-				+ " runs, avg: " + (blockListener.timer_onBlockDamage / blockListener.count_onBlockDamage) + "ms");
-		info("onBlockPlace took " + blockListener.timer_onBlockPlace + "ms "
-				+ " for a total of " + blockListener.count_onBlockPlace
-				+ " runs, avg: " + (blockListener.timer_onBlockPlace / blockListener.count_onBlockPlace) + "ms");
-		info("onSignChange took " + blockListener.timer_onSignChange + "ms "
-				+ " for a total of " + blockListener.count_onSignChange
-				+ " runs, avg: " + (blockListener.timer_onSignChange / blockListener.count_onSignChange) + "ms");
+		printResults(blockListener.timer_onBlockBreak, blockListener.count_onBlockBreak, "onBlockBreak");
+		printResults(blockListener.timer_onBlockDamage, blockListener.count_onBlockDamage, "onBlockDamage");
+		printResults(blockListener.timer_onBlockPlace, blockListener.count_onBlockPlace, "onBlockPlace");
+		printResults(blockListener.timer_onSignChange, blockListener.count_onSignChange, "onSignChange");
+		info("");
 
 		try {
 			saveInfoFile();
