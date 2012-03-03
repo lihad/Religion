@@ -28,7 +28,6 @@ import Lihad.Religion.Listeners.BeyondBlockListener;
 import Lihad.Religion.Listeners.BeyondEntityListener;
 import Lihad.Religion.Listeners.BeyondPlayerListener;
 import Lihad.Religion.Listeners.BeyondPluginListener;
-import Lihad.Religion.Listeners.BeyondWorldListener;
 import Lihad.Religion.Trades.TradesDriver;
 import Lihad.Religion.Util.BeyondTimerTask;
 import Lihad.Religion.Util.UpdateTimer;
@@ -94,7 +93,6 @@ public class Religion extends JavaPlugin {
 	private final BeyondBlockListener blockListener = new BeyondBlockListener(this);
 	private final BeyondPlayerListener playerListener = new BeyondPlayerListener(this);
 	private final BeyondEntityListener entityListener = new BeyondEntityListener(this);
-	private final BeyondWorldListener worldListener = new BeyondWorldListener(this);
 
 
 	

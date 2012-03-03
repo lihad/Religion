@@ -92,9 +92,7 @@ public class BeyondBlockListener implements Listener {
 					}else event.getPlayer().sendMessage("You already have a "+event.getLine(1));
 				} else event.getPlayer().sendMessage("The following isn't a valid Trade: "+event.getLine(1));
 			}
-		}else{
-
-		}
+		} 
 	}
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){

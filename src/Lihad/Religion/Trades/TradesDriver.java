@@ -73,6 +73,7 @@ public class TradesDriver {
 		for(int i=0;i<inventory.getSize();i++){
 			ItemStack item = inventory.getItem(i);
 			try{
+				if(item == null) continue;
 				if(item.getDurability()<=0) continue;
 				item.setDurability((short) (item.getDurability()-50));
 			}catch(Exception e){
