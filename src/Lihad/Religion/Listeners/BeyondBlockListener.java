@@ -37,7 +37,7 @@ public class BeyondBlockListener implements Listener {
 	@EventHandler
 	public void onSignChange(SignChangeEvent event){
 		//TRACKING
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 
 		if(event.getBlock().getLocation().getBlockY() > 119 && BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) == null){
 			//TODO: make statement "event.getLine(2).length() > 4" be > a configurable value.  That value is the minimum length a tower name can be.
@@ -110,14 +110,14 @@ public class BeyondBlockListener implements Listener {
 		} 
 		
 		//TRACKING - WON'T WORK FOR ALL THOSE RETURN STATEMENTS
-		this.timer_onSignChange += (System.currentTimeMillis() - start);
+		this.timer_onSignChange += (System.nanoTime() - start);
 		this.count_onSignChange++;
 
 	}
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
 		//TRACKING
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 
 		if(event.getBlock().getType() == Material.CHEST){
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
@@ -134,14 +134,14 @@ public class BeyondBlockListener implements Listener {
 		}
 		
 		//TRACKING
-		this.timer_onBlockBreak += (System.currentTimeMillis() - start);
+		this.timer_onBlockBreak += (System.nanoTime() - start);
 		this.count_onBlockBreak++;
 
 	}
 	@EventHandler
 	public void onBlockDamage(BlockDamageEvent event){
 		//TRACKING
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 
 		if(event.getBlock().getType() == Material.CHEST){
 			for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
@@ -158,14 +158,14 @@ public class BeyondBlockListener implements Listener {
 		}
 		
 		//TRACKING
-		this.timer_onBlockDamage += (System.currentTimeMillis() - start);
+		this.timer_onBlockDamage += (System.nanoTime() - start);
 		this.count_onBlockDamage++;
 
 	}
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event){
 		//TRACKING
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 
 		// TODO: Make this less terrible
 		/**
@@ -185,7 +185,7 @@ public class BeyondBlockListener implements Listener {
 		}
 
 		//TRACKING
-		this.timer_onBlockPlace += (System.currentTimeMillis() - start);
+		this.timer_onBlockPlace += (System.nanoTime() - start);
 		this.count_onBlockPlace++;
 
 	}

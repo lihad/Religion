@@ -54,7 +54,7 @@ public class BeyondEntityListener implements Listener {
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event){
 		//TRACKING
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 		
 		if(event.getEntity() instanceof Block){
 			Block block = (Block)event.getEntity();
@@ -102,13 +102,13 @@ public class BeyondEntityListener implements Listener {
 		}
 		
 		//TRACKING
-		this.timer_onEntityDamage += (System.currentTimeMillis() - start);
+		this.timer_onEntityDamage += (System.nanoTime() - start);
 		this.count_onEntityDamage++;
 	}
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event){
 		//TRACKING
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 
 		List<Block> blocklist = event.blockList();
 		for(int b = 0;b<blocklist.size();b++){
@@ -128,13 +128,13 @@ public class BeyondEntityListener implements Listener {
 		}
 
 		//TRACKING
-		this.timer_onEntityExplode += (System.currentTimeMillis() - start);
+		this.timer_onEntityExplode += (System.nanoTime() - start);
 		this.count_onEntityExplode++;
 	}
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event){
 		//TRACKING
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 
 		if(event.getEntity() instanceof Player){
 			Player player = (Player)event.getEntity();
@@ -146,13 +146,13 @@ public class BeyondEntityListener implements Listener {
 		}
 
 		//TRACKING
-		this.timer_onEntityDeath += (System.currentTimeMillis() - start);
+		this.timer_onEntityDeath += (System.nanoTime() - start);
 		this.count_onEntityDeath++;
 	}
 	@EventHandler
 	public void onExplosionPrime(ExplosionPrimeEvent event){
 		//TRACKING
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 
 		if(event.getEntity() instanceof LivingEntity){
 			if(Bosses.bossHealthMap.containsKey((LivingEntity)event.getEntity())){
@@ -163,14 +163,14 @@ public class BeyondEntityListener implements Listener {
 		}
 
 		//TRACKING
-		this.timer_onExplosionPrime+= (System.currentTimeMillis() - start);
+		this.timer_onExplosionPrime+= (System.nanoTime() - start);
 		this.count_onExplosionPrime++;
 	}
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
 
 		//TRACKING
-		long start = System.currentTimeMillis();
+		long start = System.nanoTime();
 
 
 		//
@@ -360,7 +360,7 @@ public class BeyondEntityListener implements Listener {
 			}
 		}
 		//TRACKING
-		this.timer_onEntityDamageByEntity+= (System.currentTimeMillis() - start);
+		this.timer_onEntityDamageByEntity+= (System.nanoTime() - start);
 		this.count_onEntityDamageByEntity++;
 	}
 	
