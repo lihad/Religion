@@ -164,9 +164,9 @@ public class CommandRunner implements CommandExecutor {
 			return true;
 		}
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("force") && arg.length == 1 && ((Player)sender).isOp()){
-			Bosses.bossExistMap.clear();
-			Bosses.bossHealthMap.clear();
-			Bosses.bossMaxHealthMap.clear();
+			//Bosses.bossExistMap.clear();
+			//Bosses.bossHealthMap.clear();
+			//Bosses.bossMaxHealthMap.clear();
 			//Religion.bosses.bossInit();
 			return true;
 		}

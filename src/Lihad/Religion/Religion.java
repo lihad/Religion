@@ -69,8 +69,8 @@ public class Religion extends JavaPlugin {
 	public static PermissionHandler handler;
 	public static LogBlock logBlock;
 	public static CommandExecutor cmd;
-    public static UpdateTimer timer;
-    public static BeyondTimerTask task;
+    //public static UpdateTimer timer;
+   // public static BeyondTimerTask task;
 
     public static TradesDriver trades;
     
@@ -164,8 +164,8 @@ public class Religion extends JavaPlugin {
         //pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Priority.Normal, this);
 
 		//TimerManager
-		task = new BeyondTimerTask();
-		timer = new UpdateTimer(this);
+		//task = new BeyondTimerTask();
+		//timer = new UpdateTimer(this);
         
 		//CommandManager
 		cmd = new CommandRunner(this);

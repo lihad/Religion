@@ -117,6 +117,7 @@ public class BeyondEntityListener implements Listener {
 			}
 		}
 	}
+	/**
 	@EventHandler
 	public void onExplosionPrime(ExplosionPrimeEvent event){
 		if(event.getEntity() instanceof LivingEntity){
@@ -127,6 +128,7 @@ public class BeyondEntityListener implements Listener {
 			}
 		}
 	}
+	*/
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
 		/**

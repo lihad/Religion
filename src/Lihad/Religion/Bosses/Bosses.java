@@ -37,6 +37,7 @@ import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Util.BeyondUtil;
 
 public class Bosses {
+	/**
 	public static Religion plugin;
 	
     public static Map<Location, String> configBossMap = BeyondConfig.getBossLocation();
@@ -474,7 +475,7 @@ public class Bosses {
 		int next = random.nextInt(7);
 		return next;
 	}
-
+*/
 }
 
 
