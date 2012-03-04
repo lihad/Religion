@@ -103,7 +103,7 @@ public class Religion extends JavaPlugin {
 		double avg = 0;
 		if (count != 0)
 			avg = timer/count;
-		info(name + " took " + timer + "ms " + " for a total of " + count + "runs - average: " + avg + "ms/run");
+		info(name + " took " + timer + "ns " + " for a total of " + count + "runs - average: " + avg + "ns/run");
 		return;
 	}
 
