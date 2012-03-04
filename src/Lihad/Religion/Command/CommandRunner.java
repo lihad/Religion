@@ -167,7 +167,7 @@ public class CommandRunner implements CommandExecutor {
 			Bosses.bossExistMap.clear();
 			Bosses.bossHealthMap.clear();
 			Bosses.bossMaxHealthMap.clear();
-			Religion.bosses.bossInit();
+			//Religion.bosses.bossInit();
 			return true;
 		}
 
