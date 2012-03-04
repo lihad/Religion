@@ -21,6 +21,7 @@ public class BeyondTimerTask extends TimerTask {
 	@Override
 	public void run(){
 		try{
+			Religion.info("TimerTask is running...");
 			if(BeyondInfo.getTowersAll() != null){
 				for(int i=0;i<BeyondInfo.getTowersAll().size();i++){
 					Location location = BeyondInfo.getTowerLocation(BeyondInfo.getTowersAll().get(i));
@@ -53,10 +54,10 @@ public class BeyondTimerTask extends TimerTask {
 			areaCleanUpForDZ();
 			Religion.trades.driver();
 			Religion.saveInfoFile();
+			Religion.info("TimerTask has completed");
 		}catch(Exception e){
-			System.out.println("[Religion] [ERROR] [NO TOWER] Lihad knows why you are seeing this, ask him");
+			Religion.warning("TimerTask has failed to complete.  Exception encountered.");
 			e.printStackTrace();
-
 		}
 	}
 

@@ -37,7 +37,6 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 
 import de.diddiz.LogBlock.LogBlock;
 
-@SuppressWarnings("deprecation")
 public class Religion extends JavaPlugin {
 	
 	
@@ -69,8 +68,8 @@ public class Religion extends JavaPlugin {
 	public static PermissionHandler handler;
 	public static LogBlock logBlock;
 	public static CommandExecutor cmd;
-    //public static UpdateTimer timer;
-   // public static BeyondTimerTask task;
+    public static UpdateTimer timer;
+    public static BeyondTimerTask task;
 
     public static TradesDriver trades;
     
@@ -164,8 +163,8 @@ public class Religion extends JavaPlugin {
         //pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Priority.Normal, this);
 
 		//TimerManager
-		//task = new BeyondTimerTask();
-		//timer = new UpdateTimer(this);
+		task = new BeyondTimerTask();
+		timer = new UpdateTimer(this);
         
 		//CommandManager
 		cmd = new CommandRunner(this);
@@ -207,7 +206,7 @@ public class Religion extends JavaPlugin {
 	 */
 	public static void info(String message)
 	{
-		log.info(header + ChatColor.WHITE + message);
+		log.info(header + ChatColor.WHITE.toString() + message);
 	}
 
 	/**
@@ -217,7 +216,7 @@ public class Religion extends JavaPlugin {
 	 */
 	public static void severe(String message)
 	{
-		log.severe(header + ChatColor.RED + message);
+		log.severe(header + ChatColor.RED.toString() + message);
 	}
 
 	/**
@@ -227,7 +226,7 @@ public class Religion extends JavaPlugin {
 	 */
 	public static void warning(String message)
 	{
-		log.warning(header + ChatColor.YELLOW + message);
+		log.warning(header + ChatColor.YELLOW.toString() + message);
 	}
 
 	/**

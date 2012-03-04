@@ -42,9 +42,12 @@ public class BeyondPlayerListener implements Listener {
 		String closestTo = BeyondInfo.getClosestValidTower(event.getTo());
 		//if(closestFrom==null)closestFrom = "null";
 		//if(closestTo==null)closestTo = "null";
+		
+		
+		//Player AoE Cooldown
 		if(BeyondInfo.getCooldownPlayers() != null &&
 				BeyondInfo.getCooldownPlayers().contains(event.getPlayer()) &&
-				closestTo != null &&
+				BeyondInfo.getClosestValidTower(event.getTo()) != null &&
 				(BeyondInfo.getReligion(event.getPlayer()) == null ||
 						!BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(event.getTo())).equals(BeyondInfo.getReligion(event.getPlayer()))) &&
 						System.currentTimeMillis()-BeyondInfo.getPlayerCooldown(event.getPlayer()) < 300000){
