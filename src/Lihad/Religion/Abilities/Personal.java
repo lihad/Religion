@@ -44,6 +44,7 @@ public class Personal {
 				}
 			}
 		}
+		eventplayer.updateInventory();
 	}
 	public static void usesLeather(Player player, Player playerrec){
 		int var = repairChance();
@@ -61,6 +62,7 @@ public class Personal {
 			player.sendMessage("Awesome! You repaired "+playerrec.getName()+"'s "+playerrec.getItemInHand().getType().name()+" by "+var+" points!");
 			playerrec.sendMessage("Alright! "+player.getName()+" repaired your "+playerrec.getItemInHand().getType().name()+" by "+var+" points!");
 		}
+		player.updateInventory();
 	}
 	public static void usesCampfireCooking(Player player){
 		if(player.getItemInHand().getType() == Material.RAW_BEEF){
@@ -88,6 +90,7 @@ public class Personal {
 			if(generalRandomizer(5) < 2)player.getInventory().addItem(new ItemStack(319, 1));
 			else player.sendMessage(ChatColor.RED.toString()+"You terrible cook!  You burnt the meat to a crisp!");
 		}
+		player.updateInventory();
 	}
 	public static void usesPaper(Player player){
 		removeItemInHandBy1(player);
@@ -137,11 +140,11 @@ public class Personal {
 			else if(creature instanceof Villager)player.getInventory().addItem(new MonsterEggs(383,(byte)120).toItemStack());
 			else player.sendMessage(ChatColor.RED.toString()+"You felt the power inside you to capture the creature, but failed!");
 			creature.remove();
-			player.updateInventory();
 		}else{
 			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"You failed to capture the "+creature.toString()+"!");
 			creature.setTarget(player);
 		}
+		player.updateInventory();
 
 	}
 	public static void usesDiamondPickAxeForIce(Player player, Block block){
@@ -169,6 +172,7 @@ public class Personal {
 			villager.setHealth(0);
 		}
 		else player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Thank you very much!");
+		player.updateInventory();
 	}
 
 
