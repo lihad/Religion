@@ -471,4 +471,58 @@ public class BeyondUtil {
 		}
 		return false;
 	}
+	
+	public static List<ItemStack> randomLootPump(){
+		List<ItemStack> stacks = new ArrayList<ItemStack>();
+		if(chancizerForHotDrops() == 0){
+			ItemStack stack = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
+			stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+			stacks.add(stack);
+		}else if(chancizerForHotDrops() == 1){
+			ItemStack stack = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
+			stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+			stacks.add(stack);
+		}else if(chancizerForHotDrops() == 2){
+			ItemStack stack = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
+			stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+			stacks.add(stack);
+		}else if(chancizerForHotDrops() == 3){
+			ItemStack stack = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
+			stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+			ItemStack stack2 = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
+			stack2.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+			stacks.add(stack);
+			stacks.add(stack2);
+		}else if(chancizerForHotDrops() == 4){
+			ItemStack stack = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
+			stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+			ItemStack stack2 = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
+			stack2.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+			stacks.add(stack);
+			stacks.add(stack2);
+		}else if(chancizerForHotDrops() == 5){
+			ItemStack stack = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
+			stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+			ItemStack stack2 = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
+			stack2.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+			stacks.add(stack);
+			stacks.add(stack2);
+		}else{
+			ItemStack stack = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
+			stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+			ItemStack stack2 = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
+			stack2.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+			ItemStack stack3 = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
+			stack3.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+			stacks.add(stack);
+			stacks.add(stack2);
+			stacks.add(stack3);
+		}
+		return stacks;
+	}
+	private static int chancizerForHotDrops(){
+		Random random = new Random();
+		int next = random.nextInt(7);
+		return next;
+	}
 }

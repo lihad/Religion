@@ -11,6 +11,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -25,6 +26,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Religion;
+import Lihad.Religion.Abilities.Personal;
 import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Information.BeyondInfo;
@@ -179,29 +181,17 @@ public class BeyondPlayerListener implements Listener {
 	*/
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){		
-		if(event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.heal") && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)){
-			List<Entity> entities = event.getPlayer().getNearbyEntities(5, 2, 5);
-			for(int i = 0; i<entities.size();i++){
-				if(entities.get(i) instanceof Player){
-					Player player = (Player)entities.get(i);
-					if(player.getHealth() < 19){
-						int var = healChance();
-						if(var==0){
-							event.getPlayer().sendMessage("You failed to heal "+BeyondUtil.getChatColor(player, BeyondInfo.getTowerName(event.getPlayer()))+player.getName());
-						}else{
-							event.getPlayer().sendMessage("You healed "+BeyondUtil.getChatColor(player, BeyondInfo.getTowerName(event.getPlayer()))+player.getName()+ChatColor.WHITE.toString()+" by "+var);
-							player.sendMessage("You were healed by "+BeyondUtil.getChatColor(event.getPlayer(), BeyondInfo.getTowerName(player))+event.getPlayer().getName()+ChatColor.WHITE.toString());
-							player.setHealth(player.getHealth()+var);
-							
-							if(event.getPlayer().getItemInHand().getAmount() <= 1)event.getPlayer().setItemInHand(null);
-							else event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
-						}
-					}else{
-						event.getPlayer().sendMessage("You failed to heal "+BeyondUtil.getChatColor(player, BeyondInfo.getTowerName(event.getPlayer()))+player.getName());
-					}
-				}
-			}
-		}
+		//Ability Interacts
+		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.ability.heal")
+				&& (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))Personal.usesBook(event.getPlayer());
+		if(event.getClickedBlock() != null && event.getClickedBlock().getType()== Material.ICE && event.getPlayer().getItemInHand() != null
+				&& event.getPlayer().getItemInHand().getType() == Material.DIAMOND_PICKAXE && Religion.handler.has(event.getPlayer(), "religion.ability.icepick"))Personal.usesDiamondPickAxeForIce(event.getPlayer(), event.getClickedBlock());
+		if(event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.FIRE && event.getPlayer().getItemInHand() != null
+				&& Religion.handler.has(event.getPlayer(), "religion.ability.cooking"))Personal.usesCampfireCooking(event.getPlayer());
+		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.PAPER
+				&& Religion.handler.has(event.getPlayer(), "religion.ability.origami"))Personal.usesPaper(event.getPlayer());
+		
+		
 		///// ONLY CHEST INTERACTS AFTER THIS POINT
 		if(event.getClickedBlock() == null)return;
 		else if(event.getClickedBlock().getType() == Material.CHEST){
@@ -306,29 +296,18 @@ public class BeyondPlayerListener implements Listener {
 			event.setCancelled(true);
 		}
 	}
+	 */
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
-		if(event.getPlayer().getItemInHand().getType() == Material.LEATHER && Religion.handler.has(event.getPlayer(), "religion.repair")){
-			if(event.getRightClicked() instanceof Player){
-				Player player = (Player) event.getRightClicked();
-				int var = repairChance();
-				if(var == 0){
-					event.getPlayer().sendMessage("Oh No! The Leather broke without repairing! Poor "+player.getName());
-					player.sendMessage("Oh No! "+event.getPlayer().getName()+" has failed to repair your item!");
-				}else if(player.getItemInHand().getDurability() <= 0){
-					event.getPlayer().sendMessage("The item you are trying to repair is already at its maximum potential!");
-				}else if(player.getItemInHand().getEnchantments().keySet().size() > 0){
-					event.getPlayer().sendMessage("You lack the potential to repair this item...");
-				}else{
-					player.getItemInHand().setDurability((short)(player.getItemInHand().getDurability()-var));
-					if(event.getPlayer().getItemInHand().getAmount() == 1)event.getPlayer().setItemInHand(null);
-					else event.getPlayer().getItemInHand().setAmount(event.getPlayer().getItemInHand().getAmount()-1);
-					event.getPlayer().sendMessage("Awesome! You repaired "+player.getName()+"'s "+player.getItemInHand().getType().name()+" by "+var+" points!");
-					player.sendMessage("Alright! "+event.getPlayer().getName()+" repaired your "+player.getItemInHand().getType().name()+" by "+var+" points!");
-				}
-			}
-		}
+		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.LEATHER && event.getRightClicked() instanceof Player
+				&& Religion.handler.has(event.getPlayer(), "religion.ability.repair"))Personal.usesLeather(event.getPlayer(), (Player)event.getRightClicked());
+		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.DIAMOND && event.getRightClicked() instanceof Villager
+				&& Religion.handler.has(event.getPlayer(), "religion.ability.trade"))Personal.usesDiamond(event.getPlayer(), (Villager)event.getRightClicked());
+		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.GLASS_BOTTLE && event.getRightClicked() instanceof Creature
+				&& Religion.handler.has(event.getPlayer(), "religion.ability.egg"))Personal.usesGlassBottle(event.getPlayer(), (Creature)event.getRightClicked());
+		
 	}
+	/**
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event){
 		if(BeyondInfo.getTowerName(event.getPlayer())== null && !(BeyondInfo.getClosestValidTower(event.getRespawnLocation()) == null) && event.isBedSpawn()){
@@ -360,23 +339,6 @@ public class BeyondPlayerListener implements Listener {
 		return next;
 	}
 	
-	private int repairChance(){
-		Random chance = new Random();
-		int next = chance.nextInt(100);
-		if(next<2)return 20;
-		else if(next<10)return 15;
-		else if(next<20)return 10;
-		else if(next<30)return 5;
-		else if(next<45)return 3;
-		else if(next<60)return 2;
-		else if(next<80)return 1;
-		else return 0;
-	}
-	private int healChance(){
-		Random chance = new Random();
-		int next = chance.nextInt(10);
-		if(next<1)return 2;
-		else if(next<6)return 1;
-		else return 0;
-	}
+
+
 }
