@@ -137,6 +137,7 @@ public class Personal {
 			else if(creature instanceof Villager)player.getInventory().addItem(new MonsterEggs(383,(byte)120).toItemStack());
 			else player.sendMessage(ChatColor.RED.toString()+"You felt the power inside you to capture the creature, but failed!");
 			creature.remove();
+			player.updateInventory();
 		}else{
 			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"You failed to capture the "+creature.toString()+"!");
 			creature.setTarget(player);
