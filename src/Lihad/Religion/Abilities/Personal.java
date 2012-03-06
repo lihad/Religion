@@ -98,11 +98,11 @@ public class Personal {
 		else if(chance==3)player.getWorld().spawnCreature(player.getLocation(), EntityType.OCELOT);
 		else if(chance==4)player.getWorld().spawnCreature(player.getLocation(), EntityType.WOLF);
 		else if(chance==5)player.getWorld().spawnCreature(player.getLocation(), EntityType.SNOWMAN);
-		else if(chance==6)player.getWorld().spawnCreature(player.getLocation(), EntityType.BOAT);
+		else if(chance==10)player.getWorld().spawn(player.getLocation(),Boat.class);
 		else if(chance==7)player.getWorld().spawnCreature(player.getLocation(), EntityType.CHICKEN);
 		else if(chance==8)player.getWorld().spawnCreature(player.getLocation(), EntityType.COW);
 		else if(chance==9)player.getWorld().spawnCreature(player.getLocation(), EntityType.PIG);
-		else if(chance==10)player.getWorld().spawnCreature(player.getLocation(), EntityType.MINECART);
+		else if(chance==10)player.getWorld().spawn(player.getLocation(),Minecart.class);
 		else if(chance==11)player.getWorld().spawnCreature(player.getLocation(), EntityType.SQUID);
 		else if(chance==12)player.getWorld().spawnCreature(player.getLocation(), EntityType.ZOMBIE);
 		else if(chance==13)player.getWorld().spawnCreature(player.getLocation(), EntityType.PIG_ZOMBIE);
@@ -115,26 +115,26 @@ public class Personal {
 		int chance = generalRandomizer(100);
 		if(chance < 10){
 			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"You captured a "+creature.toString()+"!");
-			if(creature instanceof Creeper)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)50).toItemStack()));
-			else if(creature instanceof Skeleton)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)51).toItemStack()));
-			else if(creature instanceof Spider)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)52).toItemStack()));
-			else if(creature instanceof Zombie)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)53).toItemStack()));
-			else if(creature instanceof Slime)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)55).toItemStack()));
-			else if(creature instanceof Ghast)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)56).toItemStack()));
-			else if(creature instanceof Skeleton)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)57).toItemStack()));
-			else if(creature instanceof PigZombie)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)58).toItemStack()));
-			else if(creature instanceof CaveSpider)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)59).toItemStack()));
-			else if(creature instanceof Silverfish)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)60).toItemStack()));
-			else if(creature instanceof Blaze)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)61).toItemStack()));
-			else if(creature instanceof MagmaCube)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)62).toItemStack()));
-			else if(creature instanceof Pig)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)90).toItemStack()));
-			else if(creature instanceof Sheep)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)91).toItemStack()));
-			else if(creature instanceof Cow)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)92).toItemStack()));
-			else if(creature instanceof Chicken)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)93).toItemStack()));
-			else if(creature instanceof Squid)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)94).toItemStack()));
-			else if(creature instanceof Wolf)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)95).toItemStack()));
-			else if(creature instanceof MushroomCow)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)96).toItemStack()));
-			else if(creature instanceof Villager)creature.getWorld().dropItemNaturally(creature.getLocation(), (new MonsterEggs(383,(byte)120).toItemStack()));
+			if(creature instanceof Creeper)player.getInventory().addItem(new MonsterEggs(383,(byte)50).toItemStack());
+			else if(creature instanceof Skeleton)player.getInventory().addItem(new MonsterEggs(383,(byte)51).toItemStack());
+			else if(creature instanceof Spider)player.getInventory().addItem(new MonsterEggs(383,(byte)52).toItemStack());
+			else if(creature instanceof Zombie)player.getInventory().addItem(new MonsterEggs(383,(byte)53).toItemStack());
+			else if(creature instanceof Slime)player.getInventory().addItem(new MonsterEggs(383,(byte)55).toItemStack());
+			else if(creature instanceof Ghast)player.getInventory().addItem(new MonsterEggs(383,(byte)56).toItemStack());
+			else if(creature instanceof Skeleton)player.getInventory().addItem(new MonsterEggs(383,(byte)57).toItemStack());
+			else if(creature instanceof PigZombie)player.getInventory().addItem(new MonsterEggs(383,(byte)58).toItemStack());
+			else if(creature instanceof CaveSpider)player.getInventory().addItem(new MonsterEggs(383,(byte)59).toItemStack());
+			else if(creature instanceof Silverfish)player.getInventory().addItem(new MonsterEggs(383,(byte)60).toItemStack());
+			else if(creature instanceof Blaze)player.getInventory().addItem(new MonsterEggs(383,(byte)61).toItemStack());
+			else if(creature instanceof MagmaCube)player.getInventory().addItem(new MonsterEggs(383,(byte)62).toItemStack());
+			else if(creature instanceof Pig)player.getInventory().addItem(new MonsterEggs(383,(byte)90).toItemStack());
+			else if(creature instanceof Sheep)player.getInventory().addItem(new MonsterEggs(383,(byte)91).toItemStack());
+			else if(creature instanceof Cow)player.getInventory().addItem(new MonsterEggs(383,(byte)92).toItemStack());
+			else if(creature instanceof Chicken)player.getInventory().addItem(new MonsterEggs(383,(byte)93).toItemStack());
+			else if(creature instanceof Squid)player.getInventory().addItem(new MonsterEggs(383,(byte)94).toItemStack());
+			else if(creature instanceof Wolf)player.getInventory().addItem(new MonsterEggs(383,(byte)95).toItemStack());
+			else if(creature instanceof MushroomCow)player.getInventory().addItem(new MonsterEggs(383,(byte)96).toItemStack());
+			else if(creature instanceof Villager)player.getInventory().addItem(new MonsterEggs(383,(byte)120).toItemStack());
 			else player.sendMessage(ChatColor.RED.toString()+"You felt the power inside you to capture the creature, but failed!");
 			creature.remove();
 		}else{
@@ -159,7 +159,7 @@ public class Personal {
 				villager.getWorld().dropItemNaturally(villager.getLocation(), stacks.get(i));
 			}
 		}
-		else if(chance < 50){
+		else if(chance < 45){
 			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Thank you!  Now my wife will lay me for sure!");
 			villager.getWorld().spawnCreature(villager.getLocation(), EntityType.VILLAGER);
 		}

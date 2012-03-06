@@ -251,9 +251,9 @@ public class BeyondEntityListener implements Listener {
 								stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
 								Random chance = new Random();
 								int next = chance.nextInt(100);
-								if(next<10)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(),BeyondUtil.weaponLevelRandomizer());
+								if(next<20)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(),BeyondUtil.weaponLevelRandomizer());
+								if(next<10)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
 								if(next<5)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
-								if(next<1)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
 							}
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));

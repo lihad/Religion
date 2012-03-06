@@ -184,9 +184,9 @@ public class BeyondPlayerListener implements Listener {
 		//Ability Interacts
 		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.ability.heal")
 				&& (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))Personal.usesBook(event.getPlayer());
-		if(event.getClickedBlock() != null && event.getClickedBlock().getType()== Material.ICE && event.getPlayer().getItemInHand() != null
+		if(event.getClickedBlock() != null && event.getClickedBlock().getType()== Material.ICE && event.getPlayer().getItemInHand() != null && event.getAction() == Action.LEFT_CLICK_BLOCK
 				&& event.getPlayer().getItemInHand().getType() == Material.DIAMOND_PICKAXE && Religion.handler.has(event.getPlayer(), "religion.ability.icepick"))Personal.usesDiamondPickAxeForIce(event.getPlayer(), event.getClickedBlock());
-		if(event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.FIRE && event.getPlayer().getItemInHand() != null
+		if(event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.LAVA && event.getPlayer().getItemInHand() != null
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.cooking"))Personal.usesCampfireCooking(event.getPlayer());
 		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.PAPER
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.origami"))Personal.usesPaper(event.getPlayer());

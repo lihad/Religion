@@ -2,8 +2,10 @@ package Lihad.Religion.Util;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
@@ -476,49 +478,79 @@ public class BeyondUtil {
 		List<ItemStack> stacks = new ArrayList<ItemStack>();
 		if(chancizerForHotDrops() == 0){
 			ItemStack stack = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
-			stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+			stack.addUnsafeEnchantments(lootPumpStackerTool());
 			stacks.add(stack);
 		}else if(chancizerForHotDrops() == 1){
 			ItemStack stack = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
-			stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+			stack.addUnsafeEnchantments(lootPumpStackerArmor());
 			stacks.add(stack);
 		}else if(chancizerForHotDrops() == 2){
 			ItemStack stack = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
-			stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+			stack.addUnsafeEnchantments(lootPumpStackerWeapon());
 			stacks.add(stack);
 		}else if(chancizerForHotDrops() == 3){
 			ItemStack stack = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
-			stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+			stack.addUnsafeEnchantments(lootPumpStackerArmor());
 			ItemStack stack2 = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
-			stack2.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+			stack2.addUnsafeEnchantments(lootPumpStackerTool());
 			stacks.add(stack);
 			stacks.add(stack2);
 		}else if(chancizerForHotDrops() == 4){
 			ItemStack stack = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
-			stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+			stack.addUnsafeEnchantments(lootPumpStackerTool());
 			ItemStack stack2 = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
-			stack2.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+			stack2.addUnsafeEnchantments(lootPumpStackerWeapon());
 			stacks.add(stack);
 			stacks.add(stack2);
 		}else if(chancizerForHotDrops() == 5){
 			ItemStack stack = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
-			stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+			stack.addUnsafeEnchantments(lootPumpStackerArmor());
 			ItemStack stack2 = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
-			stack2.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+			stack2.addUnsafeEnchantments(lootPumpStackerWeapon());
 			stacks.add(stack);
 			stacks.add(stack2);
 		}else{
 			ItemStack stack = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
-			stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+			stack.addUnsafeEnchantments(lootPumpStackerTool());
 			ItemStack stack2 = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
-			stack2.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+			stack2.addUnsafeEnchantments(lootPumpStackerArmor());
 			ItemStack stack3 = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
-			stack3.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+			stack3.addUnsafeEnchantments(lootPumpStackerWeapon());
 			stacks.add(stack);
 			stacks.add(stack2);
 			stacks.add(stack3);
 		}
 		return stacks;
+	}
+	private static Map<Enchantment,Integer> lootPumpStackerWeapon(){
+		Map<Enchantment,Integer> map = new HashMap<Enchantment,Integer>();
+		Random random = new Random();
+		int next = random.nextInt(100);
+		map.put(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+		if(next<15)		map.put(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+		if(next<8)		map.put(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+		if(next<3)		map.put(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+		return map;
+	}
+	private static Map<Enchantment,Integer> lootPumpStackerArmor(){
+		Map<Enchantment,Integer> map = new HashMap<Enchantment,Integer>();
+		Random random = new Random();
+		int next = random.nextInt(100);
+		map.put(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+		if(next<15)		map.put(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+		if(next<8)		map.put(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+		if(next<3)		map.put(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+		return map;
+	}
+	private static Map<Enchantment,Integer> lootPumpStackerTool(){
+		Map<Enchantment,Integer> map = new HashMap<Enchantment,Integer>();
+		Random random = new Random();
+		int next = random.nextInt(100);
+		map.put(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+		if(next<15)		map.put(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+		if(next<8)		map.put(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+		if(next<3)		map.put(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+		return map;
 	}
 	private static int chancizerForHotDrops(){
 		Random random = new Random();
