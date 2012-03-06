@@ -35,8 +35,9 @@ public class BeyondPlayerListener implements Listener {
 	public BeyondPlayerListener(Religion instance) {
 		plugin = instance;
 	}
-
+	/**
 	@EventHandler
+
 	public void onPlayerMove(PlayerMoveEvent event){
 		String closestFrom = BeyondInfo.getClosestValidTower(event.getFrom());
 		String closestTo = BeyondInfo.getClosestValidTower(event.getTo());
@@ -55,7 +56,7 @@ public class BeyondPlayerListener implements Listener {
 			event.getPlayer().sendMessage(ChatColor.RED.toString()+"You're shell-shocked. Your will is too weak to continue in.");
 		}
 	}
-
+*/
 	////////////////////////////////	
 	/**
 		if(closestFrom.equals("null")&&!closestTo.equals("null")&&BeyondInfo.getReligion(event.getPlayer()) == null){

@@ -27,6 +27,6 @@ public class UpdateTimer {
     	System.out.println("[Religion] Timer has been set,.");
     	Calendar cal = Calendar.getInstance();    	
     	//TODO: Timer value needs to be configurable through Relgion.Config.BeyondConfig
-    	//timer.scheduleAtFixedRate(Religion.task, cal.getTime(),  1800000);
+    	timer.scheduleAtFixedRate(Religion.task, cal.getTime(),  1800000);
     }
 }
