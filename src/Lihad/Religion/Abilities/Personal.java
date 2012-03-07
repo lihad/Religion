@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -111,33 +112,31 @@ public class Personal {
 		else if(chance==13)player.getWorld().spawnCreature(player.getLocation(), EntityType.PIG_ZOMBIE);
 		else if(chance==14)player.getWorld().spawnCreature(player.getLocation(), EntityType.SILVERFISH);
 		else if(chance==15)player.getWorld().spawnCreature(player.getLocation(), EntityType.SHEEP);
-		else player.sendMessage("You crumple up a piece of paper and throw it ... Nothing happens");
+		else player.sendMessage("You crumple up a piece of paper and throw it. Nothing happens");
 	}
 	public static void usesGlassBottle(Player player, Creature creature){
 		removeItemInHandBy1(player);
 		int chance = generalRandomizer(100);
 		if(chance < 10){
 			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"You captured a "+creature.toString()+"!");
-			if(creature instanceof Creeper)player.getInventory().addItem(new MonsterEggs(383,(byte)50).toItemStack());
-			else if(creature instanceof Skeleton)player.getInventory().addItem(new MonsterEggs(383,(byte)51).toItemStack());
-			else if(creature instanceof Spider)player.getInventory().addItem(new MonsterEggs(383,(byte)52).toItemStack());
-			else if(creature instanceof Zombie)player.getInventory().addItem(new MonsterEggs(383,(byte)53).toItemStack());
-			else if(creature instanceof Slime)player.getInventory().addItem(new MonsterEggs(383,(byte)55).toItemStack());
-			else if(creature instanceof Ghast)player.getInventory().addItem(new MonsterEggs(383,(byte)56).toItemStack());
-			else if(creature instanceof Skeleton)player.getInventory().addItem(new MonsterEggs(383,(byte)57).toItemStack());
-			else if(creature instanceof PigZombie)player.getInventory().addItem(new MonsterEggs(383,(byte)58).toItemStack());
-			else if(creature instanceof CaveSpider)player.getInventory().addItem(new MonsterEggs(383,(byte)59).toItemStack());
-			else if(creature instanceof Silverfish)player.getInventory().addItem(new MonsterEggs(383,(byte)60).toItemStack());
-			else if(creature instanceof Blaze)player.getInventory().addItem(new MonsterEggs(383,(byte)61).toItemStack());
-			else if(creature instanceof MagmaCube)player.getInventory().addItem(new MonsterEggs(383,(byte)62).toItemStack());
-			else if(creature instanceof Pig)player.getInventory().addItem(new MonsterEggs(383,(byte)90).toItemStack());
-			else if(creature instanceof Sheep)player.getInventory().addItem(new MonsterEggs(383,(byte)91).toItemStack());
-			else if(creature instanceof Cow)player.getInventory().addItem(new MonsterEggs(383,(byte)92).toItemStack());
-			else if(creature instanceof Chicken)player.getInventory().addItem(new MonsterEggs(383,(byte)93).toItemStack());
-			else if(creature instanceof Squid)player.getInventory().addItem(new MonsterEggs(383,(byte)94).toItemStack());
-			else if(creature instanceof Wolf)player.getInventory().addItem(new MonsterEggs(383,(byte)95).toItemStack());
-			else if(creature instanceof MushroomCow)player.getInventory().addItem(new MonsterEggs(383,(byte)96).toItemStack());
-			else if(creature instanceof Villager)player.getInventory().addItem(new MonsterEggs(383,(byte)120).toItemStack());
+			if(creature instanceof Creeper)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)50));
+			else if(creature instanceof Skeleton)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)51));
+			else if(creature instanceof Spider)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)52));
+			else if(creature instanceof PigZombie)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)57));
+			else if(creature instanceof Zombie)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)54));
+			else if(creature instanceof CaveSpider)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)59));
+			else if(creature instanceof Silverfish)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)60));
+			else if(creature instanceof Pig)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)90));
+			else if(creature instanceof Sheep)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)91));
+			else if(creature instanceof Cow)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)92));
+			else if(creature instanceof Chicken)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)93));
+			else if(creature instanceof Squid)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)94));
+			else if(creature instanceof Wolf)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)95));
+			else if(creature instanceof MushroomCow)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)96));
+			else if(creature instanceof Snowman)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)97));
+			else if(creature instanceof Ocelot)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)98));
+			else if(creature instanceof IronGolem)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)99));
+			else if(creature instanceof Villager)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)120));
 			else player.sendMessage(ChatColor.RED.toString()+"You felt the power inside you to capture the creature, but failed!");
 			creature.remove();
 		}else{
@@ -152,6 +151,41 @@ public class Personal {
 			block.setTypeId(0);
 			block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.ICE, 1));
 		}
+	}
+	public static void usesDiamondItem(Player player, Villager villager, int useableindex){
+		// 0 for weapon
+		// 1 for armor
+		// 2 for tool
+		int chance = generalRandomizer(100);
+		player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"I think I can enchant that "+player.getItemInHand().getType().name()+" for you....");
+		if(chance<70){
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"HAHA!  We did it!");
+			if(useableindex == 0)player.getItemInHand().addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+			if(useableindex == 1)player.getItemInHand().addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
+			if(useableindex == 2)player.getItemInHand().addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+			player.getWorld().strikeLightningEffect(player.getLocation());
+		}else if(chance<80){
+			removeItemInHandBy1(player);
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Oh no.... umm, I am so sorry...");
+		}else{
+			player.getWorld().strikeLightning(player.getLocation());
+			villager.getWorld().strikeLightning(villager.getLocation());
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"OH! BLAAAAAARRRRRRGH");
+		}
+		player.updateInventory();
+	}
+	public static void usesPainting(Player player,Sheep sheep){
+		Random chance = new Random();
+		int next = chance.nextInt(10);
+		removeItemInHandBy1(player);
+		if(next<9)sheep.setColor(sheepRandomizer());
+		else{
+			player.sendMessage(ChatColor.RED.toString()+"BLAAAAAARRRRRAAWWWWRRRR");
+			((Wolf)sheep.getWorld().spawnCreature(sheep.getLocation(), EntityType.WOLF)).setAngry(true);
+			sheep.remove();
+		}
+		player.updateInventory();
+
 	}
 	public static void usesDiamond(Player player, Villager villager){
 		removeItemInHandBy1(player);
@@ -202,5 +236,28 @@ public class Personal {
 	private static void removeItemInHandBy1(Player player){
 		if(player.getItemInHand().getAmount() == 1)player.setItemInHand(null);
 		else player.getItemInHand().setAmount(player.getItemInHand().getAmount()-1);
+	}
+	private static DyeColor sheepRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(16);
+		switch(next){
+		case 0:return DyeColor.WHITE;
+		case 1:return DyeColor.ORANGE;
+		case 2:return DyeColor.MAGENTA;
+		case 3:return DyeColor.LIGHT_BLUE;
+		case 4:return DyeColor.YELLOW;
+		case 5:return DyeColor.LIME;
+		case 6:return DyeColor.PINK;
+		case 7:return DyeColor.GRAY;
+		case 8:return DyeColor.SILVER;
+		case 9:return DyeColor.CYAN;
+		case 10:return DyeColor.PURPLE;
+		case 11:return DyeColor.BLUE;
+		case 12:return DyeColor.BROWN;
+		case 13:return DyeColor.GREEN;
+		case 14:return DyeColor.RED;
+		case 15:return DyeColor.BLACK ;
+		}
+		return DyeColor.WHITE;
 	}
 }

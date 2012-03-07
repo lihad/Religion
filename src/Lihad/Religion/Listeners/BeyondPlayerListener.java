@@ -11,6 +11,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -186,7 +187,7 @@ public class BeyondPlayerListener implements Listener {
 				&& (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))Personal.usesBook(event.getPlayer());
 		if(event.getClickedBlock() != null && event.getClickedBlock().getType()== Material.ICE && event.getPlayer().getItemInHand() != null && event.getAction() == Action.LEFT_CLICK_BLOCK
 				&& event.getPlayer().getItemInHand().getType() == Material.DIAMOND_PICKAXE && Religion.handler.has(event.getPlayer(), "religion.ability.icepick"))Personal.usesDiamondPickAxeForIce(event.getPlayer(), event.getClickedBlock());
-		if(event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.TORCH && event.getPlayer().getItemInHand() != null && event.getAction() == Action.RIGHT_CLICK_BLOCK
+		if(event.getClickedBlock() != null && event.getClickedBlock().getType() == Material.TORCH && event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getAmount() > 1  && event.getAction() == Action.RIGHT_CLICK_BLOCK
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.cooking"))Personal.usesCampfireCooking(event.getPlayer());
 		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.PAPER
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.origami"))Personal.usesPaper(event.getPlayer());
@@ -299,13 +300,25 @@ public class BeyondPlayerListener implements Listener {
 	 */
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event){
-		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.LEATHER && event.getRightClicked() instanceof Player
+		if(event.getPlayer().getItemInHand() == null)return;
+		if(event.getPlayer().getItemInHand().getType() == Material.LEATHER && event.getRightClicked() instanceof Player
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.repair"))Personal.usesLeather(event.getPlayer(), (Player)event.getRightClicked());
-		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.DIAMOND && event.getRightClicked() instanceof Villager
+		if(event.getPlayer().getItemInHand().getType() == Material.DIAMOND && event.getRightClicked() instanceof Villager
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.trade"))Personal.usesDiamond(event.getPlayer(), (Villager)event.getRightClicked());
-		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.GLASS_BOTTLE && event.getRightClicked() instanceof Creature
+		if(event.getPlayer().getItemInHand().getType() == Material.GLASS_BOTTLE && event.getRightClicked() instanceof Creature
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.egg"))Personal.usesGlassBottle(event.getPlayer(), (Creature)event.getRightClicked());
+		if(event.getPlayer().getItemInHand().getType() == Material.DIAMOND_SWORD && event.getRightClicked() instanceof Villager
+				&& Religion.handler.has(event.getPlayer(), "religion.ability.enchantsword"))Personal.usesDiamondItem(event.getPlayer(), (Villager)event.getRightClicked(), 0);
+		if((event.getPlayer().getItemInHand().getType() == Material.DIAMOND_HELMET || event.getPlayer().getItemInHand().getType() == Material.DIAMOND_LEGGINGS || event.getPlayer().getItemInHand().getType() == Material.DIAMOND_CHESTPLATE || event.getPlayer().getItemInHand().getType() == Material.DIAMOND_BOOTS)
+				&& event.getRightClicked() instanceof Villager
+				&& Religion.handler.has(event.getPlayer(), "religion.ability.enchantarmor"))Personal.usesDiamondItem(event.getPlayer(), (Villager)event.getRightClicked(), 1);
+		if((event.getPlayer().getItemInHand().getType() == Material.DIAMOND_HOE || event.getPlayer().getItemInHand().getType() == Material.DIAMOND_AXE || event.getPlayer().getItemInHand().getType() == Material.DIAMOND_PICKAXE || event.getPlayer().getItemInHand().getType() == Material.DIAMOND_SPADE)
+				&& event.getRightClicked() instanceof Villager
+				&& Religion.handler.has(event.getPlayer(), "religion.ability.enchanttool"))Personal.usesDiamondItem(event.getPlayer(), (Villager)event.getRightClicked(), 2);
+		if(event.getPlayer().getItemInHand().getType() == Material.PAINTING && event.getRightClicked() instanceof Sheep
+				&& Religion.handler.has(event.getPlayer(), "religion.ability.sheep"))Personal.usesPainting(event.getPlayer(), (Sheep)event.getRightClicked());
 		
+	
 	}
 	/**
 	@EventHandler
