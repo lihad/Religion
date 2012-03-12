@@ -79,7 +79,7 @@ public class BeyondPlayerListener implements Listener {
 				return;
 			}
 		}
-		if(!BeyondInfo.getClosestValidTower(event.getFrom()).equals(BeyondInfo.getClosestValidTower(event.getTo()))){
+		if(BeyondInfo.getClosestValidTower(event.getTo()) != null && (BeyondInfo.getClosestValidTower(event.getFrom()) == null)){
 			event.getPlayer().sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(event.getPlayer(), BeyondInfo.getClosestValidTower(event.getTo())) + BeyondInfo.getClosestValidTower(event.getTo()));
 		}
 		//BOSS SPAWNER

@@ -9,7 +9,6 @@ public class BukkitSchedulePlayerMove implements Runnable {
 		while(!BeyondPlayerListener.queue.isEmpty()){
 			BeyondPlayerListener.onPlayerMoveExecutor(BeyondPlayerListener.queue.get(0));
 			BeyondPlayerListener.queue.remove(0);
-			System.out.println("Running queue.  Size: "+BeyondPlayerListener.queue.size());
 
 		}
 		isEmpty = true;
