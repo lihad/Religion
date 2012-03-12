@@ -1,5 +1,6 @@
 package Lihad.Religion.Listeners;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -18,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -32,22 +34,24 @@ import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
+import Lihad.Religion.Util.BukkitSchedulePlayerMove;
 
 public class BeyondPlayerListener implements Listener {
 	public static Religion plugin;
+	public static List<PlayerMoveEvent> queue = new LinkedList<PlayerMoveEvent>();
 	public BeyondPlayerListener(Religion instance) {
 		plugin = instance;
 	}
-	/**
 	@EventHandler
-
 	public void onPlayerMove(PlayerMoveEvent event){
-		String closestFrom = BeyondInfo.getClosestValidTower(event.getFrom());
-		String closestTo = BeyondInfo.getClosestValidTower(event.getTo());
-		//if(closestFrom==null)closestFrom = "null";
-		//if(closestTo==null)closestTo = "null";
-		
-		
+		queue.add(event);
+		if(BukkitSchedulePlayerMove.isEmpty){
+			plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin,Religion.playerMoveTask, 1L);
+			BukkitSchedulePlayerMove.isEmpty = false;
+		}
+	}
+	public static void onPlayerMoveExecutor(PlayerMoveEvent event){
+
 		//Player AoE Cooldown
 		if(BeyondInfo.getCooldownPlayers() != null &&
 				BeyondInfo.getCooldownPlayers().contains(event.getPlayer()) &&
@@ -58,12 +62,9 @@ public class BeyondPlayerListener implements Listener {
 			event.setTo(event.getFrom());
 			event.getPlayer().sendMessage(ChatColor.RED.toString()+"You're shell-shocked. Your will is too weak to continue in.");
 		}
-	}
-*/
 	////////////////////////////////	
-	/**
-		if(closestFrom.equals("null")&&!closestTo.equals("null")&&BeyondInfo.getReligion(event.getPlayer()) == null){
-			if(BeyondUtil.timestampReference(closestTo)){
+		if(BeyondInfo.getClosestValidTower(event.getFrom()) == null&& BeyondInfo.getClosestValidTower(event.getTo()) != null &&BeyondInfo.getReligion(event.getPlayer()) == null){
+			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(event.getTo()))){
 				event.setTo(event.getFrom());
 				event.getPlayer().sendMessage("This is a religious area. Go away non-believer!");
 				return;
@@ -71,15 +72,15 @@ public class BeyondPlayerListener implements Listener {
 				event.getPlayer().sendMessage("Your heart begins to race!");
 			}
 		}
-		if((!closestTo.equals("null"))&&(!closestFrom.equals("null"))&&BeyondInfo.getReligion(event.getPlayer()) == null){
-			if(BeyondUtil.timestampReference(closestTo)){
+		if(BeyondInfo.getClosestValidTower(event.getFrom()) != null && BeyondInfo.getClosestValidTower(event.getTo()) != null && BeyondInfo.getReligion(event.getPlayer()) == null){
+			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(event.getTo()))){
 				event.getPlayer().damage(6);
 				event.getPlayer().sendMessage("Being in a religious area without your own religion is pulling your soul apart...");
 				return;
 			}
 		}
-		if(!closestFrom.equals(closestTo)){
-			event.getPlayer().sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(event.getPlayer(), closestTo) + closestTo);
+		if(!BeyondInfo.getClosestValidTower(event.getFrom()).equals(BeyondInfo.getClosestValidTower(event.getTo()))){
+			event.getPlayer().sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(event.getPlayer(), BeyondInfo.getClosestValidTower(event.getTo())) + BeyondInfo.getClosestValidTower(event.getTo()));
 		}
 		//BOSS SPAWNER
 		 /**
@@ -160,6 +161,7 @@ public class BeyondPlayerListener implements Listener {
 				}
 			}
 		}
+			*/
 		if(BeyondInfo.isDevastationZone(event.getTo()) && !BeyondInfo.isDevastationZone(event.getFrom())){
 			event.getPlayer().sendMessage(ChatColor.GRAY.toString()+"You are entering a Devastation Zone (DZ)");
 		}
@@ -179,9 +181,9 @@ public class BeyondPlayerListener implements Listener {
 			event.getPlayer().sendMessage(ChatColor.RED.toString()+"You have left a Holy Area.");
 		}
 	}
-	*/
+
 	@EventHandler
-	public void onPlayerInteract(PlayerInteractEvent event){		
+	public void onPlayerInteract(PlayerInteractEvent event){
 		//Ability Interacts
 		if(event.getPlayer().getItemInHand() != null && event.getPlayer().getItemInHand().getType() == Material.BOOK && Religion.handler.has(event.getPlayer(), "religion.ability.heal")
 				&& (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK))Personal.usesBook(event.getPlayer());

@@ -48,6 +48,7 @@ public class Personal {
 		eventplayer.updateInventory();
 	}
 	public static void usesLeather(Player player, Player playerrec){
+		removeItemInHandBy1(player);
 		int var = repairChance();
 		if(var == 0){
 			player.sendMessage("Oh No! The Leather broke without repairing! Poor "+playerrec.getName());
@@ -58,8 +59,6 @@ public class Personal {
 			player.sendMessage("You lack the potential to repair this item...");
 		}else{
 			playerrec.getItemInHand().setDurability((short)(player.getItemInHand().getDurability()-var));
-			if(player.getItemInHand().getAmount() == 1)player.setItemInHand(null);
-			else player.getItemInHand().setAmount(player.getItemInHand().getAmount()-1);
 			player.sendMessage("Awesome! You repaired "+playerrec.getName()+"'s "+playerrec.getItemInHand().getType().name()+" by "+var+" points!");
 			playerrec.sendMessage("Alright! "+player.getName()+" repaired your "+playerrec.getItemInHand().getType().name()+" by "+var+" points!");
 		}

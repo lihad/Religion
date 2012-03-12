@@ -30,6 +30,7 @@ import Lihad.Religion.Listeners.BeyondPlayerListener;
 import Lihad.Religion.Listeners.BeyondPluginListener;
 import Lihad.Religion.Trades.TradesDriver;
 import Lihad.Religion.Util.BeyondTimerTask;
+import Lihad.Religion.Util.BukkitSchedulePlayerMove;
 import Lihad.Religion.Util.UpdateTimer;
 
 import com.nijiko.permissions.PermissionHandler;
@@ -70,6 +71,7 @@ public class Religion extends JavaPlugin {
 	public static CommandExecutor cmd;
     public static UpdateTimer timer;
     public static BeyondTimerTask task;
+    public static BukkitSchedulePlayerMove playerMoveTask;
 
     public static TradesDriver trades;
     
@@ -166,6 +168,9 @@ public class Religion extends JavaPlugin {
 		task = new BeyondTimerTask();
 		timer = new UpdateTimer(this);
         
+		//BukkitSchedulerManager
+		playerMoveTask = new BukkitSchedulePlayerMove();
+		
 		//CommandManager
 		cmd = new CommandRunner(this);
 		getCommand("rr").setExecutor(cmd);
