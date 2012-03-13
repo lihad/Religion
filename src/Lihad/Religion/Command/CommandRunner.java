@@ -349,6 +349,8 @@ public class CommandRunner implements CommandExecutor {
 			Religion.warning("PlayerMovement max loss rate to Religion is at: "+BeyondPlayerListener.listenerMaxDropRate);
 			Religion.warning("PlayerMovement average loss rate per player is : "+(BeyondPlayerListener.listenerDropRate/(double)plugin.getServer().getOnlinePlayers().length));
 			Religion.warning("Queue size is : "+BeyondPlayerListener.queue.size());
+			Religion.warning("Current Player Process : "+BeyondPlayerListener.queue.get(0).getPlayer());
+
 
 			return true;
 		}
