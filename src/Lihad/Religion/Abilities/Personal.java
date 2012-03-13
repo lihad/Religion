@@ -118,8 +118,7 @@ public class Personal {
 		int chance = generalRandomizer(100);
 		if(chance < 10){
 			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"You captured a "+creature.toString()+"!");
-			if(creature instanceof Creeper)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)50));
-			else if(creature instanceof Skeleton)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)51));
+			if(creature instanceof Skeleton)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)51));
 			else if(creature instanceof Spider)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)52));
 			else if(creature instanceof PigZombie)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)57));
 			else if(creature instanceof Zombie)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)54));
@@ -170,6 +169,10 @@ public class Personal {
 			player.getWorld().strikeLightning(player.getLocation());
 			villager.getWorld().strikeLightning(villager.getLocation());
 			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"OH! BLAAAAAARRRRRRGH");
+			for(int i=0; i<20; i++){
+				villager.getWorld().spawnCreature(villager.getLocation(), EntityType.SILVERFISH);
+			}
+			villager.setHealth(0);
 		}
 		player.updateInventory();
 	}

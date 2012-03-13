@@ -211,7 +211,7 @@ public class Religion extends JavaPlugin {
 	 */
 	public static void info(String message)
 	{
-		log.info(header + ChatColor.WHITE.toString() + message);
+		log.info(header + ChatColor.WHITE + message);
 	}
 
 	/**
@@ -221,7 +221,7 @@ public class Religion extends JavaPlugin {
 	 */
 	public static void severe(String message)
 	{
-		log.severe(header + ChatColor.RED.toString() + message);
+		log.severe(header + ChatColor.RED + message);
 	}
 
 	/**
@@ -231,7 +231,7 @@ public class Religion extends JavaPlugin {
 	 */
 	public static void warning(String message)
 	{
-		log.warning(header + ChatColor.YELLOW.toString() + message);
+		log.warning(header + ChatColor.YELLOW + message);
 	}
 
 	/**

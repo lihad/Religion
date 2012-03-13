@@ -18,6 +18,7 @@ import Lihad.Religion.Religion;
 import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Information.BeyondInfo;
+import Lihad.Religion.Listeners.BeyondPlayerListener;
 import Lihad.Religion.Util.BeyondUtil;
 
 public class CommandRunner implements CommandExecutor {
@@ -341,6 +342,14 @@ public class CommandRunner implements CommandExecutor {
 				return true;
 			}
 			BeyondInfo.setHolyZone(BeyondInfo.getTowerName(((Player)sender)), ((Player)sender).getLocation());
+			return true;
+		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("debug") && arg[1].equals("queue") && arg.length == 2){
+			Religion.warning("PlayerMovement loss rate to Religion is at: "+BeyondPlayerListener.listenerDropRate);
+			Religion.warning("PlayerMovement max loss rate to Religion is at: "+BeyondPlayerListener.listenerMaxDropRate);
+			Religion.warning("PlayerMovement average loss rate per player is : "+(BeyondPlayerListener.listenerDropRate/(double)plugin.getServer().getOnlinePlayers().length));
+			Religion.warning("Queue size is : "+BeyondPlayerListener.queue.size());
+
 			return true;
 		}
 		

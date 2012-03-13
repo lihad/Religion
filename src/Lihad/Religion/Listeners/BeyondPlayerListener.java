@@ -39,12 +39,24 @@ import Lihad.Religion.Util.BukkitSchedulePlayerMove;
 public class BeyondPlayerListener implements Listener {
 	public static Religion plugin;
 	public static List<PlayerMoveEvent> queue = new LinkedList<PlayerMoveEvent>();
+	public static LinkedList<Player> playersOnQueue = new LinkedList<Player>();
+	public static int listenerDropRate = 0;
+	public static int listenerMaxDropRate = 0;
+
 	public BeyondPlayerListener(Religion instance) {
 		plugin = instance;
 	}
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event){
+		if(playersOnQueue != null && playersOnQueue.contains(event.getPlayer())){
+			
+			listenerDropRate = listenerDropRate+1;
+			return;
+		}
+		listenerMaxDropRate = listenerDropRate;
+		listenerDropRate = 0;
 		queue.add(event);
+		playersOnQueue.add(event.getPlayer());
 		if(BukkitSchedulePlayerMove.isEmpty){
 			plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin,Religion.playerMoveTask, 1L);
 			BukkitSchedulePlayerMove.isEmpty = false;
@@ -52,6 +64,7 @@ public class BeyondPlayerListener implements Listener {
 	}
 	public static void onPlayerMoveExecutor(PlayerMoveEvent event){
 
+		
 		//Player AoE Cooldown
 		if(BeyondInfo.getCooldownPlayers() != null &&
 				BeyondInfo.getCooldownPlayers().contains(event.getPlayer()) &&
