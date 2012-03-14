@@ -45,7 +45,7 @@ public class BeyondBlockListener implements Listener {
 						event.getPlayer().sendMessage("You are already a member of a religion!");
 						return;
 					}
-					if(BeyondUtil.isActiveArea(event.getPlayer(), event.getLine(1), event.getBlock())){
+					if(BeyondUtil.isActiveArea(event.getPlayer(), event.getLine(1))){
 						event.getPlayer().sendMessage("This area is already being used.  Move away, or get the other players to join your religion!");
 						return;
 					}

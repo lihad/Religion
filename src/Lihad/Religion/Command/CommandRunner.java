@@ -11,10 +11,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Giant;
+import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import Lihad.Religion.Religion;
+import Lihad.Religion.Bosses.Ahkmed;
 import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Information.BeyondInfo;
@@ -354,6 +356,19 @@ public class CommandRunner implements CommandExecutor {
 
 			return true;
 		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("check")&& arg.length == 1){
+			if(BeyondUtil.isActiveArea((Player)sender, null))((Player)sender).sendMessage(ChatColor.RED.toString()+"This area is active, you will be unable to create a tower here.");
+			else ((Player)sender).sendMessage(ChatColor.GREEN.toString()+"This area is desolate");
+			return true;
+		}
+		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("test")&& arg.length == 1){
+			Ahkmed ahk = ((Player)sender).getWorld().spawn(((Player)sender).getLocation(), Ahkmed.class);
+			System.out.println(ahk.getLocation());
+			return true;
+		}
+
+
+			
 		
 		else return false;
 	}

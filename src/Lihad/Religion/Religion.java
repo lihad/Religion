@@ -17,6 +17,7 @@ import Lihad.Religion.Abilities.Personal;
 import Lihad.Religion.Abilities.SpellAoE;
 import Lihad.Religion.Abilities.TowerAoE;
 import Lihad.Religion.Bosses.Bosses;
+import Lihad.Religion.Bosses.BukkitScheduleBossManager;
 import Lihad.Religion.Command.CommandRunner;
 import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Config.BeyondConfigReader;
@@ -72,6 +73,7 @@ public class Religion extends JavaPlugin {
     public static UpdateTimer timer;
     public static BeyondTimerTask task;
     public static BukkitSchedulePlayerMove playerMoveTask;
+    public static BukkitScheduleBossManager bossManagerTask;
 
     public static TradesDriver trades;
     
@@ -169,13 +171,17 @@ public class Religion extends JavaPlugin {
 		timer = new UpdateTimer(this);
         
 		//BukkitSchedulerManager
-		playerMoveTask = new BukkitSchedulePlayerMove();
+		playerMoveTask = new BukkitSchedulePlayerMove(this);
+		getServer().getScheduler().scheduleAsyncRepeatingTask(this,Religion.playerMoveTask, 0, 15L);
 		
 		//CommandManager
 		cmd = new CommandRunner(this);
 		getCommand("rr").setExecutor(cmd);
 		
 		//BossInitiallizer
+		bossManagerTask = new BukkitScheduleBossManager();
+		getServer().getScheduler().scheduleAsyncRepeatingTask(this,Religion.bossManagerTask, 0, 100L);
+
 		//bosses.bossInit();
 
 		System.out.println("[Religion] Has launched successfully.");

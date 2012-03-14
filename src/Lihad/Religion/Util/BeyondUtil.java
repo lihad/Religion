@@ -403,13 +403,17 @@ public class BeyondUtil {
 	/**
 	 * @param block - Location where player wants to place a tower
 	 */
-	public static boolean isActiveArea(Player iCanHasTowerPlz, String religion, Block block)
+	public static boolean isActiveArea(Player iCanHasTowerPlz, String religion)
 	{
 		//Player parameter will be used when we add some code for them to invite others to join the new tower...?
 
 		QueryParams params = new QueryParams(Religion.logBlock);
-		List<Player> coReligionists = BeyondInfo.getReligionPlayers(religion);
-		Iterator<Player> iter = coReligionists.iterator();
+		if(religion != null){
+			List<Player> coReligionists = BeyondInfo.getReligionPlayers(religion);
+			Iterator<Player> iter = coReligionists.iterator();
+			while(iter.hasNext())
+				params.players.add(iter.next().getName());
+		}
 		params.players = new ArrayList<String>();
 		params.players.add(iCanHasTowerPlz.getName());
 		List<Entity> entities = iCanHasTowerPlz.getNearbyEntities(5, 10, 5);
@@ -418,8 +422,6 @@ public class BeyondUtil {
 				if(entities.get(i) instanceof Player) params.players.add(((Player)entities.get(i)).getName());
 			}
 		}
-		while(iter.hasNext())
-			params.players.add(iter.next().getName());
 		params.players.add("Fire");
 		params.players.add("Enderman");
 		params.players.add("Water");
@@ -441,7 +443,7 @@ public class BeyondUtil {
 		params.bct = BlockChangeType.CREATED;
 		params.radius = 500;
 		params.since = 20160;
-		params.world = block.getWorld();
+		params.world = iCanHasTowerPlz.getWorld();
 		params.loc = iCanHasTowerPlz.getLocation();
 		params.needDate = true;
 		params.needType = true;

@@ -3,6 +3,7 @@ package Lihad.Religion.Information;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -526,6 +527,9 @@ public class BeyondInfo {
 		array = string.split(",");
 		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 		return location;
+	}
+	public static List<String> getBosses(){
+		return BeyondInfoReader.getKeyList("Bosses");
 	}
 	//has Functions
 	/**

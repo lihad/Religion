@@ -39,7 +39,7 @@ import Lihad.Religion.Util.BukkitSchedulePlayerMove;
 public class BeyondPlayerListener implements Listener {
 	public static Religion plugin;
 	public static List<PlayerMoveEvent> queue = new LinkedList<PlayerMoveEvent>();
-	public static LinkedList<Player> playersOnQueue = new LinkedList<Player>();
+	public static LinkedList<String> playersOnQueue = new LinkedList<String>();
 	public static int listenerDropRate = 0;
 	public static int listenerMaxDropRate = 0;
 
@@ -48,7 +48,8 @@ public class BeyondPlayerListener implements Listener {
 	}
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event){
-		if(playersOnQueue != null && playersOnQueue.contains(event.getPlayer())){
+		/**
+		if(playersOnQueue != null && playersOnQueue.contains(event.getPlayer().getName())){
 			
 			listenerDropRate = listenerDropRate+1;
 			return;
@@ -56,46 +57,51 @@ public class BeyondPlayerListener implements Listener {
 		listenerMaxDropRate = listenerDropRate;
 		listenerDropRate = 0;
 		queue.add(event);
-		playersOnQueue.add(event.getPlayer());
-		if(BukkitSchedulePlayerMove.isEmpty){
+		playersOnQueue.add(event.getPlayer().getName());
+		if(queue.size() == 1){
 			plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin,Religion.playerMoveTask, 1L);
-			BukkitSchedulePlayerMove.isEmpty = false;
 		}
+		*/
 	}
-	public static void onPlayerMoveExecutor(PlayerMoveEvent event){
+	public static void onPlayerMoveExecutor(Player player, Location from, Location to){
 
 		
 		//Player AoE Cooldown
 		if(BeyondInfo.getCooldownPlayers() != null &&
-				BeyondInfo.getCooldownPlayers().contains(event.getPlayer()) &&
-				BeyondInfo.getClosestValidTower(event.getTo()) != null &&
-				(BeyondInfo.getReligion(event.getPlayer()) == null ||
-						!BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(event.getTo())).equals(BeyondInfo.getReligion(event.getPlayer()))) &&
-						System.currentTimeMillis()-BeyondInfo.getPlayerCooldown(event.getPlayer()) < 300000){
-			event.setTo(event.getFrom());
-			event.getPlayer().sendMessage(ChatColor.RED.toString()+"You're shell-shocked. Your will is too weak to continue in.");
+				BeyondInfo.getCooldownPlayers().contains(player) &&
+				BeyondInfo.getClosestValidTower(to) != null &&
+				(BeyondInfo.getReligion(player) == null ||
+						!BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(to)).equals(BeyondInfo.getReligion(player))) &&
+						System.currentTimeMillis()-BeyondInfo.getPlayerCooldown(player) < 300000){
+			player.teleport(from);
+			player.sendMessage(ChatColor.RED.toString()+"You're shell-shocked. Your will is too weak to continue in.");
 		}
 	////////////////////////////////	
-		if(BeyondInfo.getClosestValidTower(event.getFrom()) == null&& BeyondInfo.getClosestValidTower(event.getTo()) != null &&BeyondInfo.getReligion(event.getPlayer()) == null){
-			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(event.getTo()))){
-				event.setTo(event.getFrom());
-				event.getPlayer().sendMessage("This is a religious area. Go away non-believer!");
+		if(BeyondInfo.getClosestValidTower(from) == null&& BeyondInfo.getClosestValidTower(to) != null &&BeyondInfo.getReligion(player) == null){
+			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(to))){
+				player.teleport(from);
+				player.sendMessage("This is a religious area. Go away non-believer!");
 				return;
 			}else{
-				event.getPlayer().sendMessage("Your heart begins to race!");
+				player.sendMessage("Your heart begins to race!");
 			}
 		}
-		if(BeyondInfo.getClosestValidTower(event.getFrom()) != null && BeyondInfo.getClosestValidTower(event.getTo()) != null && BeyondInfo.getReligion(event.getPlayer()) == null){
-			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(event.getTo()))){
-				event.getPlayer().damage(6);
-				event.getPlayer().sendMessage("Being in a religious area without your own religion is pulling your soul apart...");
+		if(BeyondInfo.getClosestValidTower(from) != null && BeyondInfo.getClosestValidTower(to) != null && BeyondInfo.getReligion(player) == null){
+			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(to))){
+				player.damage(6);
+				player.sendMessage("Being in a religious area without your own religion is pulling your soul apart...");
 				return;
 			}
 		}
-		if(BeyondInfo.getClosestValidTower(event.getTo()) != null && (BeyondInfo.getClosestValidTower(event.getFrom()) == null)){
-			event.getPlayer().sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(event.getPlayer(), BeyondInfo.getClosestValidTower(event.getTo())) + BeyondInfo.getClosestValidTower(event.getTo()));
+		if(BeyondInfo.getClosestValidTower(to) != null && (BeyondInfo.getClosestValidTower(from) == null)){
+			player.sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(player, BeyondInfo.getClosestValidTower(to)) + BeyondInfo.getClosestValidTower(to));
+		}
+		if(BeyondInfo.getClosestValidTower(to) == null && (BeyondInfo.getClosestValidTower(from) != null)){
+			player.sendMessage("You are now entering the "+ChatColor.AQUA.toString()+"wilds");
 		}
 		//BOSS SPAWNER
+		
+		
 		 /**
 		for(int a = 0;a<Bosses.configBossMap.size();a++){
 			Location location = (Location) Bosses.configBossMap.keySet().toArray()[a];
@@ -175,23 +181,23 @@ public class BeyondPlayerListener implements Listener {
 			}
 		}
 			*/
-		if(BeyondInfo.isDevastationZone(event.getTo()) && !BeyondInfo.isDevastationZone(event.getFrom())){
-			event.getPlayer().sendMessage(ChatColor.GRAY.toString()+"You are entering a Devastation Zone (DZ)");
+		if(BeyondInfo.isDevastationZone(to) && !BeyondInfo.isDevastationZone(from)){
+			player.sendMessage(ChatColor.GRAY.toString()+"You are entering a Devastation Zone (DZ)");
 		}
-		if(BeyondInfo.isDevastationZone(event.getFrom()) && !BeyondInfo.isDevastationZone(event.getTo())){
-			event.getPlayer().sendMessage(ChatColor.GRAY.toString()+"You are leaving a Devastation Zone (DZ)");
+		if(BeyondInfo.isDevastationZone(from) && !BeyondInfo.isDevastationZone(to)){
+			player.sendMessage(ChatColor.GRAY.toString()+"You are leaving a Devastation Zone (DZ)");
 		}
-		if(BeyondInfo.is500Tower(event.getTo()) && !BeyondInfo.is500Tower(event.getFrom()) && !BeyondInfo.hasPlayer(event.getPlayer())){
-			event.getPlayer().sendMessage(ChatColor.RED.toString()+"The dark eye of "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getClosestTower(event.getTo())+ChatColor.RED.toString()+" is watching your every move. Build at your own risk. Type "+ChatColor.WHITE.toString()+"/reach"+ChatColor.RED.toString()+" for more info");
+		if(BeyondInfo.is500Tower(to) && !BeyondInfo.is500Tower(from) && !BeyondInfo.hasPlayer(player)){
+			player.sendMessage(ChatColor.RED.toString()+"The dark eye of "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getClosestTower(to)+ChatColor.RED.toString()+" is watching your every move. Build at your own risk. Type "+ChatColor.WHITE.toString()+"/reach"+ChatColor.RED.toString()+" for more info");
 		}
-		if(BeyondInfo.is500Tower(event.getFrom()) && !BeyondInfo.is500Tower(event.getTo()) && !BeyondInfo.hasPlayer(event.getPlayer())){
-			event.getPlayer().sendMessage(ChatColor.GREEN.toString()+"You have passed into the wilderness.");
+		if(BeyondInfo.is500Tower(from) && !BeyondInfo.is500Tower(to) && !BeyondInfo.hasPlayer(player)){
+			player.sendMessage(ChatColor.GREEN.toString()+"You have passed into the wilderness.");
 		}
-		if(BeyondInfo.isHolyZone(event.getTo()) && !BeyondInfo.isHolyZone(event.getFrom())){
-			event.getPlayer().sendMessage(ChatColor.GREEN.toString()+"You have entered a Holy Area. No Griefing allowed!");
+		if(BeyondInfo.isHolyZone(to) && !BeyondInfo.isHolyZone(from)){
+			player.sendMessage(ChatColor.GREEN.toString()+"You have entered a Holy Area. No Griefing allowed!");
 		}
-		if(BeyondInfo.isHolyZone(event.getFrom()) && !BeyondInfo.isHolyZone(event.getTo())){
-			event.getPlayer().sendMessage(ChatColor.RED.toString()+"You have left a Holy Area.");
+		if(BeyondInfo.isHolyZone(from) && !BeyondInfo.isHolyZone(to)){
+			player.sendMessage(ChatColor.RED.toString()+"You have left a Holy Area.");
 		}
 	}
 

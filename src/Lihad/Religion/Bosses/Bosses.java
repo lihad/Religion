@@ -37,7 +37,6 @@ import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Util.BeyondUtil;
 
 public class Bosses {
-	/**
 	public static Religion plugin;
 	
     public static Map<Location, String> configBossMap = BeyondConfig.getBossLocation();
@@ -57,13 +56,14 @@ public class Bosses {
 	public Bosses(Religion instance) {
 		plugin = instance;
 	}
+	/**
 	public void bossInit(){
 		for(int i = 0;i<configBossMap.size();i++){
 			spawnBoss((Location)configBossMap.keySet().toArray()[i], configBossMap.get((Location)configBossMap.keySet().toArray()[i]));
 		}
 	}
+	*/
 	public void spawnBoss(Location location, String bossname){
-		
 		location.getBlock().setTypeId(0);
 		LivingEntity boss = location.getWorld().spawnCreature(location, getCreatureType(bossname));
 		loadTriggers(bossname);
@@ -475,7 +475,6 @@ public class Bosses {
 		int next = random.nextInt(7);
 		return next;
 	}
-*/
 }
 
 
