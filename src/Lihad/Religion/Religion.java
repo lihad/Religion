@@ -5,17 +5,22 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import Lihad.Religion.Abilities.Personal;
+import Lihad.Religion.Abilities.ReverseEngineering;
 import Lihad.Religion.Abilities.SpellAoE;
 import Lihad.Religion.Abilities.TowerAoE;
+import Lihad.Religion.Bosses.Ahkmed;
 import Lihad.Religion.Bosses.Bosses;
 import Lihad.Religion.Bosses.BukkitScheduleBossManager;
 import Lihad.Religion.Command.CommandRunner;
@@ -27,8 +32,10 @@ import Lihad.Religion.Information.BeyondInfoReader;
 import Lihad.Religion.Information.BeyondInfoWriter;
 import Lihad.Religion.Listeners.BeyondBlockListener;
 import Lihad.Religion.Listeners.BeyondEntityListener;
+import Lihad.Religion.Listeners.BeyondInventoryListener;
 import Lihad.Religion.Listeners.BeyondPlayerListener;
 import Lihad.Religion.Listeners.BeyondPluginListener;
+import Lihad.Religion.Recipe.Recipes;
 import Lihad.Religion.Trades.TradesDriver;
 import Lihad.Religion.Util.BeyondTimerTask;
 import Lihad.Religion.Util.BukkitSchedulePlayerMove;
@@ -74,6 +81,8 @@ public class Religion extends JavaPlugin {
     public static BeyondTimerTask task;
     public static BukkitSchedulePlayerMove playerMoveTask;
     public static BukkitScheduleBossManager bossManagerTask;
+    public static ReverseEngineering reverse;
+    public static Recipes recipes;
 
     public static TradesDriver trades;
     
@@ -96,6 +105,7 @@ public class Religion extends JavaPlugin {
 	private final BeyondBlockListener blockListener = new BeyondBlockListener(this);
 	private final BeyondPlayerListener playerListener = new BeyondPlayerListener(this);
 	private final BeyondEntityListener entityListener = new BeyondEntityListener(this);
+	private final BeyondInventoryListener inventoryListener = new BeyondInventoryListener(this);
 
 
 	
@@ -151,6 +161,8 @@ public class Religion extends JavaPlugin {
 		tower = new TowerAoE(this);
 		personal = new Personal(this);
 		trades = new TradesDriver(this);
+		reverse = new ReverseEngineering(this);
+		recipes = new Recipes(this);
 		//bosses = new Bosses(this);
 
 		//PermsManager
@@ -163,6 +175,7 @@ public class Religion extends JavaPlugin {
         pm.registerEvents(pluginListener, this);
         pm.registerEvents(playerListener, this);
         pm.registerEvents(entityListener, this);
+        pm.registerEvents(inventoryListener, this);
 
         //pm.registerEvent(Event.Type.ENTITY_DEATH, this.entityListener, Priority.Normal, this);
 
@@ -183,6 +196,14 @@ public class Religion extends JavaPlugin {
 		getServer().getScheduler().scheduleAsyncRepeatingTask(this,Religion.bossManagerTask, 0, 100L);
 
 		//bosses.bossInit();
+		
+		//RecipeManager
+		for(int i = 0;i<recipes.REVERSE_ENGINEERING_RECIPES.size();i++){
+			this.getServer().addRecipe(recipes.REVERSE_ENGINEERING_RECIPES.get(i));
+		}
+		for(int i = 0;i<recipes.WEAPON_UPGRADE_RECIPES.size();i++){
+			this.getServer().addRecipe(recipes.WEAPON_UPGRADE_RECIPES.get(i));
+		}		
 
 		System.out.println("[Religion] Has launched successfully.");
 		System.out.println("-----------------------------------------");

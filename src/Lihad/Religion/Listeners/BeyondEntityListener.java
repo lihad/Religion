@@ -241,7 +241,7 @@ public class BeyondEntityListener implements Listener {
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
 					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 20)
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 2000)
 								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){

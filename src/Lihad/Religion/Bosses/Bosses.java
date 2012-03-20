@@ -39,16 +39,11 @@ import Lihad.Religion.Util.BeyondUtil;
 public class Bosses {
 	public static Religion plugin;
 	
-    public static Map<Location, String> configBossMap = BeyondConfig.getBossLocation();
+    //public static Map<Location, String> configBossMap = BeyondConfig.getBossLocation();
     public static Map<LivingEntity, Integer> bossHealthMap = new HashMap<LivingEntity, Integer>();
-    public static Map<LivingEntity, Integer> bossMaxHealthMap = new HashMap<LivingEntity, Integer>();
+    //public static Map<LivingEntity, Integer> bossMaxHealthMap = new HashMap<LivingEntity, Integer>();
     public static Map<LivingEntity, Boolean> bossExistMap = new HashMap<LivingEntity, Boolean>();
-    public static Map<String, LivingEntity> bossNameMap = new HashMap<String, LivingEntity>();
-	
-	//AHKED TRIGGERS
-	public boolean wolftrigger = false;
-	public boolean powertrigger = false;
-	public boolean powertrigger2 = false;
+    //public static Map<String, LivingEntity> bossNameMap = new HashMap<String, LivingEntity>();
 	
 	//XTAL TRIGGERS
 	public boolean xtalMobTrigger = false;
@@ -82,31 +77,22 @@ public class Bosses {
 	//////////  BOSS CREATION AND TRIGGER LOADER
 	private void loadTriggers(String bossname){
 		if(bossname.equals("Ahkmed")){
-			wolftrigger = false;
-			powertrigger = false;
-			powertrigger2 = false;
+ 
 		}
 		if(bossname.equals("Xtal")){
 			xtalMobTrigger = false;
 		}
 	}
 	private CreatureType getCreatureType(String bossname){
-		if(bossname.equals("Ahkmed"))return CreatureType.PIG_ZOMBIE;
 		if(bossname.equals("Xtal"))return CreatureType.CREEPER;
 
 		else return null;
 	}
 	private int getBossHealth(String bossname){
-		if(bossname.equals("Ahkmed"))return 10000;
 		if(bossname.equals("Xtal"))return 50000;
 		else return 0;
 	}
 	private void setSpawnBossPotionEffects(LivingEntity entity, String bossname){
-		if(bossname.equals("Ahkmed")){
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 2));
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 2));
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 72000, 1));
-		}
 		if(bossname.equals("Xtal")){
 			entity.getWorld().strikeLightningEffect(entity.getLocation());
 			entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 5));
@@ -204,6 +190,7 @@ public class Bosses {
 	//
 	// "Ahkmed" Triggers
 	//
+	/**
 	public void stageWolf(EntityDamageEvent event){
 		LivingEntity boss = ((LivingEntity)event.getEntity());
 		if(bossHealthMap.get(boss)%40 == 0)wolftrigger = true;
@@ -238,6 +225,7 @@ public class Bosses {
 			}
 		}
 	}
+	*/
 	//
 	//
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////

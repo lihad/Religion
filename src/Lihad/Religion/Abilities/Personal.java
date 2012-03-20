@@ -119,10 +119,10 @@ public class Personal {
 		if(chance < 10){
 			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"You captured a "+creature.toString()+"!");
 			if(creature instanceof Skeleton)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)51));
+			else if(creature instanceof CaveSpider)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)59));
 			else if(creature instanceof Spider)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)52));
 			else if(creature instanceof PigZombie)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)57));
 			else if(creature instanceof Zombie)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)54));
-			else if(creature instanceof CaveSpider)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)59));
 			else if(creature instanceof Silverfish)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)60));
 			else if(creature instanceof Pig)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)90));
 			else if(creature instanceof Sheep)player.getInventory().addItem(new ItemStack(383,1,(short)0,(byte)91));

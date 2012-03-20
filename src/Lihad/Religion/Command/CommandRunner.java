@@ -362,7 +362,7 @@ public class CommandRunner implements CommandExecutor {
 			return true;
 		}
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("test")&& arg.length == 1){
-			Ahkmed ahk = ((Player)sender).getWorld().spawn(((Player)sender).getLocation(), Ahkmed.class);
+			Ahkmed ahk = (Ahkmed)((Player)sender).getWorld().spawn(((Player)sender).getLocation(), Ahkmed.class);
 			System.out.println(ahk.getLocation());
 			return true;
 		}

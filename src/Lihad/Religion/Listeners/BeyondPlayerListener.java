@@ -17,6 +17,8 @@ import org.bukkit.entity.Villager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -59,7 +61,7 @@ public class BeyondPlayerListener implements Listener {
 		queue.add(event);
 		playersOnQueue.add(event.getPlayer().getName());
 		if(queue.size() == 1){
-			plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin,Religion.playerMoveTask, 1L);
+			plugin.getServer().getScheduler()io.scheduleAsyncDelayedTask(plugin,Religion.playerMoveTask, 1L);
 		}
 		*/
 	}

@@ -4,6 +4,6 @@ public class BukkitScheduleBossManager implements Runnable {
 
 	@Override
 	public void run() {
+		
 	}
-
 }

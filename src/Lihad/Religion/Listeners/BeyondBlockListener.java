@@ -33,7 +33,7 @@ public class BeyondBlockListener implements Listener {
 						event.getPlayer().sendMessage("This name is already being used - try a different one.");
 						return;
 					}
-					if(BeyondInfo.isSpawnZone(event.getPlayer().getLocation())){
+					if(!event.getPlayer().isOp() && BeyondInfo.isSpawnZone(event.getPlayer().getLocation())){
 						event.getPlayer().sendMessage("You need to be farther away from spawn!!.");
 						return;
 					}
@@ -45,7 +45,7 @@ public class BeyondBlockListener implements Listener {
 						event.getPlayer().sendMessage("You are already a member of a religion!");
 						return;
 					}
-					if(BeyondUtil.isActiveArea(event.getPlayer(), event.getLine(1))){
+					if(Religion.logBlock != null && BeyondUtil.isActiveArea(event.getPlayer(), event.getLine(1))){
 						event.getPlayer().sendMessage("This area is already being used.  Move away, or get the other players to join your religion!");
 						return;
 					}
