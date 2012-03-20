@@ -73,7 +73,7 @@ public class BeyondEntityListener implements Listener {
 		}
 
 		if(event instanceof EntityDamageByEntityEvent)onEntityDamageByEntity((EntityDamageByEntityEvent)event);
-		/**
+		
 		if(event.getEntity() instanceof Creature){
 			if((Bosses.bossHealthMap.containsKey(event.getEntity())) && !(event instanceof EntityDamageByEntityEvent)){
 				for(int i = 0;i<Bosses.bossHealthMap.size();i++){
@@ -85,7 +85,6 @@ public class BeyondEntityListener implements Listener {
 				}
 			}
 		}
-		 */
 	}
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event){
@@ -118,7 +117,7 @@ public class BeyondEntityListener implements Listener {
 		}
 	}
 	/**
-	@EventHandler
+	//@EventHandler
 	public void onExplosionPrime(ExplosionPrimeEvent event){
 		if(event.getEntity() instanceof LivingEntity){
 			if(Bosses.bossHealthMap.containsKey((LivingEntity)event.getEntity())){
@@ -131,7 +130,7 @@ public class BeyondEntityListener implements Listener {
 	*/
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event){
-		/**
+
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
@@ -147,11 +146,6 @@ public class BeyondEntityListener implements Listener {
 							return;
 						}
 					}
-					for(int j=0;j<Bosses.bossNameMap.size();j++){
-						if(Bosses.bossNameMap.get(Bosses.bossNameMap.keySet().toArray()[j]).equals(entity)){
-							Religion.bosses.damageTriggers(event, (String) Bosses.bossNameMap.keySet().toArray()[j]);
-						}
-					}
 					Religion.bosses.healthDepleteByEntity(event);
 					event.setCancelled(true);
 				}
@@ -159,8 +153,6 @@ public class BeyondEntityListener implements Listener {
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-		*/
 		
 		//if(event.getDamager() instanceof Player && !Bosses.bossHealthMap.containsKey(event.getEntity())){
 		if(event.getDamager() instanceof Player){

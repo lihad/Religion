@@ -48,23 +48,6 @@ public class BeyondPlayerListener implements Listener {
 	public BeyondPlayerListener(Religion instance) {
 		plugin = instance;
 	}
-	@EventHandler
-	public void onPlayerMove(PlayerMoveEvent event){
-		/**
-		if(playersOnQueue != null && playersOnQueue.contains(event.getPlayer().getName())){
-			
-			listenerDropRate = listenerDropRate+1;
-			return;
-		}
-		listenerMaxDropRate = listenerDropRate;
-		listenerDropRate = 0;
-		queue.add(event);
-		playersOnQueue.add(event.getPlayer().getName());
-		if(queue.size() == 1){
-			plugin.getServer().getScheduler()io.scheduleAsyncDelayedTask(plugin,Religion.playerMoveTask, 1L);
-		}
-		*/
-	}
 	public static void onPlayerMoveExecutor(Player player, Location from, Location to){
 
 		
@@ -102,87 +85,18 @@ public class BeyondPlayerListener implements Listener {
 			player.sendMessage("You are now entering the "+ChatColor.AQUA.toString()+"wilds");
 		}
 		//BOSS SPAWNER
-		
-		
-		 /**
-		for(int a = 0;a<Bosses.configBossMap.size();a++){
-			Location location = (Location) Bosses.configBossMap.keySet().toArray()[a];
-			if(event.getPlayer().getWorld().equals(location.getWorld())){
-				if((location.distance(event.getPlayer().getLocation()) < 40 &&Bosses.bossExistMap.isEmpty()) || (location.distance(event.getPlayer().getLocation()) < 40 && !Bosses.bossExistMap.get(Bosses.bossNameMap.get(Bosses.configBossMap.get(location))))){
-					System.out.println("BOSS SPAWN");
-					Religion.bosses.spawnBoss(location, Bosses.configBossMap.get(location));
-				}
-
-			}
-
-		}
-		//
-		//
-		//
-		if(Bosses.bossExistMap != null && Bosses.bossExistMap.containsValue(true)){
-			//System.out.println("-------------------------");
-
-			//System.out.println(Bosses.bossExistMap);
-			//System.out.println(Bosses.bossHealthMap);
-			//System.out.println(Bosses.bossMaxHealthMap);
-			//System.out.println(Bosses.bossNameMap);
-
-			//System.out.println("-------------------------");
-
-			for(int a = 0; a<Bosses.bossHealthMap.size();a++){
-				Creature boss = (Creature) Bosses.bossHealthMap.keySet().toArray()[a];
-				List<Entity> list = boss.getNearbyEntities(40, 40, 40);
-				if(list.isEmpty()){
-					System.out.println("Despawn1");
-					Bosses.bossExistMap.remove(boss);
-					Bosses.bossHealthMap.remove(boss);
-					Bosses.bossMaxHealthMap.remove(boss);
-					boss.remove();
-				}else{
-					for(int j=0;j<list.size();j++){
-						if(list.get(j) instanceof Player){
-							break;
-						}else if(list.size()-1==j){
-							System.out.println("Despawn2");
-							Bosses.bossExistMap.remove(boss);
-							Bosses.bossHealthMap.remove(boss);
-							Bosses.bossMaxHealthMap.remove(boss);
-							boss.remove();
-							break;
-						}
-					}
-				}
-				if(boss.getTarget() != null){
-					if(!list.contains(boss.getTarget())){
-						for(int i = 0; i<list.size(); i++){
-							if(list.get(i) instanceof Player){
-								boss.setTarget((LivingEntity) list.get(i));
-								break;
-							}
-						}
-					}
-				}else{
-					for(int i = 0; i<list.size(); i++){
-						if(list.get(i) instanceof Player){
-							boss.setTarget((LivingEntity) list.get(i));
-							break;
-						}
-					}
+		/**
+		for(int a = 0;a<BeyondInfo.getBosses().size();a++){
+			Location location = (Location) BeyondInfo.getBossLocation(BeyondInfo.getBosses().get(a));
+			if(to.getWorld().equals(location.getWorld())){
+				if((location.distance(to) < 40 &&Bosses.bossExistMap != null && Bosses.bossExistMap.get(BeyondInfo.getBosses().get(a)) != null && !Bosses.bossExistMap.get(BeyondInfo.getBosses().get(a)))){
+					System.out.println("BOSS SPAWN - "+BeyondInfo.getBosses().get(a));
+					Religion.bosses.spawnBoss(location, BeyondInfo.getBosses().get(a));
 				}
 			}
 		}
-		if(event.getPlayer().getNearbyEntities(20, 20, 20).contains(Bosses.bossNameMap.get("Xtal")) && Bosses.bossExistMap.get(Bosses.bossNameMap.get("Xtal"))==true &&((Creature)Bosses.bossNameMap.get("Xtal")).getTarget() != null){
-			Random chance = new Random();
-			for(int i=0;i<event.getPlayer().getNearbyEntities(20, 20, 20).size();i++){
-				if(event.getPlayer().getNearbyEntities(20, 20, 20).get(i)instanceof Player){
-					int random = chance.nextInt(1000);
-					if(random<1 && !event.getPlayer().getNearbyEntities(20, 20, 20).get(i).equals((LivingEntity)Bosses.bossNameMap.get("Xtal"))){
-						event.getPlayer().getNearbyEntities(20, 20, 20).get(i).getWorld().strikeLightning(event.getPlayer().getNearbyEntities(20, 20, 20).get(i).getLocation());
-					}
-				}
-			}
-		}
-			*/
+		*/
+		////////////////////////////////////////////////////////////////////////////
 		if(BeyondInfo.isDevastationZone(to) && !BeyondInfo.isDevastationZone(from)){
 			player.sendMessage(ChatColor.GRAY.toString()+"You are entering a Devastation Zone (DZ)");
 		}

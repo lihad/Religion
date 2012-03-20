@@ -1,6 +1,7 @@
 package Lihad.Religion.Command;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -26,6 +27,7 @@ import Lihad.Religion.Util.BeyondUtil;
 public class CommandRunner implements CommandExecutor {
 	public static Religion plugin;
 	public ItemStack post;
+	public static List<String> playersToBeRemoved = new LinkedList<String>();
 
 	public CommandRunner(Religion instance){
 		plugin = instance;
@@ -82,6 +84,7 @@ public class CommandRunner implements CommandExecutor {
 			}
 			else if(BeyondInfo.isMemberInvited((Player)sender, arg[1])){
 				BeyondInfo.addPlayer((Player)sender, arg[1]);
+				plugin.notification("Player, "+((Player)sender).getName()+", has joined Tower "+arg[1]+", Religion of "+BeyondInfo.getReligion(arg[1]));
 				sender.sendMessage("You have joined the Tower of "+arg[1]+" and the Religion of "+BeyondInfo.getReligion(arg[1]));
 				BeyondInfo.removeInvited(((Player)sender), arg[1]);
 			}else{
@@ -99,6 +102,8 @@ public class CommandRunner implements CommandExecutor {
 			else if(BeyondInfo.isPlayerAMember(arg[1], BeyondInfo.getTowerName((Player)sender))){
 				BeyondInfo.removePlayer(arg[1]);
 				sender.sendMessage(arg[1]+" has been removed from "+BeyondInfo.getTowerName((Player)sender));
+				plugin.notification("Player, "+arg[1]+", has beened exiled by "+((Player)sender).getName()+", Tower of "+BeyondInfo.getTowerName((Player)sender));
+
 				if(plugin.getServer().getPlayer(arg[1]) != null){
 					plugin.getServer().getPlayer(arg[1]).sendMessage("You have been removed from "+BeyondInfo.getTowerName((Player)sender));
 				}
@@ -152,10 +157,19 @@ public class CommandRunner implements CommandExecutor {
 			}
 			else if(BeyondInfo.getLeader((Player)sender) != null){
 				if(BeyondInfo.getLeader((Player)sender).equals(((Player)sender).getName())){
-				BeyondUtil.towerBroadcast(BeyondInfo.getTowerName((Player)sender), "The leader of Tower "+BeyondInfo.getTowerName((Player)sender)+" has parished");
-				BeyondInfo.getTowerLocation(BeyondInfo.getTowerName((Player)sender)).getBlock().setTypeId(0);
-				BeyondInfo.getTowerLocation(BeyondInfo.getTowerName((Player)sender)).getWorld().createExplosion(BeyondInfo.getTowerLocation(BeyondInfo.getTowerName((Player)sender)), 5, true);
-				BeyondInfo.removeTower(BeyondInfo.getReligion(BeyondInfo.getTowerName((Player)sender)), BeyondInfo.getTowerName((Player)sender));
+					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+						public void run() {
+							plugin.notification("Player "+playersToBeRemoved.get(0)+" has left the Tower "+BeyondInfo.getTowerNamePlayerString((playersToBeRemoved.get(0))));
+							BeyondInfo.getTowerLocation(BeyondInfo.getTowerNamePlayerString(playersToBeRemoved.get(0))).getBlock().setTypeId(0);
+							BeyondInfo.getTowerLocation(BeyondInfo.getTowerNamePlayerString(playersToBeRemoved.get(0))).getWorld().createExplosion(BeyondInfo.getTowerLocation(BeyondInfo.getTowerNamePlayerString(playersToBeRemoved.get(0))), 5, true);
+							BeyondUtil.towerBroadcast(BeyondInfo.getTowerNamePlayerString(playersToBeRemoved.get(0)), "The leader of Tower "+BeyondInfo.getTowerNamePlayerString(playersToBeRemoved.get(0))+" has perished");
+							BeyondInfo.removeTower(BeyondInfo.getReligion(BeyondInfo.getTowerNamePlayerString(playersToBeRemoved.get(0))), BeyondInfo.getTowerNamePlayerString(playersToBeRemoved.get(0)));
+							playersToBeRemoved.remove(0);
+						}
+					}, 72000L);
+					playersToBeRemoved.add(((Player)sender).getName());
+					plugin.notification("Player "+((Player)sender).getName()+" is beginning the process to leave Tower "+BeyondInfo.getTowerNamePlayerString(((Player)sender).getName()));
+
 				}else{
 					BeyondInfo.removePlayer((Player)sender);
 					sender.sendMessage("You have left your tower and religion");
@@ -237,7 +251,6 @@ public class CommandRunner implements CommandExecutor {
 				return true;
 			}
 			String message = "";
-			System.out.println("BeyondInfo.getTowerName((Player)sender) "+BeyondInfo.getTowerName((Player)sender));
 			List<Player> towerplayers = BeyondInfo.getTowerPlayers(BeyondInfo.getTowerName((Player)sender));
 			List<Player> religionplayers = BeyondInfo.getReligionPlayers(BeyondInfo.getReligion((Player)sender));
 			for(int i=0;i<religionplayers.size();i++){

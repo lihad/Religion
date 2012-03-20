@@ -17,6 +17,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
@@ -40,10 +41,11 @@ public class Bosses {
 	public static Religion plugin;
 	
     //public static Map<Location, String> configBossMap = BeyondConfig.getBossLocation();
-    public static Map<LivingEntity, Integer> bossHealthMap = new HashMap<LivingEntity, Integer>();
-    //public static Map<LivingEntity, Integer> bossMaxHealthMap = new HashMap<LivingEntity, Integer>();
-    public static Map<LivingEntity, Boolean> bossExistMap = new HashMap<LivingEntity, Boolean>();
-    //public static Map<String, LivingEntity> bossNameMap = new HashMap<String, LivingEntity>();
+    public static Map<String, Integer> bossHealthMap = new HashMap<String, Integer>();
+    public static Map<String, Boolean> bossExistMap = new HashMap<String, Boolean>();
+    public static Map<String, String> bossTypeMap = new HashMap<String, String>();
+    public static Map<LivingEntity, String> bossNameMap = new HashMap<LivingEntity, String>();
+
 	
 	//XTAL TRIGGERS
 	public boolean xtalMobTrigger = false;
@@ -60,13 +62,11 @@ public class Bosses {
 	*/
 	public void spawnBoss(Location location, String bossname){
 		location.getBlock().setTypeId(0);
-		LivingEntity boss = location.getWorld().spawnCreature(location, getCreatureType(bossname));
-		loadTriggers(bossname);
+		LivingEntity boss = location.getWorld().spawnCreature(location, getEntityType(bossname));
+		bossNameMap.put(boss, bossname);
+		bossExistMap.put(bossname, true);
+		bossHealthMap.put(bossname, getBaseHealth(bossname));
 		setSpawnBossPotionEffects(boss, bossname);
-		bossHealthMap.put(boss, getBossHealth(bossname));
-		bossMaxHealthMap.put(boss, getBossHealth(bossname));
-		bossExistMap.put(boss, true);
-		bossNameMap.put(bossname, boss);
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,38 +75,17 @@ public class Bosses {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////  BOSS CREATION AND TRIGGER LOADER
-	private void loadTriggers(String bossname){
-		if(bossname.equals("Ahkmed")){
- 
-		}
-		if(bossname.equals("Xtal")){
-			xtalMobTrigger = false;
-		}
-	}
-	private CreatureType getCreatureType(String bossname){
-		if(bossname.equals("Xtal"))return CreatureType.CREEPER;
-
-		else return null;
-	}
-	private int getBossHealth(String bossname){
-		if(bossname.equals("Xtal"))return 50000;
-		else return 0;
+	private int getBaseHealth(String bossname){
+		if(bossname.equalsIgnoreCase("Ahkmed"))return Ahkmed.getBaseHealth;
+		return 0;
 	}
 	private void setSpawnBossPotionEffects(LivingEntity entity, String bossname){
-		if(bossname.equals("Xtal")){
-			entity.getWorld().strikeLightningEffect(entity.getLocation());
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 5));
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 5));
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 72000, 1));
-		}
-		if(bossname.equals("Jamal")){
-			entity.getWorld().strikeLightningEffect(entity.getLocation());
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 72000, 5));
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 72000, 5));
-			entity.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 72000, 1));
-		}
+		if(bossname.equals("Ahkmed")) Ahkmed.setSpawnBossPotionEffects(entity);
 	}
-	
+	private EntityType getEntityType(String bossname){
+		if(bossname.equals("Ahkmed"))return EntityType.PIG_ZOMBIE;
+		return EntityType.CHICKEN;
+	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,30 +97,30 @@ public class Bosses {
 
 	public void healthDeplete(EntityDamageEvent event){
 		LivingEntity boss = ((LivingEntity)event.getEntity());
-		if(boss.getHealth() >= (bossHealthMap.get(boss)/(bossMaxHealthMap.get(boss)/20))){
-			System.out.println("FIRE NORMAL "+boss.getHealth()+" to "+(bossHealthMap.get(boss)/(bossMaxHealthMap.get(boss)/20)));
+		if(boss.getHealth() >= (bossHealthMap.get(boss)/(getBaseHealth(bossNameMap.get(boss))/20))){
+			System.out.println("FIRE NORMAL "+boss.getHealth()+" to "+(bossHealthMap.get(boss)/(getBaseHealth(bossNameMap.get(boss))/20)));
 			boss.setHealth(boss.getHealth()-1);
 			//flinch add?
 		}
-		bossHealthMap.put(boss, bossHealthMap.get(boss)-event.getDamage());
+		bossHealthMap.put(bossNameMap.get(boss), bossHealthMap.get(boss)-event.getDamage());
 	}
 	public void healthDepleteByEntity(EntityDamageByEntityEvent event){
 		LivingEntity boss = ((LivingEntity)event.getEntity());
 		if(event.getDamager() instanceof LivingEntity){
-			if((double)boss.getHealth() >= (bossHealthMap.get(boss)/(bossMaxHealthMap.get(boss)/20))){
-				System.out.println("FIRE ATTACK "+boss.getHealth()+" to "+(bossHealthMap.get(boss)/(bossMaxHealthMap.get(boss)/20)));
+			if((double)boss.getHealth() >= (bossHealthMap.get(boss)/(getBaseHealth(bossNameMap.get(boss))/20))){
+				System.out.println("FIRE ATTACK "+boss.getHealth()+" to "+(bossHealthMap.get(boss)/(getBaseHealth(bossNameMap.get(boss))/20)));
 				((Creature)boss).setTarget((LivingEntity) event.getDamager());
 				boss.setHealth(boss.getHealth()-1);
-				bossHealthMap.put(boss, bossHealthMap.get(boss)-event.getDamage());
+				bossHealthMap.put(bossNameMap.get(boss), bossHealthMap.get(boss)-event.getDamage());
 				if(event.getDamager() instanceof Player){
 					((Player)event.getDamager()).sendMessage("Boss has dropped below "+bossHealthMap.get(boss)+" health!!!");
 				}
 
 			}else{
 				((Creature)boss).setTarget((LivingEntity) event.getDamager());
-				bossHealthMap.put(boss, bossHealthMap.get(boss)-event.getDamage());
+				bossHealthMap.put(bossNameMap.get(boss), bossHealthMap.get(boss)-event.getDamage());
 				if(event.getDamager() instanceof Player){
-					bossHealthMap.put(boss, bossHealthMap.get(boss)-enchantDamageCalculator((Player)event.getDamager(), event.getEntity()));
+					bossHealthMap.put(bossNameMap.get(boss), bossHealthMap.get(boss)-enchantDamageCalculator((Player)event.getDamager(), event.getEntity()));
 				}
 			}
 		}
@@ -170,20 +149,6 @@ public class Bosses {
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////  TRIGGER REDIRECTS
-	
-	public void damageTriggers(EntityDamageEvent event, String bossname){
-		if(bossname.equals("Ahkmed")){
-			stageWolf(event);
-			stagePower(event);
-			stageFire(event);
-		}
-		if(bossname.equals("Xtal")){
-			stageBoom(event);
-			stageBurn(event);
-			stageRaid(event);
-			xtalPushBack(event);
-		}
-	}
 	
 	//
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////

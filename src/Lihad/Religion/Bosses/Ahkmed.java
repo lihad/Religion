@@ -2,6 +2,7 @@ package Lihad.Religion.Bosses;
 
 
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.entity.CreatureType;
 import org.bukkit.entity.Entity;
@@ -35,27 +36,25 @@ public abstract class Ahkmed implements PigZombie {
 		entity.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 72000, 1));
     }
     public static void randomEventRunner(PigZombie ahkmed){
-    	
+    	Random rnd = new Random();
+    	int next = rnd.nextInt(100);
+    	if(next<10)triggerSpeedFaster(ahkmed);
+    	else if(next <30)triggerDamResist(ahkmed);
+    	else if(next <60)triggerSpeed(ahkmed);
+    	else if(next <100)triggerWolf(ahkmed);
     }
-
-
-
-
-
-
-
-    private void triggerWolf(PigZombie ahkmed){
+    private static void triggerWolf(PigZombie ahkmed){
     	for(int i =0; i<20;i++){
     		((Wolf)ahkmed.getWorld().spawnCreature(ahkmed.getLocation(), EntityType.WOLF)).setAngry(true);
     	}
     }
-    private void triggerSpeed(PigZombie ahkmed){
+    private static void triggerSpeed(PigZombie ahkmed){
     	ahkmed.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 200, 5));
     }
-    private void triggerDamResist(PigZombie ahkmed){
+    private static void triggerDamResist(PigZombie ahkmed){
     	ahkmed.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 100, 5));
     }
-    private void triggerSpeedFaster(PigZombie ahkmed){
+    private static void triggerSpeedFaster(PigZombie ahkmed){
     	ahkmed.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 200, 8));
     }
     

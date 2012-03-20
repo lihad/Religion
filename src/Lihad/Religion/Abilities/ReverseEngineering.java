@@ -34,7 +34,7 @@ public class ReverseEngineering {
 			event.getInventory().getResult().addUnsafeEnchantments(modifyConvertedEnchantments(compare.getEnchantments()));
 			event.getInventory().getResult().setDurability((short) (compare.getDurability() * 1.5));
 		}else{
-			event.getInventory().getResult().setType(Material.AIR);
+			event.getInventory().getResult().setType(Material.STICK);
 		}
 	}
 

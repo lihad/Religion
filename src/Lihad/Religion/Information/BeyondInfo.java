@@ -531,6 +531,16 @@ public class BeyondInfo {
 	public static List<String> getBosses(){
 		return BeyondInfoReader.getKeyList("Bosses");
 	}
+	public static String getBossName(String usertitle){
+		return BeyondInfoReader.getString("Bosses."+usertitle+".Name");
+	}
+	public static Location getBossLocation(String usertitle){
+		String[] array;
+		String string = BeyondInfoReader.getString("Bosses."+usertitle+".Location");
+		array = string.split(",");
+		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
+		return location;
+	}
 	//has Functions
 	/**
 	 * Simply checks to see if player exists in the information.yml
@@ -643,6 +653,12 @@ public class BeyondInfo {
 	public static void setHolyZone(String towername, Location location){
 		BeyondInfoWriter.writeConfigurationString("Religions."+getReligion(towername)+".Towers."+towername+".HolyZone", location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
 	}
+	public static void setBossName(String usertitle, String bossname){
+		BeyondInfoWriter.writeConfigurationString("Bosses."+usertitle+".Name", bossname);
+	}
+	public static void setBossLocation(String usertitle, Location location){
+		BeyondInfoWriter.writeConfigurationString("Bosses."+usertitle+".Location", location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
+	}
 	//add Functions
 	public static void addPlayer(Player player, String towername){
 		setPlayerPath(player,towername);
@@ -743,6 +759,9 @@ public class BeyondInfo {
 	}
 	public static void removeDevastationZone(String areaname){
 		BeyondInfoWriter.writeConfigurationNull("DZ."+areaname);
+	}
+	public static void removeBoss(String usertitle){
+		BeyondInfoWriter.writeConfigurationNull("Bosses."+usertitle);
 	}
 	//is Functions
 	public static boolean isTowerArea(Location location, String towername){

@@ -98,7 +98,7 @@ public class Religion extends JavaPlugin {
 	public static TowerAoE tower;
 	public static Personal personal;
 	
-	//public static Bosses bosses;
+	public static Bosses bosses;
 
 	
 	private final BeyondPluginListener pluginListener = new BeyondPluginListener(this);
@@ -135,6 +135,9 @@ public class Religion extends JavaPlugin {
 	public void onEnable() {
 		System.out.println("-----------------------------------------");
 		
+		//LogManager
+		log = this.getLogger();
+		
 		//ConfigManager
 		configuration = this.getConfig();
 		
@@ -163,7 +166,7 @@ public class Religion extends JavaPlugin {
 		trades = new TradesDriver(this);
 		reverse = new ReverseEngineering(this);
 		recipes = new Recipes(this);
-		//bosses = new Bosses(this);
+		bosses = new Bosses(this);
 
 		//PermsManager
 		
@@ -230,14 +233,16 @@ public class Religion extends JavaPlugin {
 			warning("Disconnected from LogBlock; towers will be denied until it is re-enabled.");
 		}
 	}
-	
+	public void notification(String message){
+		getServer().broadcastMessage(ChatColor.LIGHT_PURPLE.toString() +"[Religion Notification] " + ChatColor.AQUA.toString() + message);
+	}
 	
 	/**
 	 * Logs an informative message to the console, prefaced with this plugin's header
 	 * @param message: String
 	 */
 	public static void info(String message)
-	{
+	{ 
 		log.info(header + ChatColor.WHITE + message);
 	}
 
