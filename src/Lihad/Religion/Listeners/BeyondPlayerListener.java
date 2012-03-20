@@ -24,6 +24,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -47,6 +48,10 @@ public class BeyondPlayerListener implements Listener {
 
 	public BeyondPlayerListener(Religion instance) {
 		plugin = instance;
+	}
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event){
+		plugin.setPlayerSuffix(event.getPlayer());
 	}
 	public static void onPlayerMoveExecutor(Player player, Location from, Location to){
 

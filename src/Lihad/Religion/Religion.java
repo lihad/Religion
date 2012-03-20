@@ -10,11 +10,16 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import ru.tehkode.permissions.PermissionBackend;
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import Lihad.Religion.Abilities.Personal;
 import Lihad.Religion.Abilities.ReverseEngineering;
@@ -75,6 +80,7 @@ public class Religion extends JavaPlugin {
     public static FileConfiguration configuration;
     public static YamlConfiguration information;
 	public static PermissionHandler handler;
+	public static PermissionManager ex;
 	public static LogBlock logBlock;
 	public static CommandExecutor cmd;
     public static UpdateTimer timer;
@@ -218,10 +224,28 @@ public class Religion extends JavaPlugin {
 		if (permissionsPlugin != null) {
 			info("Succesfully connected to Permissions!");
 			handler = ((Permissions) permissionsPlugin).getHandler();
+			
 		} else {
 			handler = null;
 			warning("Disconnected from Permissions...what could possibly go wrong?");
 		}
+	}
+	public void setupPermissionsEx() {
+		Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("PermissionsEx");
+		
+		if (permissionsPlugin != null) {
+			info("Succesfully connected to Permissions!");
+			ex = PermissionsEx.getPermissionManager();
+			
+		} else {
+			ex = null;
+			warning("Disconnected from PermissionsEx...what could possibly go wrong?");
+		}
+	}
+	public void setPlayerSuffix(Player player){
+		System.out.println("getting set...?");
+		if(BeyondInfo.hasPlayer(player))ex.getUser(player).setSuffix("["+BeyondInfo.getReligion(BeyondInfo.getTowerNamePlayerString(player.getName())).charAt(0)+"-"+BeyondInfo.getTowerNamePlayerString(player.getName())+"]", null);
+		else ex.getUser(player).setSuffix("", null);
 	}
 
 	public void setupLogBlock() {

@@ -19,10 +19,9 @@ public class BeyondPluginListener implements Listener {
     }
     @EventHandler
     public void onPluginEnable(PluginEnableEvent event){
-    	if(event.getPlugin().getDescription().getName().equals("Permissions"))
-    		plugin.setupPermissions();
-    	else if(event.getPlugin().getDescription().getName().equals("LogBlock"))
-    		plugin.setupLogBlock();
+    	if(event.getPlugin().getDescription().getName().equals("Permissions"))plugin.setupPermissions();
+    	else if(event.getPlugin().getDescription().getName().equals("PermissionsEx"))plugin.setupPermissionsEx();
+    	else if(event.getPlugin().getDescription().getName().equals("LogBlock"))plugin.setupLogBlock();
     }
     @EventHandler
     public void onPluginDisable(PluginDisableEvent event){
