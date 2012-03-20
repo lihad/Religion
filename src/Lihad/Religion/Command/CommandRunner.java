@@ -171,8 +171,16 @@ public class CommandRunner implements CommandExecutor {
 					plugin.notification("Player "+((Player)sender).getName()+" is beginning the process to leave Tower "+BeyondInfo.getTowerNamePlayerString(((Player)sender).getName()));
 
 				}else{
-					BeyondInfo.removePlayer((Player)sender);
-					sender.sendMessage("You have left your tower and religion");
+					plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+						public void run() {
+							plugin.notification("Player "+playersToBeRemoved.get(0)+" has left the Tower "+BeyondInfo.getTowerNamePlayerString((playersToBeRemoved.get(0))));
+							BeyondInfo.removePlayer(playersToBeRemoved.get(0));
+							playersToBeRemoved.remove(0);
+						}
+					}, 72000L);
+					playersToBeRemoved.add(((Player)sender).getName());
+					plugin.notification("Player "+((Player)sender).getName()+" is beginning the process to leave Tower "+BeyondInfo.getTowerNamePlayerString(((Player)sender).getName()));
+
 				}
 			}else{
 				BeyondInfo.removePlayer((Player)sender);

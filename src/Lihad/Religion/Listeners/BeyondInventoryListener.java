@@ -23,7 +23,7 @@ public class BeyondInventoryListener implements Listener {
 	@EventHandler
 	public void onPlayerCraft(PrepareItemCraftEvent event){
 		
-		if(ReverseEngineering.getAllowableMaterialList().contains(event.getRecipe().getResult().getType())&& event.getRecipe().getResult().getType() == Material.DIAMOND_SWORD && isFull(event.getInventory().getMatrix()) && Religion.handler.has((Player)event.getViewers().get(0), "religion.ability.reverseengineer")){
+		if(ReverseEngineering.getAllowableMaterialList().contains(event.getRecipe().getResult().getType())&& isFull(event.getInventory().getMatrix())){
 			ReverseEngineering.reverseEngineer(event);
 		}
 		if(ReverseEngineering.getConvertibleMaterialListResult().contains(event.getRecipe().getResult().getType()) && isSingle(event.getInventory().getMatrix())){

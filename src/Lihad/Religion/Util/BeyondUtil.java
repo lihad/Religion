@@ -280,7 +280,8 @@ public class BeyondUtil {
 		int next = chance.nextInt(100);
 		if(next<10)return Material.DIAMOND_SWORD;
 		else if(next<25)return Material.IRON_SWORD;
-		else if(next<50)return Material.GOLD_SWORD;
+		else if(next<40)return Material.GOLD_SWORD;
+		else if(next<60)return Material.STONE_SWORD;
 		else return Material.WOOD_SWORD;
 	}
 	public static Enchantment weaponEnchantRandomizer(){

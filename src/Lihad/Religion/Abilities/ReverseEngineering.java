@@ -39,82 +39,86 @@ public class ReverseEngineering {
 	}
 
 	public static void reverseEngineer(PrepareItemCraftEvent event){
-		Material mattype = event.getRecipe().getResult().getType();
+		if(Religion.handler.has((Player)event.getViewers().get(0), "religion.ability.reverseengineer")){
+			Material mattype = event.getRecipe().getResult().getType();
 
-		short durability = -1;
-		//WEAPON
-		int sharpness = 0;
-		int smite = 0;
-		int bane = 0;
-		int knockback = 0;
-		int fire  = 0;
-		int looting = 0;
-		//ARMOR
-		int protection = 0;
-		int fireprotection = 0;
-		int blast = 0;
-		int projectile = 0;
-		//TOOL
-		int efficiency = 0;
-		int silk = 0;
-		int unbreaking = 0;
-		int fortune = 0;
+			short durability = -1;
+			//WEAPON
+			int sharpness = 0;
+			int smite = 0;
+			int bane = 0;
+			int knockback = 0;
+			int fire  = 0;
+			int looting = 0;
+			//ARMOR
+			int protection = 0;
+			int fireprotection = 0;
+			int blast = 0;
+			int projectile = 0;
+			//TOOL
+			int efficiency = 0;
+			int silk = 0;
+			int unbreaking = 0;
+			int fortune = 0;
 
-		for(int i = 0;i<event.getInventory().getMatrix().length-1;i++){
-			if(event.getInventory().getMatrix()[i].getEnchantments() == null) continue;
-			Map<Enchantment, Integer> map = event.getInventory().getMatrix()[i].getEnchantments();
-			if(getAllowableMaterialSwordList().contains(mattype)){
-				for(int j = 0;j<map.size();j++){
-					Enchantment enchant = (Enchantment) map.keySet().toArray()[j];
-					if(enchant.equals(Enchantment.KNOCKBACK) && map.get(enchant) > knockback)knockback = map.get(Enchantment.KNOCKBACK);
-					if(enchant.equals(Enchantment.DAMAGE_UNDEAD) && map.get(enchant) > smite)smite = map.get(Enchantment.DAMAGE_UNDEAD);
-					if(enchant.equals(Enchantment.DAMAGE_ARTHROPODS) && map.get(enchant) > bane)bane = map.get(Enchantment.DAMAGE_ARTHROPODS);
-					if(enchant.equals(Enchantment.DAMAGE_ALL) && map.get(enchant) > sharpness)sharpness = map.get(Enchantment.DAMAGE_ALL);
-					if(enchant.equals (Enchantment.FIRE_ASPECT) && map.get(enchant) > fire)fire = map.get(Enchantment.FIRE_ASPECT);
-					if(enchant.equals(Enchantment.LOOT_BONUS_MOBS) && map.get(enchant) > looting)looting = map.get(Enchantment.LOOT_BONUS_MOBS);
-					if(durability == -1) event.getInventory().getContents()[i].getDurability();
-					if(durability > event.getInventory().getContents()[i].getDurability())durability = event.getInventory().getContents()[i].getDurability();
+			for(int i = 0;i<event.getInventory().getMatrix().length-1;i++){
+				if(event.getInventory().getMatrix()[i].getEnchantments() == null) continue;
+				Map<Enchantment, Integer> map = event.getInventory().getMatrix()[i].getEnchantments();
+				if(getAllowableMaterialSwordList().contains(mattype)){
+					for(int j = 0;j<map.size();j++){
+						Enchantment enchant = (Enchantment) map.keySet().toArray()[j];
+						if(enchant.equals(Enchantment.KNOCKBACK) && map.get(enchant) > knockback)knockback = map.get(Enchantment.KNOCKBACK);
+						if(enchant.equals(Enchantment.DAMAGE_UNDEAD) && map.get(enchant) > smite)smite = map.get(Enchantment.DAMAGE_UNDEAD);
+						if(enchant.equals(Enchantment.DAMAGE_ARTHROPODS) && map.get(enchant) > bane)bane = map.get(Enchantment.DAMAGE_ARTHROPODS);
+						if(enchant.equals(Enchantment.DAMAGE_ALL) && map.get(enchant) > sharpness)sharpness = map.get(Enchantment.DAMAGE_ALL);
+						if(enchant.equals (Enchantment.FIRE_ASPECT) && map.get(enchant) > fire)fire = map.get(Enchantment.FIRE_ASPECT);
+						if(enchant.equals(Enchantment.LOOT_BONUS_MOBS) && map.get(enchant) > looting)looting = map.get(Enchantment.LOOT_BONUS_MOBS);
+						if(durability == -1) event.getInventory().getContents()[i].getDurability();
+						if(durability > event.getInventory().getContents()[i].getDurability())durability = event.getInventory().getContents()[i].getDurability();
+					}
+				}
+				if(getAllowableMaterialArmorList().contains(mattype)){
+					for(int j = 0;j<map.size();j++){
+						Enchantment enchant = (Enchantment) map.keySet().toArray()[j];
+						if(enchant.equals(Enchantment.PROTECTION_ENVIRONMENTAL) && map.get(enchant) > protection)protection = map.get(Enchantment.PROTECTION_ENVIRONMENTAL);
+						if(enchant.equals(Enchantment.PROTECTION_FIRE) && map.get(enchant) > fireprotection)fireprotection = map.get(Enchantment.PROTECTION_FIRE);
+						if(enchant.equals(Enchantment.PROTECTION_PROJECTILE) && map.get(enchant) > projectile)projectile = map.get(Enchantment.PROTECTION_PROJECTILE);
+						if(enchant.equals(Enchantment.PROTECTION_EXPLOSIONS) && map.get(enchant) > blast)blast = map.get(Enchantment.PROTECTION_EXPLOSIONS);
+						if(durability == -1) event.getInventory().getContents()[i].getDurability();
+						if(durability > event.getInventory().getContents()[i].getDurability())durability = event.getInventory().getContents()[i].getDurability();
+					}
+				}
+				if(getAllowableMaterialToolList().contains(mattype)){
+					for(int j = 0;j<map.size();j++){
+						Enchantment enchant = (Enchantment) map.keySet().toArray()[j];
+						if(enchant.equals(Enchantment.DIG_SPEED) && map.get(enchant) > efficiency)efficiency = map.get(Enchantment.DIG_SPEED);
+						if(enchant.equals(Enchantment.SILK_TOUCH) && map.get(enchant) > silk)silk = map.get(Enchantment.SILK_TOUCH);
+						if(enchant.equals(Enchantment.DURABILITY) && map.get(enchant) > unbreaking)unbreaking = map.get(Enchantment.DURABILITY);
+						if(enchant.equals(Enchantment.LOOT_BONUS_BLOCKS) && map.get(enchant) > fortune)fortune = map.get(Enchantment.LOOT_BONUS_BLOCKS);
+						if(durability == -1) event.getInventory().getContents()[i].getDurability();
+						if(durability > event.getInventory().getContents()[i].getDurability())durability = event.getInventory().getContents()[i].getDurability();
+					}
 				}
 			}
-			if(getAllowableMaterialArmorList().contains(mattype)){
-				for(int j = 0;j<map.size();j++){
-					Enchantment enchant = (Enchantment) map.keySet().toArray()[j];
-					if(enchant.equals(Enchantment.PROTECTION_ENVIRONMENTAL) && map.get(enchant) > protection)protection = map.get(Enchantment.PROTECTION_ENVIRONMENTAL);
-					if(enchant.equals(Enchantment.PROTECTION_FIRE) && map.get(enchant) > fireprotection)fireprotection = map.get(Enchantment.PROTECTION_FIRE);
-					if(enchant.equals(Enchantment.PROTECTION_PROJECTILE) && map.get(enchant) > projectile)projectile = map.get(Enchantment.PROTECTION_PROJECTILE);
-					if(enchant.equals(Enchantment.PROTECTION_EXPLOSIONS) && map.get(enchant) > blast)blast = map.get(Enchantment.PROTECTION_EXPLOSIONS);
-					if(durability == -1) event.getInventory().getContents()[i].getDurability();
-					if(durability > event.getInventory().getContents()[i].getDurability())durability = event.getInventory().getContents()[i].getDurability();
-				}
-			}
-			if(getAllowableMaterialToolList().contains(mattype)){
-				for(int j = 0;j<map.size();j++){
-					Enchantment enchant = (Enchantment) map.keySet().toArray()[j];
-					if(enchant.equals(Enchantment.DIG_SPEED) && map.get(enchant) > efficiency)efficiency = map.get(Enchantment.DIG_SPEED);
-					if(enchant.equals(Enchantment.SILK_TOUCH) && map.get(enchant) > silk)silk = map.get(Enchantment.SILK_TOUCH);
-					if(enchant.equals(Enchantment.DURABILITY) && map.get(enchant) > unbreaking)unbreaking = map.get(Enchantment.DURABILITY);
-					if(enchant.equals(Enchantment.LOOT_BONUS_BLOCKS) && map.get(enchant) > fortune)fortune = map.get(Enchantment.LOOT_BONUS_BLOCKS);
-					if(durability == -1) event.getInventory().getContents()[i].getDurability();
-					if(durability > event.getInventory().getContents()[i].getDurability())durability = event.getInventory().getContents()[i].getDurability();
-				}
-			}
+			ItemStack stack = new ItemStack(mattype, 1);
+			if(knockback != 0)stack.addUnsafeEnchantment(Enchantment.KNOCKBACK, knockback);
+			if(smite != 0)stack.addUnsafeEnchantment(Enchantment.DAMAGE_UNDEAD, smite);
+			if(bane != 0)stack.addUnsafeEnchantment(Enchantment.DAMAGE_ARTHROPODS, bane);
+			if(sharpness != 0)stack.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, sharpness);
+			if(fire != 0)stack.addUnsafeEnchantment(Enchantment.FIRE_ASPECT, fire);
+			if(looting != 0)stack.addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, looting);
+			if(protection != 0)stack.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, protection);
+			if(fireprotection != 0)stack.addUnsafeEnchantment(Enchantment.PROTECTION_FIRE, fireprotection);
+			if(projectile != 0)stack.addUnsafeEnchantment(Enchantment.PROTECTION_PROJECTILE, projectile);
+			if(blast != 0)stack.addUnsafeEnchantment(Enchantment.PROTECTION_EXPLOSIONS, blast);
+			if(efficiency != 0)stack.addUnsafeEnchantment(Enchantment.DIG_SPEED, efficiency);
+			if(silk != 0)stack.addUnsafeEnchantment(Enchantment.SILK_TOUCH, silk);
+			if(unbreaking != 0)stack.addUnsafeEnchantment(Enchantment.DURABILITY, unbreaking);
+			if(fortune != 0)stack.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, fortune);
+			event.getInventory().setResult(stack);
+		}else{
+			event.getInventory().setResult(new ItemStack(Material.STICK));
 		}
-		ItemStack stack = new ItemStack(mattype, 1);
-		if(knockback != 0)stack.addUnsafeEnchantment(Enchantment.KNOCKBACK, knockback);
-		if(smite != 0)stack.addUnsafeEnchantment(Enchantment.DAMAGE_UNDEAD, smite);
-		if(bane != 0)stack.addUnsafeEnchantment(Enchantment.DAMAGE_ARTHROPODS, bane);
-		if(sharpness != 0)stack.addUnsafeEnchantment(Enchantment.DAMAGE_ALL, sharpness);
-		if(fire != 0)stack.addUnsafeEnchantment(Enchantment.FIRE_ASPECT, fire);
-		if(looting != 0)stack.addUnsafeEnchantment(Enchantment.LOOT_BONUS_MOBS, looting);
-		if(protection != 0)stack.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, protection);
-		if(fireprotection != 0)stack.addUnsafeEnchantment(Enchantment.PROTECTION_FIRE, fireprotection);
-		if(projectile != 0)stack.addUnsafeEnchantment(Enchantment.PROTECTION_PROJECTILE, projectile);
-		if(blast != 0)stack.addUnsafeEnchantment(Enchantment.PROTECTION_EXPLOSIONS, blast);
-		if(protection != 0)stack.addUnsafeEnchantment(Enchantment.DIG_SPEED, protection);
-		if(fireprotection != 0)stack.addUnsafeEnchantment(Enchantment.SILK_TOUCH, fireprotection);
-		if(projectile != 0)stack.addUnsafeEnchantment(Enchantment.DURABILITY, projectile);
-		if(blast != 0)stack.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, blast);
-		event.getInventory().setResult(stack);
 	}
 	private static Map<Enchantment,Integer> modifyConvertedEnchantments(Map<Enchantment,Integer> origin){
 		int removal = 20;
@@ -124,7 +128,7 @@ public class ReverseEngineering {
 			if(origin.get((Enchantment)origin.keySet().toArray()[next]) == 1){
 				origin.remove((Enchantment)origin.keySet().toArray()[next]);
 			}else{
-			origin.put((Enchantment)origin.keySet().toArray()[next], origin.get((Enchantment)origin.keySet().toArray()[next])-1);
+				origin.put((Enchantment)origin.keySet().toArray()[next], origin.get((Enchantment)origin.keySet().toArray()[next])-1);
 			}
 			removal --;
 		}
@@ -334,7 +338,7 @@ public class ReverseEngineering {
 		if(material == Material.GOLD_SWORD) return Material.IRON_SWORD;
 		if(material == Material.IRON_SWORD) return Material.DIAMOND_SWORD;
 
-		
+
 		return Material.STONE_AXE;
 	}
 

@@ -233,7 +233,7 @@ public class BeyondEntityListener implements Listener {
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
 					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 2000)
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 20)
 								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
 								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
@@ -243,8 +243,8 @@ public class BeyondEntityListener implements Listener {
 								stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
 								Random chance = new Random();
 								int next = chance.nextInt(100);
-								if(next<20)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(),BeyondUtil.weaponLevelRandomizer());
-								if(next<10)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
+								if(next<30)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(),BeyondUtil.weaponLevelRandomizer());
+								if(next<20)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
 								if(next<5)stack.addUnsafeEnchantment(BeyondUtil.weaponEnchantRandomizer(), BeyondUtil.weaponLevelRandomizer());
 							}
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
@@ -271,9 +271,9 @@ public class BeyondEntityListener implements Listener {
 							stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
 							Random chance = new Random();
 							int next = chance.nextInt(100);
-							if(next<10)stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());							
+							if(next<30)stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());							
+							if(next<20)stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
 							if(next<5)stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
-							if(next<1)stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
 						}
@@ -299,9 +299,9 @@ public class BeyondEntityListener implements Listener {
 								stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
 								Random chance = new Random();
 								int next = chance.nextInt(100);
+								if(next<40)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+								if(next<25)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
 								if(next<10)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
-								if(next<5)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
-								if(next<1)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
 							}
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
