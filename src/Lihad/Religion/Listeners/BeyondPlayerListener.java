@@ -14,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Villager;
+import org.bukkit.entity.Villager.Profession;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -38,11 +39,14 @@ import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
 import Lihad.Religion.Util.BukkitSchedulePlayerMove;
+import Lihad.Religion.Util.Notification;
 
 public class BeyondPlayerListener implements Listener {
 	public static Religion plugin;
 	public static List<PlayerMoveEvent> queue = new LinkedList<PlayerMoveEvent>();
 	public static LinkedList<String> playersOnQueue = new LinkedList<String>();
+	public static LinkedList<Player> playersOnQueueJoin = new LinkedList<Player>();
+
 	public static int listenerDropRate = 0;
 	public static int listenerMaxDropRate = 0;
 
@@ -51,7 +55,15 @@ public class BeyondPlayerListener implements Listener {
 	}
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event){
-		plugin.setPlayerSuffix(event.getPlayer());
+		playersOnQueueJoin.add(event.getPlayer());
+		plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new Runnable() {
+		    public void run() {
+		    	if(playersOnQueueJoin.get(0) != null){
+				plugin.setPlayerSuffix(playersOnQueueJoin.get(0));
+		    	}
+				playersOnQueueJoin.remove(0);
+		    }
+		}, 1L);
 	}
 	public static void onPlayerMoveExecutor(Player player, Location from, Location to){
 
@@ -67,16 +79,17 @@ public class BeyondPlayerListener implements Listener {
 			player.sendMessage(ChatColor.RED.toString()+"You're shell-shocked. Your will is too weak to continue in.");
 		}
 	////////////////////////////////	
-		if(BeyondInfo.getClosestValidTower(from) == null&& BeyondInfo.getClosestValidTower(to) != null &&BeyondInfo.getReligion(player) == null){
+		if(BeyondInfo.getClosestValidTower(from) == null&& BeyondInfo.getClosestValidTower(to) != null &&BeyondInfo.getReligion(player) == null && !player.isOp()){
 			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(to))){
 				player.teleport(from);
 				player.sendMessage("This is a religious area. Go away non-believer!");
 				return;
 			}else{
+				Notification.event.add(ChatColor.WHITE.toString()+" - "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getTowerName(player)+"("+BeyondInfo.getReligion(player)+")"+ChatColor.GRAY.toString()+" has sent spies into "+ChatColor.RED.toString()+BeyondInfo.getClosestValidTower(to)+"("+BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(to))+")");
 				player.sendMessage("Your heart begins to race!");
 			}
 		}
-		if(BeyondInfo.getClosestValidTower(from) != null && BeyondInfo.getClosestValidTower(to) != null && BeyondInfo.getReligion(player) == null){
+		if(BeyondInfo.getClosestValidTower(from) != null && BeyondInfo.getClosestValidTower(to) != null && BeyondInfo.getReligion(player) == null  && !player.isOp()){
 			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(to))){
 				player.damage(6);
 				player.sendMessage("Being in a religious area without your own religion is pulling your soul apart...");
@@ -147,6 +160,7 @@ public class BeyondPlayerListener implements Listener {
 					Chest chest = (Chest) event.getClickedBlock().getState();
 					if(chest.getInventory().contains(Material.GOLD_INGOT)){
 						event.getPlayer().sendMessage("You stole a gold bar from "+ChatColor.RED.toString()+BeyondInfo.getTower(event.getClickedBlock().getLocation()));
+						Notification.event.add(ChatColor.WHITE.toString()+" - "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getTowerName(event.getPlayer())+"("+BeyondInfo.getReligion(event.getPlayer())+")"+ChatColor.GRAY.toString()+" attacked "+ChatColor.RED.toString()+BeyondInfo.getTower(event.getClickedBlock().getLocation())+"("+BeyondInfo.getReligion(event.getClickedBlock().getLocation())+")");
 						//TODO: make damage configurable via Config.BeyondConfig
 						int index =chest.getInventory().first(266);
 						ItemStack items = chest.getInventory().getItem(index);
@@ -245,11 +259,11 @@ public class BeyondPlayerListener implements Listener {
 		if(event.getPlayer().getItemInHand() == null)return;
 		if(event.getPlayer().getItemInHand().getType() == Material.LEATHER && event.getRightClicked() instanceof Player
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.repair"))Personal.usesLeather(event.getPlayer(), (Player)event.getRightClicked());
-		if(event.getPlayer().getItemInHand().getType() == Material.DIAMOND && event.getRightClicked() instanceof Villager
+		if(event.getPlayer().getItemInHand().getType() == Material.DIAMOND && event.getRightClicked() instanceof Villager && ((Villager)event.getRightClicked()).getProfession() == Profession.BLACKSMITH
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.trade"))Personal.usesDiamond(event.getPlayer(), (Villager)event.getRightClicked());
 		if(event.getPlayer().getItemInHand().getType() == Material.GLASS_BOTTLE && event.getRightClicked() instanceof Creature
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.egg"))Personal.usesGlassBottle(event.getPlayer(), (Creature)event.getRightClicked());
-		if(event.getPlayer().getItemInHand().getType() == Material.DIAMOND_SWORD && event.getRightClicked() instanceof Villager
+		if(event.getPlayer().getItemInHand().getType() == Material.DIAMOND_SWORD && event.getRightClicked() instanceof Villager && ((Villager)event.getRightClicked()).getProfession() == Profession.BLACKSMITH
 				&& Religion.handler.has(event.getPlayer(), "religion.ability.enchantsword"))Personal.usesDiamondItem(event.getPlayer(), (Villager)event.getRightClicked(), 0);
 		if((event.getPlayer().getItemInHand().getType() == Material.DIAMOND_HELMET || event.getPlayer().getItemInHand().getType() == Material.DIAMOND_LEGGINGS || event.getPlayer().getItemInHand().getType() == Material.DIAMOND_CHESTPLATE || event.getPlayer().getItemInHand().getType() == Material.DIAMOND_BOOTS)
 				&& event.getRightClicked() instanceof Villager

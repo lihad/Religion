@@ -44,6 +44,7 @@ import Lihad.Religion.Recipe.Recipes;
 import Lihad.Religion.Trades.TradesDriver;
 import Lihad.Religion.Util.BeyondTimerTask;
 import Lihad.Religion.Util.BukkitSchedulePlayerMove;
+import Lihad.Religion.Util.Notification;
 import Lihad.Religion.Util.UpdateTimer;
 
 import com.nijiko.permissions.PermissionHandler;
@@ -89,6 +90,7 @@ public class Religion extends JavaPlugin {
     public static BukkitScheduleBossManager bossManagerTask;
     public static ReverseEngineering reverse;
     public static Recipes recipes;
+    public static Notification notify;
 
     public static TradesDriver trades;
     
@@ -203,6 +205,11 @@ public class Religion extends JavaPlugin {
 		//BossInitiallizer
 		bossManagerTask = new BukkitScheduleBossManager();
 		getServer().getScheduler().scheduleAsyncRepeatingTask(this,Religion.bossManagerTask, 0, 100L);
+		
+		//NotificationInit
+		notify = new Notification(this);
+		//getServer().getScheduler().scheduleAsyncRepeatingTask(this,Religion.notify, 0,37200L);
+		
 
 		//bosses.bossInit();
 		
@@ -243,7 +250,6 @@ public class Religion extends JavaPlugin {
 		}
 	}
 	public void setPlayerSuffix(Player player){
-		System.out.println("getting set...?");
 		if(BeyondInfo.hasPlayer(player))ex.getUser(player).setSuffix("["+BeyondInfo.getReligion(BeyondInfo.getTowerNamePlayerString(player.getName())).charAt(0)+"-"+BeyondInfo.getTowerNamePlayerString(player.getName())+"]", null);
 		else ex.getUser(player).setSuffix("", null);
 	}

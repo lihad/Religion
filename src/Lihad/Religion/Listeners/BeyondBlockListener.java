@@ -1,5 +1,6 @@
 package Lihad.Religion.Listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -12,6 +13,7 @@ import Lihad.Religion.Religion;
 import Lihad.Religion.Abilities.SpellAoE;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Util.BeyondUtil;
+import Lihad.Religion.Util.Notification;
 
 public class BeyondBlockListener implements Listener {
 	public static Religion plugin;
@@ -50,6 +52,7 @@ public class BeyondBlockListener implements Listener {
 						return;
 					}
 					BeyondInfo.addTower(event.getPlayer(), event.getLine(1), event.getLine(2), event.getBlock().getLocation());
+					Notification.event.add(ChatColor.WHITE.toString()+" - "+ChatColor.GRAY.toString()+"New Tower Created for "+ChatColor.LIGHT_PURPLE.toString()+event.getLine(1)+ChatColor.GRAY.toString()+": "+ChatColor.WHITE.toString()+event.getLine(2));
 					if(event.getBlock().getRelative(1, 0, 0).getType() == Material.CHEST) event.getBlock().getRelative(1, 0, 0).setTypeId(0);
 					if(event.getBlock().getRelative(-1, 0, 0).getType() == Material.CHEST) event.getBlock().getRelative(-1, 0, 0).setTypeId(0);
 					if(event.getBlock().getRelative(0, 0, 1).getType() == Material.CHEST) event.getBlock().getRelative(0, 0, 1).setTypeId(0);

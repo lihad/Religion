@@ -51,6 +51,5 @@ public class Recipes {
 			recipes.add(Recipes.customSingle(ReverseEngineering.getConvertibleMaterialList().get(i), ReverseEngineering.getConvertedMaterial(ReverseEngineering.getConvertibleMaterialList().get(i))));
 		}
 		return recipes;
-
 	}
 }

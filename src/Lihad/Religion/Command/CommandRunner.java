@@ -23,6 +23,7 @@ import Lihad.Religion.Config.BeyondConfig;
 import Lihad.Religion.Information.BeyondInfo;
 import Lihad.Religion.Listeners.BeyondPlayerListener;
 import Lihad.Religion.Util.BeyondUtil;
+import Lihad.Religion.Util.Notification;
 
 public class CommandRunner implements CommandExecutor {
 	public static Religion plugin;
@@ -85,6 +86,8 @@ public class CommandRunner implements CommandExecutor {
 			else if(BeyondInfo.isMemberInvited((Player)sender, arg[1])){
 				BeyondInfo.addPlayer((Player)sender, arg[1]);
 				plugin.notification("Player, "+((Player)sender).getName()+", has joined Tower "+arg[1]+", Religion of "+BeyondInfo.getReligion(arg[1]));
+				Notification.event.add(ChatColor.WHITE.toString()+" - "+ChatColor.LIGHT_PURPLE.toString()+((Player)sender).getName()+ChatColor.GRAY.toString()+" joined "+ChatColor.LIGHT_PURPLE.toString()+arg[1]+ChatColor.GRAY.toString()+", Religion of "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getReligion(arg[1]));
+
 				sender.sendMessage("You have joined the Tower of "+arg[1]+" and the Religion of "+BeyondInfo.getReligion(arg[1]));
 				BeyondInfo.removeInvited(((Player)sender), arg[1]);
 			}else{
@@ -356,7 +359,7 @@ public class CommandRunner implements CommandExecutor {
 			return true;
 		}
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("holy") && arg[1].equals("set") && arg.length == 2 && BeyondInfo.isPlayerLeader((Player)sender)){
-			if(BeyondInfo.getDistanceToTower(((Player)sender).getLocation(), BeyondInfo.getClosestValidTower(((Player)sender).getLocation())) < 600){
+			if(BeyondInfo.getDistanceToTower(((Player)sender).getLocation(), BeyondInfo.getClosestTower(((Player)sender).getLocation())) < 600){
 				((Player)sender).sendMessage("This Holy Zone is too close to a tower to be set.");
 				return true;
 			}

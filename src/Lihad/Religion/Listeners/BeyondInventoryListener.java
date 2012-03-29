@@ -45,6 +45,4 @@ public class BeyondInventoryListener implements Listener {
 		}
 		return true;
 	}
-	
-
 }
