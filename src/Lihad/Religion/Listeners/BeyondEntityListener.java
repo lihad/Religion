@@ -182,20 +182,20 @@ public class BeyondEntityListener implements Listener {
 				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Creeper){
 					if(event.getDamage() >= ((Creeper)event.getEntity()).getHealth()){
-						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 20)
-								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 20)){
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 20+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 20+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))){
 							event.getEntity().remove();
 							for(int i =0;i<5;i++){
 								((Wolf)event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), EntityType.WOLF)).setOwner(player);
 							}
-						}else if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 30)
-								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 30)
-								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 30)
-								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 100)
-								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 100)){
+						}else if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 30+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 30+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 30+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 100+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 100+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))){
 							event.getEntity().remove();
 							for(int i =0;i<10;i++){
 								event.getEntity().getWorld().spawnCreature(event.getEntity().getLocation(), EntityType.CHICKEN);
@@ -211,11 +211,11 @@ public class BeyondEntityListener implements Listener {
 				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Zombie){
 					if(event.getDamage() >= ((Zombie)event.getEntity()).getHealth()){
-						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 7)
-								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 7)
-								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 40)
-								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 7)
-								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 7)){
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 7+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 7+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 40+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 7+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 7+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))){
 							event.getEntity().remove();
 							Potion potion = new Potion(BeyondUtil.potionTypeRandomizer(), BeyondUtil.potionTierRandomizer(), BeyondUtil.potionSplashRandomizer());
 							ItemStack stack = new ItemStack(Material.POTION, 1);
@@ -233,11 +233,11 @@ public class BeyondEntityListener implements Listener {
 				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
 					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
-						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 20)
-								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 20+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))){
 							event.getEntity().remove();
 							ItemStack stack = new ItemStack(BeyondUtil.weaponTypeRandomizer(), 1);
 							while(stack.getEnchantments().isEmpty()){
@@ -262,11 +262,11 @@ public class BeyondEntityListener implements Listener {
 				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof PigZombie){
 					if(event.getDamage() >= ((PigZombie)event.getEntity()).getHealth()){
-						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 20)
-								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 20+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))){
 							event.getEntity().remove();
 							ItemStack stack = new ItemStack(BeyondUtil.armorTypeRandomizer(), 1);
 							stack.addUnsafeEnchantment(BeyondUtil.armorEnchantRandomizer(), BeyondUtil.armorLevelRandomizer());
@@ -289,11 +289,11 @@ public class BeyondEntityListener implements Listener {
 				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Enderman){
 					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth()){
-						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 30)
-								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 30+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))){
 							event.getEntity().remove();
 							ItemStack stack = new ItemStack(BeyondUtil.toolTypeRandomizer(), 1);
 							while(stack.getEnchantments().isEmpty()){
@@ -318,11 +318,11 @@ public class BeyondEntityListener implements Listener {
 				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Skeleton){
 					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth()){
-						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 20)
-								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
-								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 20+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))){
 							event.getEntity().remove();
 							ItemStack stack = new ItemStack(Material.BOW, 1);
 							while(stack.getEnchantments().isEmpty()){

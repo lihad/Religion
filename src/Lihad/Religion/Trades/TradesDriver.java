@@ -76,17 +76,17 @@ public class TradesDriver {
 			ItemStack item = inventory.getItem(i);
 			if(item == null) continue;
 			if(item.getDurability()<=0) continue;
-			item.setDurability((short) (item.getDurability()-BeyondInfo.getTowerInfluence(towername)));
+			item.setDurability((short) (item.getDurability()-BeyondInfo.getTowerAoE(towername)));
 			if(item.getDurability()<0)item.setDurability((short)0);
 		}
 	}
 	public void auxFishery(Chest chest, String towername){
 		Inventory inventory = chest.getInventory();
-		inventory.addItem(new ItemStack(Material.RAW_FISH, (int) (1*BeyondInfo.getTowerInfluence(towername))));
+		inventory.addItem(new ItemStack(Material.RAW_FISH, (int) (1*BeyondInfo.getTowerAoE(towername))));
 	}
 	public void auxFletcher(Chest chest, String towername){
 		Inventory inventory = chest.getInventory();
-		inventory.addItem(new ItemStack(Material.ARROW, (int) (1*BeyondInfo.getTowerInfluence(towername))));
+		inventory.addItem(new ItemStack(Material.ARROW, (int) (1*BeyondInfo.getTowerAoE(towername))));
 	}
 	public void auxDisenchant(Chest chest, String towername){
 		Inventory inventory = chest.getInventory();

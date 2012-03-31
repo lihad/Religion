@@ -296,12 +296,13 @@ public class Personal {
 		int offX = generalRandomizer(200);
 		int offZ = generalRandomizer(200);
 
+		
 		List<String> towers = BeyondInfo.getTowersAll();
 		int randomT = generalRandomizer(towers.size());
 		String towername = towers.get(randomT);
 		
 		if(chance < 10){
-			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"AH! Now your talking! Try looking around "+BeyondInfo.getTowerLocation(towername).getBlockX()+offX+"x, "+BeyondInfo.getTowerLocation(towername).getBlockZ()+offZ+"z");
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"AH! Now your talking! Try looking around "+(BeyondInfo.getTowerLocation(towername).getBlockX()+offX)+"x, "+(BeyondInfo.getTowerLocation(towername).getBlockZ()+offZ)+"z");
 		}else if(chance < 80){
 			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"mmmmh.... I need more diamond than that if you want me to talk!");
 		}else{

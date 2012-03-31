@@ -341,6 +341,7 @@ public class CommandRunner implements CommandExecutor {
 			BeyondInfo.setHolyZone(BeyondInfo.getTowerName(((Player)sender)), ((Player)sender).getLocation());
 			return true;
 		}
+
 		else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("check")&& arg.length == 1){
 			if(BeyondUtil.isActiveArea((Player)sender, null))((Player)sender).sendMessage(ChatColor.RED.toString()+"This area is active, you will be unable to create a tower here.");
 			else ((Player)sender).sendMessage(ChatColor.GREEN.toString()+"This area is desolate");
@@ -350,7 +351,7 @@ public class CommandRunner implements CommandExecutor {
 			String say = " The players inside your AoE are: ";
 			for(int i = 0;i<plugin.getServer().getOnlinePlayers().length;i++){
 				if(BeyondInfo.isTowerArea(plugin.getServer().getOnlinePlayers()[i].getLocation(), BeyondInfo.getTowerName((Player)sender))){
-					say.concat(BeyondUtil.getChatColor((Player)sender, BeyondInfo.getTowerName(plugin.getServer().getOnlinePlayers()[i]))+"["+plugin.getServer().getOnlinePlayers()[i].getName()+" @{"+plugin.getServer().getOnlinePlayers()[i].getLocation().getBlockX()+", "+plugin.getServer().getOnlinePlayers()[i].getLocation().getBlockZ()+"}"+ChatColor.WHITE.toString()+"]");
+					say = say.concat(BeyondUtil.getChatColor((Player)sender, BeyondInfo.getTowerName(plugin.getServer().getOnlinePlayers()[i]))+"["+plugin.getServer().getOnlinePlayers()[i].getName()+" @{"+plugin.getServer().getOnlinePlayers()[i].getLocation().getBlockX()+", "+plugin.getServer().getOnlinePlayers()[i].getLocation().getBlockZ()+"}"+ChatColor.WHITE.toString()+"]");
 				}
 			}
 			((Player)sender).sendMessage(say);
