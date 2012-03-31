@@ -192,6 +192,7 @@ public class BeyondUtil {
 				|| stack.getType() == Material.IRON_SWORD)
 			itemvalue = 120;
 		else if(stack.getType() == Material.DIAMOND_BOOTS
+				|| stack.getType() == Material.BOW
 				|| stack.getType() == Material.DIAMOND_CHESTPLATE
 				|| stack.getType() == Material.DIAMOND_HELMET
 				|| stack.getType() == Material.DIAMOND_LEGGINGS
@@ -298,6 +299,32 @@ public class BeyondUtil {
 		return Enchantment.DAMAGE_ALL;
 	}
 	public static int weaponLevelRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(100);
+		if(next<1)return 10;
+		else if(next<3)return 9;
+		else if(next<6)return 8;
+		else if(next<10)return 7;
+		else if(next<15)return 6;
+		else if(next<20)return 5;
+		else if(next<30)return 4;
+		else if(next<40)return 3;
+		else if(next<50)return 2;
+		else return 1;
+	}
+	public static Enchantment bowEnchantRandomizer(){
+		Random chance = new Random();
+		int next = chance.nextInt(5);
+		switch(next){
+		case 0: return Enchantment.ARROW_DAMAGE;
+		case 1: return Enchantment.ARROW_FIRE;
+		case 2: return Enchantment.ARROW_INFINITE;
+		case 3: return Enchantment.ARROW_KNOCKBACK;
+		case 4: return Enchantment.LOOT_BONUS_MOBS;
+		}
+		return Enchantment.DAMAGE_ALL;
+	}
+	public static int bowLevelRandomizer(){
 		Random chance = new Random();
 		int next = chance.nextInt(100);
 		if(next<1)return 10;

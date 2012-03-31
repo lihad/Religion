@@ -7,6 +7,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
@@ -210,6 +211,105 @@ public class Personal {
 		else player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Thank you very much!");
 		player.updateInventory();
 	}
+	public static void usesGoldIngotPriest(Player player, Villager villager){
+		removeItemInHandBy1(player);
+		int chance = generalRandomizer(100);
+		if(chance < 5){
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"BY THE GODS! The weather is clearing...");
+			player.getWorld().setStorm(false);
+		}
+		else{
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Thank you for the offering!");
+		}
+		player.updateInventory();
+	}
+	
+	public static void usesGoldIngotButcher(Player player, Villager villager){
+		removeItemInHandBy1(player);
+		player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Here ya' go!");
+		int chance = generalRandomizer(3);
+		int amount = generalRandomizer(64);
+		switch(chance){
+		case 0:
+			villager.getWorld().dropItemNaturally(villager.getLocation(), new ItemStack(Material.COOKED_BEEF,amount));
+			break;
+		case 1:
+			villager.getWorld().dropItemNaturally(villager.getLocation(), new ItemStack(Material.COOKED_CHICKEN,amount));
+			break;
+		case 2:
+			villager.getWorld().dropItemNaturally(villager.getLocation(), new ItemStack(Material.COOKED_FISH,amount));
+			break;	
+		}
+		player.updateInventory();
+	}
+	public static void usesGoldIngotFarmer(Player player, Villager villager){
+		removeItemInHandBy1(player);
+		int chance = generalRandomizer(100);
+		if(chance < 5){
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"You have more of this on you... don't you...");
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+			((Wolf)player.getWorld().spawnCreature(villager.getLocation(), EntityType.WOLF)).setAngry(true);
+		}else if(chance < 13){
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Here... it isn't much, but it's all I have");
+			ItemStack stack = new ItemStack(Material.BOW);
+			stack.addEnchantment(Enchantment.ARROW_DAMAGE, 2);
+			villager.getWorld().dropItemNaturally(villager.getLocation(),stack);
+		}else{
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Thank you!!! This will feed my family for weeks!");
+		}
+		player.updateInventory();
+	}
+	public static void usesGoldIngotBlacksmith(Player player, Villager villager){
+		removeItemInHandBy1(player);
+		player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Thanks for the gold");
+	}
+	public static void usesGoldIngotLibrarian(Player player, Villager villager){
+		removeItemInHandBy1(player);
+		player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Ah... lets learn something!");
+		int chance = generalRandomizer(100);
+		if(chance < 20){
+			player.setLevel(player.getLevel()+3);
+		}else if(chance < 95){
+			player.setLevel(player.getLevel()+1);
+		}else{
+			player.setLevel(0);
+			player.sendMessage(ChatColor.RED.toString()+"Well... aren't you retarded");
+		}
+		player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Your level is now "+ChatColor.WHITE.toString()+player.getLevel());
+	}
+	public static void usesDiamondSpy(Player player, Villager villager){
+		removeItemInHandBy1(player);
+		player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"Ah... lets learn something!");
+		int chance = generalRandomizer(100);
+		int offX = generalRandomizer(200);
+		int offZ = generalRandomizer(200);
+
+		List<String> towers = BeyondInfo.getTowersAll();
+		int randomT = generalRandomizer(towers.size());
+		String towername = towers.get(randomT);
+		
+		if(chance < 10){
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"AH! Now your talking! Try looking around "+BeyondInfo.getTowerLocation(towername).getBlockX()+offX+"x, "+BeyondInfo.getTowerLocation(towername).getBlockZ()+offZ+"z");
+		}else if(chance < 80){
+			player.sendMessage(ChatColor.LIGHT_PURPLE.toString()+"mmmmh.... I need more diamond than that if you want me to talk!");
+		}else{
+			player.sendMessage(ChatColor.RED.toString()+"I will not be a traitor!!!");
+			villager.setHealth(0);
+		}
+	}
+
 
 
 	private static int healChance(){

@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,13 +18,13 @@ public class TradesDriver {
 	public TradesDriver(Religion instance){
 		plugin = instance;
 	}
-	
-	
+
+
 	public void driver(){
 		checkTradeChests();
 		updateTradeChests();
 	}
-	
+
 	public void checkTradeChests(){
 		List<String> religions = BeyondInfo.getReligions();
 		for(int i = 0;i<religions.size();i++){
@@ -54,9 +55,10 @@ public class TradesDriver {
 					Location location = BeyondInfo.getTradeLocation(towers.get(j), trades.get(k));
 					if(location.getBlock().getState() instanceof Chest){
 						Chest chest = (Chest) location.getBlock().getState();
-						if(trades.get(k).equals("Blacksmith"))auxBlacksmith(chest);
-						else if(trades.get(k).equals("Fishery"))auxFishery(chest);
-						else if(trades.get(k).equals("Fletcher"))auxFletcher(chest);
+						if(trades.get(k).equals("Blacksmith"))auxBlacksmith(chest,towers.get(j));
+						else if(trades.get(k).equals("Fishery"))auxFishery(chest,towers.get(j));
+						else if(trades.get(k).equals("Fletcher"))auxFletcher(chest,towers.get(j));
+						else if(trades.get(k).equals("Disenchant"))auxFletcher(chest,towers.get(j));
 						else{
 							System.out.println("[Religion] Watchdog. Get Lihad. updateTradeChests. Invalid Trade found: "+trades.get(k));
 						}
@@ -68,49 +70,92 @@ public class TradesDriver {
 		}
 	}
 
-	public void auxBlacksmith(Chest chest){
+	public void auxBlacksmith(Chest chest, String towername){
 		Inventory inventory = chest.getInventory();
 		for(int i=0;i<inventory.getSize();i++){
 			ItemStack item = inventory.getItem(i);
-			try{
-				if(item == null) continue;
-				if(item.getDurability()<=0) continue;
-				item.setDurability((short) (item.getDurability()-50));
-			}catch(Exception e){
-				System.out.println("[Religion] Watchdog. Get Lihad. auxBlacksmith. Exception thrown. Handled");
-				e.printStackTrace();
-			}
+			if(item == null) continue;
+			if(item.getDurability()<=0) continue;
+			item.setDurability((short) (item.getDurability()-BeyondInfo.getTowerInfluence(towername)));
+			if(item.getDurability()<0)item.setDurability((short)0);
 		}
 	}
-	public void auxFishery(Chest chest){
+	public void auxFishery(Chest chest, String towername){
 		Inventory inventory = chest.getInventory();
-		try{
-			for(int i = 0; i<5; i++){
-				inventory.addItem(new ItemStack(Material.RAW_FISH, 1));
-			}
-		}catch(Exception e){
-			System.out.println("[Religion] Watchdog. Get Lihad. auxFishery. Exception thrown. Handled");
-			e.printStackTrace();
-		}
+		inventory.addItem(new ItemStack(Material.RAW_FISH, (int) (1*BeyondInfo.getTowerInfluence(towername))));
 	}
-	public void auxFletcher(Chest chest){
+	public void auxFletcher(Chest chest, String towername){
 		Inventory inventory = chest.getInventory();
-		try{
-			for(int i = 0; i<10; i++){
-				if(inventory.contains(Material.WOOD)){
-					int index = inventory.first(Material.WOOD);
-					if(inventory.getItem(index).getAmount() == 1)inventory.setItem(index, null);
-					else{
-						inventory.getItem(index).setAmount(inventory.getItem(index).getAmount());
-						inventory.setItem(index, inventory.getItem(index));
-					}
-					inventory.addItem(new ItemStack(Material.ARROW, 1));
-				}
+		inventory.addItem(new ItemStack(Material.ARROW, (int) (1*BeyondInfo.getTowerInfluence(towername))));
+	}
+	public void auxDisenchant(Chest chest, String towername){
+		Inventory inventory = chest.getInventory();
+		for(int i = 0; i<inventory.getSize();i++){
+			switch(i){
+			case 0:
+				inventory.getItem(i).removeEnchantment(Enchantment.ARROW_DAMAGE);
+				break;
+			case 1:
+				inventory.getItem(i).removeEnchantment(Enchantment.ARROW_FIRE);
+				break;
+			case 2:
+				inventory.getItem(i).removeEnchantment(Enchantment.ARROW_INFINITE);
+				break;
+			case 3:
+				inventory.getItem(i).removeEnchantment(Enchantment.ARROW_KNOCKBACK);
+				break;
+			case 4:
+				inventory.getItem(i).removeEnchantment(Enchantment.DAMAGE_ALL);
+				break;
+			case 5:
+				inventory.getItem(i).removeEnchantment(Enchantment.DAMAGE_ARTHROPODS);
+				break;
+			case 6:
+				inventory.getItem(i).removeEnchantment(Enchantment.DAMAGE_UNDEAD);
+				break;
+			case 7:
+				inventory.getItem(i).removeEnchantment(Enchantment.DIG_SPEED);
+				break;
+			case 8:
+				inventory.getItem(i).removeEnchantment(Enchantment.DURABILITY);
+				break;
+			case 9:
+				inventory.getItem(i).removeEnchantment(Enchantment.FIRE_ASPECT);
+				break;
+			case 10:
+				inventory.getItem(i).removeEnchantment(Enchantment.KNOCKBACK);
+				break;
+			case 11:
+				inventory.getItem(i).removeEnchantment(Enchantment.LOOT_BONUS_BLOCKS);
+				break;
+			case 12:
+				inventory.getItem(i).removeEnchantment(Enchantment.LOOT_BONUS_MOBS);
+				break;
+			case 13:
+				inventory.getItem(i).removeEnchantment(Enchantment.OXYGEN);
+				break;
+			case 14:
+				inventory.getItem(i).removeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL);
+				break;
+			case 15:
+				inventory.getItem(i).removeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL);
+				break;
+			case 16:
+				inventory.getItem(i).removeEnchantment(Enchantment.PROTECTION_FALL);
+				break;
+			case 17:
+				inventory.getItem(i).removeEnchantment(Enchantment.PROTECTION_FIRE);
+				break;
+			case 18:
+				inventory.getItem(i).removeEnchantment(Enchantment.PROTECTION_PROJECTILE);
+				break;
+			case 19:
+				inventory.getItem(i).removeEnchantment(Enchantment.SILK_TOUCH);
+				break;
+			case 20:
+				inventory.getItem(i).removeEnchantment(Enchantment.WATER_WORKER);
+				break;
 			}
-		}catch(Exception e){
-			System.out.println("[Religion] Watchdog. Get Lihad. auxFletcher. Exception thrown. Handled");
-			e.printStackTrace();
 		}
 	}
-
 }

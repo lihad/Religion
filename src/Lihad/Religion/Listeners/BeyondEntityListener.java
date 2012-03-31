@@ -14,6 +14,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Wolf;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
@@ -302,6 +303,35 @@ public class BeyondEntityListener implements Listener {
 								if(next<40)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
 								if(next<25)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
 								if(next<10)stack.addUnsafeEnchantment(BeyondUtil.toolEnchantRandomizer(), BeyondUtil.toolLevelRandomizer());
+							}
+							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
+							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));
+						}
+					}
+				}
+				
+				//
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//
+				// "Skele Bow"
+				//
+				
+				if(event.getDamager() instanceof Player && event.getEntity() instanceof Skeleton){
+					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth()){
+						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 20)
+								|| (BeyondInfo.getReligion(player).equals("Notchitism") && dice < 5)
+								|| (BeyondInfo.getReligion(player).equals("Jorism") && dice < 5)){
+							event.getEntity().remove();
+							ItemStack stack = new ItemStack(Material.BOW, 1);
+							while(stack.getEnchantments().isEmpty()){
+								stack.addUnsafeEnchantment(BeyondUtil.bowEnchantRandomizer(), BeyondUtil.bowLevelRandomizer());
+								Random chance = new Random();
+								int next = chance.nextInt(100);
+								if(next<40)stack.addUnsafeEnchantment(BeyondUtil.bowEnchantRandomizer(), BeyondUtil.bowLevelRandomizer());
+								if(next<25)stack.addUnsafeEnchantment(BeyondUtil.bowEnchantRandomizer(), BeyondUtil.bowLevelRandomizer());
+								if(next<10)stack.addUnsafeEnchantment(BeyondUtil.bowEnchantRandomizer(), BeyondUtil.bowLevelRandomizer());
 							}
 							event.getEntity().getWorld().dropItemNaturally(event.getEntity().getLocation(), stack);
 							((Player)event.getDamager()).sendMessage("Hooray! A "+ChatColor.BLUE.toString()+stack.getType().toString()+ChatColor.WHITE.toString()+" dropped! Rarity Index: "+BeyondUtil.getColorOfRarity(BeyondUtil.rarity(stack))+BeyondUtil.rarity(stack));

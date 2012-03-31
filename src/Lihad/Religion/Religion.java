@@ -196,7 +196,7 @@ public class Religion extends JavaPlugin {
         
 		//BukkitSchedulerManager
 		playerMoveTask = new BukkitSchedulePlayerMove(this);
-		getServer().getScheduler().scheduleAsyncRepeatingTask(this,Religion.playerMoveTask, 0, 15L);
+		getServer().getScheduler().scheduleAsyncRepeatingTask(this,Religion.playerMoveTask, 0, 10L);
 		
 		//CommandManager
 		cmd = new CommandRunner(this);
@@ -250,10 +250,9 @@ public class Religion extends JavaPlugin {
 		}
 	}
 	public void setPlayerSuffix(Player player){
-		if(BeyondInfo.hasPlayer(player))ex.getUser(player).setSuffix("["+BeyondInfo.getReligion(BeyondInfo.getTowerNamePlayerString(player.getName())).charAt(0)+"-"+BeyondInfo.getTowerNamePlayerString(player.getName())+"]", null);
+		if(BeyondInfo.hasPlayer(player))ex.getUser(player).setSuffix(ChatColor.WHITE.toString()+"["+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getReligion(BeyondInfo.getTowerNamePlayerString(player.getName())).charAt(0)+ChatColor.WHITE.toString()+"]", null);
 		else ex.getUser(player).setSuffix("", null);
 	}
-
 	public void setupLogBlock() {
 		logBlock = (LogBlock)this.getServer().getPluginManager().getPlugin("LogBlock");
 		
@@ -266,7 +265,6 @@ public class Religion extends JavaPlugin {
 	public void notification(String message){
 		getServer().broadcastMessage(ChatColor.LIGHT_PURPLE.toString() +"[Religion Notification] " + ChatColor.AQUA.toString() + message);
 	}
-	
 	/**
 	 * Logs an informative message to the console, prefaced with this plugin's header
 	 * @param message: String
