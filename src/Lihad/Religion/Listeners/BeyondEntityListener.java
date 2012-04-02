@@ -135,8 +135,23 @@ public class BeyondEntityListener implements Listener {
 		//
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//
+		// "PvP Overt"
+
+		if(event.getDamager() instanceof Player && event.getEntity() instanceof Player){
+			if(((Religion.OVERT.contains(((Player)event.getDamager()).getName()) || BeyondInfo.hasPlayer((Player)event.getDamager()))
+						&& (Religion.OVERT.contains(((Player)event.getEntity()).getName()) || BeyondInfo.hasPlayer((Player)event.getEntity())))){
+			}else if(((Player)event.getDamager()).isOp()){
+				return;
+			}else{
+				event.setCancelled(true);
+			}
+		}
+		//
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		//
 		// "Bosses"
 		//
+		/**
 		if(event.getEntity() instanceof Creature){
 			for(int i = 0;i<Bosses.bossHealthMap.size();i++){
 				LivingEntity entity = (LivingEntity) Bosses.bossHealthMap.keySet().toArray()[i];
@@ -152,11 +167,12 @@ public class BeyondEntityListener implements Listener {
 				}
 			}
 		}
+		*/
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		
 		//if(event.getDamager() instanceof Player && !Bosses.bossHealthMap.containsKey(event.getEntity())){
-		if(event.getDamager() instanceof Player){
+		if(event.getDamager() instanceof Player && !(event.getEntity() instanceof Player)){
 			Player player = (Player)event.getDamager();
 			if(BeyondInfo.getReligion(player) != null){
 				int dice = BeyondUtil.calculator(player);
@@ -317,7 +333,7 @@ public class BeyondEntityListener implements Listener {
 				//
 				
 				if(event.getDamager() instanceof Player && event.getEntity() instanceof Skeleton){
-					if(event.getDamage() >= ((Enderman)event.getEntity()).getHealth()){
+					if(event.getDamage() >= ((Skeleton)event.getEntity()).getHealth()){
 						if((BeyondInfo.getReligion(player).equals("Lihazism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
 								|| (BeyondInfo.getReligion(player).equals("Fercism") && dice < 5+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))
 								|| (BeyondInfo.getReligion(player).equals("Pandasidism") && dice < 20+(BeyondInfo.getTowerAoE(BeyondInfo.getTowerName(player))/10))

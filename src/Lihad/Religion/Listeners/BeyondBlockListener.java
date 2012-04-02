@@ -116,6 +116,14 @@ public class BeyondBlockListener implements Listener {
 				}
 			}
 		}
+		if(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) != null
+				&& !BeyondInfo.is25Tower(event.getBlock().getLocation())
+				&& event.getBlock().getLocation().getBlockY() > 12
+				&& !BeyondInfo.isPlayerAMember(event.getPlayer().getName(), BeyondInfo.getClosestValidTower(event.getBlock().getLocation()))
+				&& !event.getPlayer().isOp()
+		){
+			event.setCancelled(true);
+		}
 	}
 	@EventHandler
 	public void onBlockDamage(BlockDamageEvent event){
@@ -131,6 +139,14 @@ public class BeyondBlockListener implements Listener {
 					}
 				}
 			}
+		}
+		if(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) != null
+				&& !BeyondInfo.is25Tower(event.getBlock().getLocation())
+				&& event.getBlock().getLocation().getBlockY() > 12
+				&& !BeyondInfo.isPlayerAMember(event.getPlayer().getName(), BeyondInfo.getClosestValidTower(event.getBlock().getLocation()))
+				&& !event.getPlayer().isOp()
+		){
+			event.setCancelled(true);
 		}
 	}
 	@EventHandler
@@ -150,6 +166,14 @@ public class BeyondBlockListener implements Listener {
 			for(int i = 0; i<BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).size();i++){
 				if(BeyondUtil.isNextTo(BeyondInfo.getTradeLocation(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()), BeyondInfo.getTrades(BeyondInfo.getClosestValidTower(event.getBlock().getLocation())).get(i)), place)) event.setCancelled(true);
 			}
+		}
+		if(BeyondInfo.getClosestValidTower(event.getBlock().getLocation()) != null
+				&& !BeyondInfo.is25Tower(event.getBlock().getLocation())
+				&& event.getBlock().getLocation().getBlockY() > 12
+				&& !BeyondInfo.isPlayerAMember(event.getPlayer().getName(), BeyondInfo.getClosestValidTower(event.getBlock().getLocation()))
+				&& !event.getPlayer().isOp()
+		){
+			event.setCancelled(true);
 		}
 	}
 }

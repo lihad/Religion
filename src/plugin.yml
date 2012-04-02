@@ -1,7 +1,10 @@
 name: Religion
 main: Lihad.Religion.Religion
-version: 1.13_02
+version: 1.14
 commands:
   rr:
+    description: Invalid Command
+    usage: Invalid Command
+  overt:
     description: Invalid Command
     usage: Invalid Command

@@ -356,6 +356,39 @@ public class CommandRunner implements CommandExecutor {
 			}
 			((Player)sender).sendMessage(say);
 			return true;
+		}else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("home")&& arg.length == 1){
+			if(BeyondInfo.hasPlayer(((Player)sender)) && BeyondInfo.getTowerHomeLocation(BeyondInfo.getTowerName(((Player)sender))) != null){
+				((Player)sender).teleport(BeyondInfo.getTowerHomeLocation(BeyondInfo.getTowerName(((Player)sender))));
+			}else{
+				((Player)sender).sendMessage("Fail.  Either you are not in a Religion or your Leader has yet to set a Home.");
+			}
+			return true;
+
+		}else if(cmd.getName().equalsIgnoreCase("rr") && arg[0].equals("sethome")&& arg.length == 1){
+			if(BeyondInfo.isPlayerLeader(((Player)sender))){
+				if(BeyondInfo.isTowerArea(((Player)sender).getLocation(), BeyondInfo.getTowerName(((Player)sender)))){
+					BeyondInfo.setTowerHomeLocation(BeyondInfo.getTowerName(((Player)sender)), ((Player)sender).getLocation());
+					((Player)sender).sendMessage("Tower Home Set");
+				}else{
+					((Player)sender).sendMessage("Must set in AoE");
+				}
+			}else{
+				((Player)sender).sendMessage("You are not a Leader, you can not run this command");
+			}
+			return true;
+		}else if(cmd.getName().equalsIgnoreCase("overt") && arg.length == 0){
+			if(BeyondInfo.hasPlayer(((Player)sender))){
+				((Player)sender).sendMessage(ChatColor.GRAY.toString()+"This command is of no use to a Religion member. PvP on");
+			}else{
+				if(Religion.OVERT != null && Religion.OVERT.contains(((Player)sender).getName())){
+					Religion.OVERT.remove(((Player)sender).getName());
+					((Player)sender).sendMessage(ChatColor.GRAY.toString()+"PvP off");
+				}else{
+					Religion.OVERT.add(((Player)sender).getName());
+					((Player)sender).sendMessage(ChatColor.GRAY.toString()+"PvP on");
+				}
+			}
+			return true;
 		}
 		else return false;
 	}

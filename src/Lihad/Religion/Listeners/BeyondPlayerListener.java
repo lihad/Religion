@@ -78,24 +78,6 @@ public class BeyondPlayerListener implements Listener {
 			player.teleport(from);
 			player.sendMessage(ChatColor.RED.toString()+"You're shell-shocked. Your will is too weak to continue in.");
 		}
-	////////////////////////////////	
-		if(BeyondInfo.getClosestValidTower(from) == null&& BeyondInfo.getClosestValidTower(to) != null &&BeyondInfo.getReligion(player) == null && !player.isOp()){
-			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(to))){
-				player.teleport(from);
-				player.sendMessage("This is a religious area. Go away non-believer!");
-				return;
-			}else{
-				Notification.event.add(ChatColor.WHITE.toString()+" - "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getTowerName(player)+"("+BeyondInfo.getReligion(player)+")"+ChatColor.GRAY.toString()+" has sent spies into "+ChatColor.RED.toString()+BeyondInfo.getClosestValidTower(to)+"("+BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(to))+")");
-				player.sendMessage("Your heart begins to race!");
-			}
-		}
-		if(BeyondInfo.getClosestValidTower(from) != null && BeyondInfo.getClosestValidTower(to) != null && BeyondInfo.getReligion(player) == null  && !player.isOp()){
-			if(BeyondUtil.timestampReference(BeyondInfo.getClosestValidTower(to))){
-				player.damage(6);
-				player.sendMessage("Being in a religious area without your own religion is pulling your soul apart...");
-				return;
-			}
-		}
 		if(BeyondInfo.getClosestValidTower(to) != null && (BeyondInfo.getClosestValidTower(from) == null)){
 			player.sendMessage("You are now entering the territory of "+BeyondUtil.getChatColor(player, BeyondInfo.getClosestValidTower(to)) + BeyondInfo.getClosestValidTower(to));
 		}
@@ -119,10 +101,11 @@ public class BeyondPlayerListener implements Listener {
 		if(BeyondInfo.isDevastationZone(from) && !BeyondInfo.isDevastationZone(to))player.sendMessage(ChatColor.GRAY.toString()+"You are leaving a Devastation Zone (DZ)");
 		if(BeyondInfo.is500Tower(to) && !BeyondInfo.is500Tower(from) && !BeyondInfo.hasPlayer(player))player.sendMessage(ChatColor.RED.toString()+"The dark eye of "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getClosestTower(to)+ChatColor.RED.toString()+" is watching your every move. Build at your own risk. Type "+ChatColor.WHITE.toString()+"/reach"+ChatColor.RED.toString()+" for more info");
 		if(BeyondInfo.is500Tower(from) && !BeyondInfo.is500Tower(to) && !BeyondInfo.hasPlayer(player))player.sendMessage(ChatColor.GREEN.toString()+"You have passed into the wilderness.");
+		if(BeyondInfo.is25Tower(to) && !BeyondInfo.is25Tower(from) && !BeyondInfo.hasPlayer(player))player.sendMessage(ChatColor.RED.toString()+"You are entering the core of "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getClosestTower(to));
+		if(BeyondInfo.is25Tower(from) && !BeyondInfo.is25Tower(to) && !BeyondInfo.hasPlayer(player))player.sendMessage(ChatColor.GREEN.toString()+"You have passed into city of "+ChatColor.LIGHT_PURPLE.toString()+BeyondInfo.getClosestTower(to));
 		if(BeyondInfo.isHolyZone(to) && !BeyondInfo.isHolyZone(from))player.sendMessage(ChatColor.GREEN.toString()+"You have entered a Holy Area. No Griefing allowed!");
 		if(BeyondInfo.isHolyZone(from) && !BeyondInfo.isHolyZone(to))player.sendMessage(ChatColor.RED.toString()+"You have left a Holy Area.");
 	}
-
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event){
 		//Ability Interacts
@@ -253,7 +236,7 @@ public class BeyondPlayerListener implements Listener {
 			}else if((!BeyondInfo.getTowerName(event.getPlayer()).equals(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation()))) && BeyondInfo.getReligion(event.getPlayer()).equals(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation())))){
 				event.getPlayer().sendMessage("You need to be a member of this tower to interact with this chest in that manner.");
 				event.setCancelled(true);
-			}else if(BeyondInfo.getTowerName(event.getPlayer()).equals(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation()))){
+			}else if(BeyondInfo.getTowerName(event.getPlayer()).equals(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation())) && (BeyondInfo.isMemberTrusted(event.getPlayer()) || BeyondInfo.isPlayerLeader(event.getPlayer())))  {
 				//OPENS
 			}else if(!BeyondInfo.getReligion(event.getPlayer()).equals(BeyondInfo.getReligion(BeyondInfo.getClosestValidTower(event.getClickedBlock().getLocation())))){
 				//STEALS

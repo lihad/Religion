@@ -3,6 +3,8 @@ package Lihad.Religion;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -75,6 +77,8 @@ public class Religion extends JavaPlugin {
 	protected static String name = "Religion";
 	/** Header used for console and player output messages */
 	protected static String header = "[" + name + "] ";
+	
+	public static List<String> OVERT = new LinkedList<String>();
 	
 	public static java.util.logging.Logger log = java.util.logging.Logger.getLogger("Minecraft");
 	
@@ -201,6 +205,7 @@ public class Religion extends JavaPlugin {
 		//CommandManager
 		cmd = new CommandRunner(this);
 		getCommand("rr").setExecutor(cmd);
+		getCommand("overt").setExecutor(cmd);
 		
 		//BossInitiallizer
 		bossManagerTask = new BukkitScheduleBossManager();

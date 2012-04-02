@@ -152,6 +152,15 @@ public class BeyondInfo {
 		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
 		return location;
 	}
+	
+	public static Location getTowerHomeLocation(String towername){
+		String[] array;
+		String string = BeyondInfoReader.getString("Religions."+getReligion(towername) + ".Towers."+towername+".HomeLocation");
+		array = string.split(",");
+		Location location = new Location(plugin.getServer().getWorld(array[3]), Integer.parseInt(array[0]), Integer.parseInt(array[1]), Integer.parseInt(array[2]));
+		return location;
+	}
+	
 	/**
 	 * 
 	 * @param towername
@@ -584,6 +593,9 @@ public class BeyondInfo {
 	private static void setTowerLocation(String towername, Location location){
 		BeyondInfoWriter.writeConfigurationString("Religions."+getReligion(towername)+".Towers."+towername+".Location", location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
 	}
+	public static void setTowerHomeLocation(String towername, Location location){
+		BeyondInfoWriter.writeConfigurationString("Religions."+getReligion(towername)+".Towers."+towername+".HomeLocation", location.getBlockX()+","+location.getBlockY()+","+location.getBlockZ()+","+location.getWorld().getName());
+	}
 	private static void setTowerLocation(Player player, int x, int y, int z, World world){
 		BeyondInfoWriter.writeConfigurationString("Religions."+getPlayerPath(player)+".Location", x+","+y+","+z+","+world.getName());
 	}
@@ -787,8 +799,12 @@ public class BeyondInfo {
 		return false;
 	}
 	public static boolean isPlayerLeader(Player player){
-		if(getLeader(player).equals(player.getName()))return true;
-		else return false;
+		try{
+			if(getLeader(player).equals(player.getName()))return true;
+			else return false;
+		}catch(Exception e){
+			return false;
+		}
 	}
 	public static boolean isDevastationZone(Location location){
 		List<String> zones = getDevastationZones();
@@ -810,6 +826,16 @@ public class BeyondInfo {
 	public static boolean is500Tower(Location location){
 		List<String> alltowers = getTowersAll();
 		double distance = 500;
+		for(int i = 0;i<alltowers.size();i++){
+			if(getDistanceToTower(location, alltowers.get(i))<distance){
+				return true;
+			}
+		}
+		return false;
+	}
+	public static boolean is25Tower(Location location){
+		List<String> alltowers = getTowersAll();
+		double distance = 25;
 		for(int i = 0;i<alltowers.size();i++){
 			if(getDistanceToTower(location, alltowers.get(i))<distance){
 				return true;
